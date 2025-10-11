@@ -114,10 +114,10 @@ const Services = () => {
             Our Mission
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed mb-8">
-            "To help the child dream, remember the dream, and actualize the
-            dream" - We are committed to fostering a holistic, globally-oriented
-            education that integrates the British, Jolly Phonics, and Nigerian
-            curricula across all levels.
+            &quot;To help the child dream, remember the dream, and actualize the
+            dream&quot; - We are committed to fostering a holistic,
+            globally-oriented education that integrates the British, Jolly
+            Phonics, and Nigerian curricula across all levels.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <span className="px-6 py-3 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200   rounded-full font-semibold">

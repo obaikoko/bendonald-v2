@@ -1,13 +1,12 @@
 import React from "react";
+import Image from "next/image";
 
 const WhyChooseUs = () => {
   return (
     <div className=" py-16">
       {/* Section Header */}
       <div className="text-center mb-12">
-        <h1 className="text-4xl font-bold ">
-          Why Choose Bendonalds School?
-        </h1>
+        <h1 className="text-4xl font-bold ">Why Choose Bendonalds School?</h1>
         <p className="text-lg italic  max-w-3xl mx-auto mt-4">
           Discover our commitment to nurturing excellence, creativity, and
           character.
@@ -19,10 +18,12 @@ const WhyChooseUs = () => {
         <div className="flex flex-col lg:flex-row items-center justify-between  shadow-lg rounded-lg overflow-hidden">
           {/* Image */}
           <div className="lg:w-1/2">
-            <img
-              src="images/exam.jpg"
-              alt="Academic Excellence at Bendonald School"
+            <Image
               className="w-full h-full object-cover rounded"
+              width={500}
+              height={200}
+              alt="Academic Excellence at Bendonald School"
+              src="/images/exam.jpg"
             />
           </div>
           {/* Text */}
@@ -45,10 +46,12 @@ const WhyChooseUs = () => {
         <div className="flex flex-col lg:flex-row-reverse items-center justify-between  shadow-lg rounded-lg overflow-hidden">
           {/* Image */}
           <div className="lg:w-1/2">
-            <img
-              src="images/holistic_development.jpg"
-              alt="Holistic Development at Bendonald School"
+            <Image
               className="w-full h-full object-cover rounded"
+              width={500}
+              height={200}
+              alt="image"
+              src="/images/holistic_development.jpg"
             />
           </div>
           {/* Text */}
@@ -71,10 +74,12 @@ const WhyChooseUs = () => {
         <div className="flex flex-col lg:flex-row items-center justify-between  shadow-lg rounded-lg overflow-hidden">
           {/* Image */}
           <div className="lg:w-1/2">
-            <img
-              src="images/community_values.jpg"
-              alt="Community and Values at Bendonald School"
+            <Image
               className="w-full h-full object-cover rounded"
+              width={500}
+              height={200}
+              alt="image"
+              src="/images/community_values.jpg"
             />
           </div>
           {/* Text */}

@@ -17,7 +17,6 @@ import { StudentFormData, StudentId } from '@/schemas/studentSchema';
 import DeleteStudentButton from './delete-student-button';
 import Image from 'next/image';
 import MailDialog from '../mail-dailog-box';
-import Link from 'next/link';
 import CreateInvoiceDialog from '../invoices/create-invoice-dialog';
 
 const StudentDetails = ({ studentId }: StudentId) => {

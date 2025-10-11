@@ -4,10 +4,7 @@ import AdmissionForm from "./admission-form";
 import {
   GraduationCap,
   Users,
-  Calendar,
   BookOpen,
-  Award,
-  Heart,
   Phone,
   Mail,
   MapPin,
@@ -116,7 +113,7 @@ const AdmissionPage = () => {
               Join our community of excellence!
             </p>
             <p className="text-lg  max-w-2xl mx-auto mb-8">
-              Begin your child's journey towards academic excellence and
+              Begin your child&quot;s journey towards academic excellence and
               personal growth at Bendonalds International Schools Calabar
             </p>
             <div className="flex flex-wrap justify-center gap-4">
@@ -272,7 +269,7 @@ const AdmissionPage = () => {
 
           <div className="text-center mt-12">
             <p className="text-lg text-blue-100 mb-6">
-              Ready to begin your child's educational journey?
+              Ready to begin your child&quot;s educational journey?
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <span className="px-6 py-3 bg-white/20 text-white rounded-full font-semibold">

@@ -44,61 +44,123 @@ export interface ListInvoicesResponse {
 
 export const billingApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    listInvoices: builder.query<ListInvoicesResponse, { studentId?: string; term?: string; session?: string; status?: string; pageNumber?: number } | void>({
+    listInvoices: builder.query<
+      ListInvoicesResponse,
+      {
+        studentId?: string;
+        term?: string;
+        session?: string;
+        status?: string;
+        pageNumber?: number;
+      } | void
+    >({
       query: (params) => ({
         url: BILLING_URL,
-        params,
-        credentials: 'include',
+        params: params || {},
+        credentials: "include",
       }),
-      providesTags: ['Billing'] as any,
+      providesTags: ["Billing"] ,
     }),
 
-    createInvoice: builder.mutation<Invoice, { studentId: string; term: string; session: string; dueDate?: string; items: FeeItem[] }>({
+    createInvoice: builder.mutation<
+      Invoice,
+      {
+        studentId: string;
+        term: string;
+        session: string;
+        dueDate?: string;
+        items: FeeItem[];
+      }
+    >({
       query: (body) => ({
         url: BILLING_URL,
-        method: 'POST',
+        method: "POST",
         body,
-        credentials: 'include',
+        credentials: "include",
       }),
-      invalidatesTags: ['Billing'] as any,
+      invalidatesTags: ["Billing"] ,
     }),
 
-    updateInvoice: builder.mutation<Invoice, { id: string; term?: string; session?: string; dueDate?: string | null; items?: FeeItem[]; status?: 'unpaid' | 'partial' | 'paid' }>({
+    updateInvoice: builder.mutation<
+      Invoice,
+      {
+        id: string;
+        term?: string;
+        session?: string;
+        dueDate?: string | null;
+        items?: FeeItem[];
+        status?: "unpaid" | "partial" | "paid";
+      }
+    >({
       query: ({ id, ...body }) => ({
         url: `${BILLING_URL}/${id}`,
-        method: 'PUT',
+        method: "PUT",
         body,
-        credentials: 'include',
+        credentials: "include",
       }),
-      invalidatesTags: ['Billing'] as any,
+      invalidatesTags: ["Billing"] ,
     }),
 
-    recordPayment: builder.mutation<Payment, { invoiceId: string; amount: number; method: string; note?: string; paidAt?: string }>({
+    recordPayment: builder.mutation<
+      Payment,
+      {
+        invoiceId: string;
+        amount: number;
+        method: string;
+        note?: string;
+        paidAt?: string;
+      }
+    >({
       query: (body) => ({
         url: `${BILLING_URL}/payments`,
-        method: 'POST',
+        method: "POST",
         body,
-        credentials: 'include',
+        credentials: "include",
       }),
-      invalidatesTags: ['Billing'] as any,
+      invalidatesTags: ["Billing"] ,
     }),
 
-    summaryReport: builder.query<{ totalCollected: number; byMethod: Record<string, number>; byRecorder: Record<string, number>; count: number }, { startDate?: string; endDate?: string; term?: string; session?: string; level?: string; subLevel?: string } | void>({
+    summaryReport: builder.query<
+      {
+        totalCollected: number;
+        byMethod: Record<string, number>;
+        byRecorder: Record<string, number>;
+        count: number;
+      },
+      {
+        startDate?: string;
+        endDate?: string;
+        term?: string;
+        session?: string;
+        level?: string;
+        subLevel?: string;
+      } | void
+    >({
       query: (params) => ({
         url: `${BILLING_URL}/reports/summary`,
-        params,
-        credentials: 'include',
+        params: params || {},
+        credentials: "include",
       }),
-      providesTags: ['Billing'] as any,
+      providesTags: ["Billing"] ,
     }),
 
-    studentStatement: builder.query<{ statement: any[]; totals: { totalInvoiced: number; totalPaid: number; totalBalance: number } }, { studentId: string; term?: string; session?: string }>({
+    studentStatement: builder.query<
+      {
+        // statement: any[];
+        totals: {
+          totalInvoiced: number;
+          totalPaid: number;
+          totalBalance: number;
+        };
+      },
+      { studentId: string; term?: string; session?: string }
+    >({
       query: (params) => ({
         url: `${BILLING_URL}/reports/statement`,
         params,
-        credentials: 'include',
+        credentials: "include",
       }),
-      providesTags: ['Billing'] as any,
+      providesTags: ["Billing"] ,
     }),
   }),
 });

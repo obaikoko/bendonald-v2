@@ -16,10 +16,10 @@ const NewUsers = () => {
         <p className="text-base md:text-lg leading-relaxed mb-8">
           Bendonalds International Schools Calabar is committed to delivering a
           world-class education in a nurturing and inspiring environment. Our
-          mission is to develop tomorrow's leaders through academic excellence,
-          personal growth, and global perspectives. Supported by experienced
-          educators and cutting-edge facilities, we empower each child to
-          realize their full potential.
+          mission is to develop tomorrow&quot;s leaders through academic
+          excellence, personal growth, and global perspectives. Supported by
+          experienced educators and cutting-edge facilities, we empower each
+          child to realize their full potential.
         </p>
 
         <Link

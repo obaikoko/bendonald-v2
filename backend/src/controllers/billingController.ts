@@ -13,7 +13,7 @@ import {
 } from "../validators/billingValidators";
 
 const createInvoice = asyncHandler(async (req: Request, res: Response) => {
-  const { studentId, term, session, dueDate, items } = createInvoiceSchema.parse(
+  const { studentId, term, session, items } = createInvoiceSchema.parse(
     req.body
   );
 

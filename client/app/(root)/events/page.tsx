@@ -20,40 +20,40 @@ const EventPage = () => {
     { id: 'cultural', label: 'Cultural', icon: MapPin }
   ];
 
-  const upcomingEvents = [
-    {
-      id: 1,
-      title: "Annual Sports Day",
-      date: "2024-03-15",
-      time: "9:00 AM",
-      location: "School Sports Complex",
-      description: "Join us for our annual sports day featuring various competitions and activities.",
-      category: "sports",
-      image: "/images/sport1.jpg"
-    },
-    {
-      id: 2,
-      title: "Science Fair Exhibition",
-      date: "2024-03-22",
-      time: "10:00 AM",
-      location: "School Auditorium",
-      description: "Students showcase their innovative science projects and experiments.",
-      category: "academic",
-      image: "/images/exam.jpg"
-    },
-    {
-      id: 3,
-      title: "Cultural Day Celebration",
-      date: "2024-03-29",
-      time: "2:00 PM",
-      location: "School Hall",
-      description: "Celebrate our diverse cultural heritage with performances and exhibitions.",
-      category: "cultural",
-      image: "/images/band.jpg"
-    }
-  ];
+  // const upcomingEvents = [
+  //   {
+  //     id: 1,
+  //     title: "Annual Sports Day",
+  //     date: "2024-03-15",
+  //     time: "9:00 AM",
+  //     location: "School Sports Complex",
+  //     description: "Join us for our annual sports day featuring various competitions and activities.",
+  //     category: "sports",
+  //     image: "/images/sport1.jpg"
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Science Fair Exhibition",
+  //     date: "2024-03-22",
+  //     time: "10:00 AM",
+  //     location: "School Auditorium",
+  //     description: "Students showcase their innovative science projects and experiments.",
+  //     category: "academic",
+  //     image: "/images/exam.jpg"
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Cultural Day Celebration",
+  //     date: "2024-03-29",
+  //     time: "2:00 PM",
+  //     location: "School Hall",
+  //     description: "Celebrate our diverse cultural heritage with performances and exhibitions.",
+  //     category: "cultural",
+  //     image: "/images/band.jpg"
+  //   }
+  // ];
 
-  const filteredEvents = filter === 'all' ? upcomingEvents : upcomingEvents.filter(event => event.category === filter);
+  // const filteredEvents = filter === 'all' ? upcomingEvents : upcomingEvents.filter(event => event.category === filter);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 dark:from-gray-900 dark:to-gray-800">

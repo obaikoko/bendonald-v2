@@ -12,7 +12,6 @@ import {
   BadgePlus,
   Hammer,
   CalendarDays,
-  Settings,
   DollarSign,
   SpeakerIcon,
   X,

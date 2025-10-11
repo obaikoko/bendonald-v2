@@ -4,7 +4,6 @@ export const createInvoiceSchema = z.object({
   studentId: z.string().min(5, "studentId is required"),
   term: z.string().min(1, "term is required"),
   session: z.string().min(3, "session is required"),
-  dueDate: z.coerce.date().optional(),
   items: z
     .array(
       z.object({

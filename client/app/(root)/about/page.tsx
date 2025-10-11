@@ -92,22 +92,29 @@ const AboutPage = () => {
                 Our Story
               </h2>
               <p className="text-xl text-gray-600 dark:text-gray-300 leading-relaxed mb-8">
-                Bendonalds International Schools was founded in 2020 by Mrs. and Mrs. Celestine Atsu. 
-                Originally a COVID-19 lesson center, it has evolved into the thriving institution we know today, 
-                dedicated to nurturing young minds in a supportive environment.
+                Bendonalds International Schools was founded in 2020 by Mrs. and
+                Mrs. Celestine Atsu. Originally a COVID-19 lesson center, it has
+                evolved into the thriving institution we know today, dedicated
+                to nurturing young minds in a supportive environment.
               </p>
               <div className="space-y-4">
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
-                  <span className="text-gray-700 dark:text-gray-300">Founded during challenging times</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Founded during challenging times
+                  </span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                  <span className="text-gray-700 dark:text-gray-300">Evolved into comprehensive education</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Evolved into comprehensive education
+                  </span>
                 </div>
                 <div className="flex items-center space-x-3">
                   <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  <span className="text-gray-700 dark:text-gray-300">Dedicated to student success</span>
+                  <span className="text-gray-700 dark:text-gray-300">
+                    Dedicated to student success
+                  </span>
                 </div>
               </div>
             </div>
@@ -133,20 +140,25 @@ const AboutPage = () => {
               Our Mission & Vision
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Bendonalds International Schools is committed to fostering a holistic, 
-              globally-oriented education, integrating the British, Jolly Phonics, and Nigerian curricula.
+              Bendonalds International Schools is committed to fostering a
+              holistic, globally-oriented education, integrating the British,
+              Jolly Phonics, and Nigerian curricula.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
             <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg">
-              <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4">Our Motto</h3>
+              <h3 className="text-2xl font-bold text-blue-600 dark:text-blue-400 mb-4">
+                Our Motto
+              </h3>
               <p className="text-lg text-gray-700 dark:text-gray-300 font-semibold">
-                "Citadel for Future Leaders"
+                &quot;Citadel for Future Leaders&quot;
               </p>
             </div>
             <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-lg">
-              <h3 className="text-2xl font-bold text-red-600 dark:text-red-400 mb-4">Our Vision</h3>
+              <h3 className="text-2xl font-bold text-red-600 dark:text-red-400 mb-4">
+                Our Vision
+              </h3>
               <ul className="space-y-2 text-gray-700 dark:text-gray-300">
                 <li className="flex items-center space-x-2">
                   <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
@@ -171,15 +183,13 @@ const AboutPage = () => {
                 key={index}
                 className="group bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-2"
               >
-                <div className={`w-16 h-16 rounded-xl bg-gradient-to-r ${value.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                <div
+                  className={`w-16 h-16 rounded-xl bg-gradient-to-r ${value.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}
+                >
                   <value.icon className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold  mb-3">
-                  {value.title}
-                </h3>
-                <p>
-                  {value.description}
-                </p>
+                <h3 className="text-xl font-bold  mb-3">{value.title}</h3>
+                <p>{value.description}</p>
               </div>
             ))}
           </div>
@@ -212,10 +222,11 @@ const AboutPage = () => {
               <div>
                 <h3 className="text-3xl font-bold mb-6">Mrs. Agiye Esther</h3>
                 <p className="text-xl  leading-relaxed mb-6">
-                  Mrs. Agiye Esther brings a wealth of experience to Bendonalds, 
-                  shaping a future-oriented education for our pupils. Her vision and 
-                  dedication have been instrumental in creating an environment where 
-                  every child can thrive and reach their full potential.
+                  Mrs. Agiye Esther brings a wealth of experience to Bendonalds,
+                  shaping a future-oriented education for our pupils. Her vision
+                  and dedication have been instrumental in creating an
+                  environment where every child can thrive and reach their full
+                  potential.
                 </p>
                 <div className="space-y-3">
                   <div className="flex items-center space-x-3">
@@ -245,7 +256,8 @@ const AboutPage = () => {
               Our Achievements
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Celebrating milestones and successes that define our commitment to excellence
+              Celebrating milestones and successes that define our commitment to
+              excellence
             </p>
           </div>
 
@@ -261,16 +273,15 @@ const AboutPage = () => {
                 <h3 className="text-xl font-bold   mb-4">
                   {achievement.title}
                 </h3>
-                <p>
-                  {achievement.description}
-                </p>
+                <p>{achievement.description}</p>
               </div>
             ))}
           </div>
 
           <div className="mt-16 text-center">
             <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-              We invite you to join the Bendonalds community for an enriching academic experience and holistic development.
+              We invite you to join the Bendonalds community for an enriching
+              academic experience and holistic development.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <span className="px-6 py-3 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 rounded-full font-semibold">

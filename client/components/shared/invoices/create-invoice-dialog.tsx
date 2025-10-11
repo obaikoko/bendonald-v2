@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCreateInvoiceMutation } from "@/src/features/billing/billingApiSlice";
 import { toast } from "sonner";
+import { showZodErrors } from "@/lib/utils";
 
 type ItemRow = { name: string; amount: string };
 
@@ -24,11 +25,14 @@ interface CreateInvoiceDialogProps {
   studentId: string;
 }
 
-const CreateInvoiceDialog = ({ open, onClose, studentId }: CreateInvoiceDialogProps) => {
+const CreateInvoiceDialog = ({
+  open,
+  onClose,
+  studentId,
+}: CreateInvoiceDialogProps) => {
   const router = useRouter();
   const [term, setTerm] = useState("");
   const [session, setSession] = useState("");
-  const [dueDate, setDueDate] = useState("");
   const [items, setItems] = useState<ItemRow[]>([{ name: "", amount: "" }]);
   const [createInvoice, { isLoading }] = useCreateInvoiceMutation();
 
@@ -47,7 +51,6 @@ const CreateInvoiceDialog = ({ open, onClose, studentId }: CreateInvoiceDialogPr
         studentId: studentId.trim(),
         term: term.trim(),
         session: session.trim(),
-        dueDate: dueDate ? new Date(dueDate).toISOString() : undefined,
         items: items
           .filter((it) => it.name && it.amount)
           .map((it) => ({ name: it.name.trim(), amount: Number(it.amount) })),
@@ -57,13 +60,16 @@ const CreateInvoiceDialog = ({ open, onClose, studentId }: CreateInvoiceDialogPr
       toast.success("Invoice created successfully!");
       onClose(); // Close the dialog
       router.push(`/admin/billing/${res.id}`);
-    } catch (err: any) {
-      toast.error(err?.data?.message || "Failed to create invoice");
+    } catch (error) {
+      showZodErrors(error);
     }
   };
 
   const canSubmit =
-    studentId && term && session && items.some((it) => it.name && Number(it.amount) > 0);
+    studentId &&
+    term &&
+    session &&
+    items.some((it) => it.name && Number(it.amount) > 0);
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -71,7 +77,8 @@ const CreateInvoiceDialog = ({ open, onClose, studentId }: CreateInvoiceDialogPr
         <DialogHeader>
           <DialogTitle>Create Invoice</DialogTitle>
           <DialogDescription>
-            Fill out invoice details and click "Create Invoice" to continue.
+            Fill out invoice details and click &quot;Create Invoice&quot; to
+            continue.
           </DialogDescription>
         </DialogHeader>
 
@@ -95,7 +102,6 @@ const CreateInvoiceDialog = ({ open, onClose, studentId }: CreateInvoiceDialogPr
                 value={session}
                 onChange={(e) => setSession(e.target.value)}
               />
-             
             </CardContent>
           </Card>
 
@@ -109,13 +115,14 @@ const CreateInvoiceDialog = ({ open, onClose, studentId }: CreateInvoiceDialogPr
               </div>
               <div className="space-y-2">
                 {items.map((it, idx) => (
-                  <div key={idx} className="grid grid-cols-1 md:grid-cols-3 gap-2">
+                  <div
+                    key={idx}
+                    className="grid grid-cols-1 md:grid-cols-3 gap-2"
+                  >
                     <Input
                       placeholder="Item name"
                       value={it.name}
-                      onChange={(e) =>
-                        updateItem(idx, "name", e.target.value)
-                      }
+                      onChange={(e) => updateItem(idx, "name", e.target.value)}
                     />
                     <Input
                       type="number"
