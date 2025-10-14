@@ -24,8 +24,10 @@ app.set("trust proxy", true);
 
 const corsOptions = {
   origin:
-    process.env.NODE_ENV === "https://bendonald-v2.vercel.app",
-     credentials: true,
+    process.env.NODE_ENV === "production"
+      ? ["https://www.bendonaldschools.com", "https://bendonaldschools.com"]
+      : "http://localhost:3000",
+  credentials: true,
 };
 
 app.use(cors(corsOptions));

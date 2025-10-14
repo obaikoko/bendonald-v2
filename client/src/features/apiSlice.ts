@@ -1,8 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 const baseQuery = fetchBaseQuery({
-  // baseUrl: process.env.NEXT_PUBLIC_API_URL,
-  baseUrl: "https://bendonald-v2.onrender.com/",
+  baseUrl: process.env.NEXT_PUBLIC_API_URL,
 });
 export const apiSlice = createApi({
   baseQuery,
