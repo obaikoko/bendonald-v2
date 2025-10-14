@@ -25,7 +25,7 @@ app.set("trust proxy", true);
 const corsOptions = {
   origin:
     process.env.NODE_ENV === "production"
-      ? "https://bendonald-v2.onrender.com"
+      ? "https://bendonald-v2.vercel.app"
       : "http://localhost:3000",
   credentials: true,
 };
