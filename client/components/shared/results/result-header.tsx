@@ -45,7 +45,7 @@ const ResultHeader = ({ result }: { result: StudentResult }) => {
         <div className='flex items-center gap-2'>
           <LineChart className='w-4 h-4 text-blue-600' />
           <span>
-            <strong>Average:</strong> {result.averageScore.toString().slice(0, 5)}%
+            <strong>Average:</strong> {result.averageScore?.toString().slice(0, 5)}%
           </span>
         </div>
         <div className='flex items-center gap-2'>
