@@ -135,7 +135,7 @@ ${generateLetterHeadHTML(result)}
 
   <tr class="footer">
     <td colspan="8">NUMBER OF PEOPLE IN CLASS: ${
-      result.numberInClass ?? '-'
+      result.numberInClass ?? "-"
     }</td>
   </tr>
   <tr class="footer">
@@ -150,10 +150,12 @@ ${generateLetterHeadHTML(result)}
   </tr>
   <tr class="footer">
     <td colspan="8">
-      Pass/Fail:    ${(mathTotalScore <= 40 && engTotalScore <= 40) ||
-                result.averageScore && result.averageScore < 40
-                  ? 'FAILED'
-                  : 'PASS'} &nbsp;&nbsp;&nbsp;&nbsp; 
+      Pass/Fail:    ${
+        (mathTotalScore <= 40 && engTotalScore <= 40) ||
+        (result.averageScore && result.averageScore < 40)
+          ? "FAILED"
+          : "PASS"
+      } &nbsp;&nbsp;&nbsp;&nbsp; 
       Conduct: ____________ &nbsp;&nbsp;&nbsp;&nbsp; 
       Signature: ____________
     </td>
@@ -161,23 +163,23 @@ ${generateLetterHeadHTML(result)}
   <tr class="footer">
     <td colspan="8">
       Re-Opening Date: ${formatDate(
-        nextTermInfo.reOpeningDate ?? '-'
+        nextTermInfo.reOpeningDate ?? "-"
       )} &nbsp;&nbsp;&nbsp;&nbsp;
       Next Term Fee: ${formatCurrency(
-        nextTermInfo.nextTermFee ?? '-'
+        nextTermInfo.nextTermFee ?? "-"
       )} &nbsp;&nbsp;&nbsp;&nbsp;
       Bus Fare: ${formatCurrency(
-        nextTermInfo.busFee ?? '-'
+        nextTermInfo.busFee ?? "-"
       )} &nbsp;&nbsp;&nbsp;&nbsp;
-      Other Charges: ${formatCurrency(nextTermInfo.otherCharges && '-')} 
+      Other Charges: ${formatCurrency(nextTermInfo.otherCharges && "-")} 
     </td>
   
   </tr>
   <tr class="footer">
      <td colspan="8">
-      ACCOUNT NAME: BERYL INTERNATIONAL SCHOOLS &nbsp;&nbsp;&nbsp;&nbsp;
-      ACCOUNT NUMBER: 2035177616 &nbsp;&nbsp;&nbsp;&nbsp;
-      BANK NAME: FIRST BANK OF NIGERIA &nbsp;&nbsp;&nbsp;&nbsp;
+      ACCOUNT NAME: ${process.env.SCHOOL_ACC_NAME} &nbsp;&nbsp;&nbsp;&nbsp;
+      ACCOUNT NUMBER: ${process.env.SCHOOL_ACC_NO} &nbsp;&nbsp;&nbsp;&nbsp;
+      BANK NAME: ${process.env.SCHOOL_BANK_NAME} &nbsp;&nbsp;&nbsp;&nbsp;
     </td>
   
   </tr>

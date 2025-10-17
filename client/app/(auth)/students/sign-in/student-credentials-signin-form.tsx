@@ -3,7 +3,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { Eye, EyeOff, Mail, Lock, GraduationCap } from 'lucide-react';
+import { Eye, EyeOff, Lock, GraduationCap, LogIn } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { useStudentLoginMutation } from '@/src/features/auth/studentsApiSlice';
 import { setCredentials } from '@/src/features/auth/authSlice';
@@ -49,18 +49,21 @@ const StudentCredentialsSignInForm = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 text-gray-500">
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="studentId" className="text-sm font-medium text-gray-700">
-            Student Email
+          <Label
+            htmlFor="studentId"
+            className="text-sm font-medium text-gray-700"
+          >
+            Student ID
           </Label>
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <GraduationCap className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <Input
               id="studentId"
               type="text"
               autoComplete="studentId"
               placeholder="Enter your student ID"
               className="pl-10 h-11 border-gray-200 focus:border-green-500 focus:ring-green-500"
-              {...register('studentId')}
+              {...register("studentId")}
             />
           </div>
           {errors.studentId && (
@@ -72,18 +75,21 @@ const StudentCredentialsSignInForm = () => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="password" className="text-sm font-medium text-gray-700">
+          <Label
+            htmlFor="password"
+            className="text-sm font-medium text-gray-700"
+          >
             Password
           </Label>
           <div className="relative">
             <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
             <Input
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               id="password"
               autoComplete="current-password"
               placeholder="Enter your password"
               className="pl-10 pr-10 h-11 border-gray-200 focus:border-green-500 focus:ring-green-500"
-              {...register('password')}
+              {...register("password")}
             />
             <button
               type="button"
@@ -114,8 +120,8 @@ const StudentCredentialsSignInForm = () => {
           </div>
         ) : (
           <div className="flex items-center space-x-2">
-            <GraduationCap className="w-4 h-4" />
-            <span>Student Sign In</span>
+            <LogIn className="w-4 h-4" />
+            <span>Sign In</span>
           </div>
         )}
       </Button>

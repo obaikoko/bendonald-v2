@@ -12,23 +12,25 @@ export const generateLetterHeadHTML = (result: StudentResult) => {
         <!-- Student Passport -->
         <div>
           <img src="${
-            result.image || 'https://via.placeholder.com/80'
+            result.image || "https://via.placeholder.com/80"
           }" alt="Student Passport" style="height: 80px; width: 80px; object-fit: cover; border: 1px solid #ccc; border-radius: 4px;" />
         </div>
 
         <!-- School Info -->
         <div style="flex-grow: 1; text-align: center;">
-          <h2 style="margin: 0;">Beryl International Schools</h2>
+          <h2 style="margin: 0;">Bendonalds International Schools</h2>
           <p style="margin: 0; color: #E22777; font-size: 20px;">
-            Plot 1, Block 1, Ikot Eneobong (Federal Housing Estate)<br /> Calabar Municipality, Cross River State<br />
+            NO. 9 BY MTN MAST, ODUKPANI CLOSE, IKOT ENEOBONG <br />   F.H.E 8 MILES, CALABAR, C.R.S NIGERIA<br />
             
           </p>
-          </> TEL: 07060511978, 09073091617</p>
+          <p> TEL:   07038307768, 08169866808 </p>
         </div>
  
         <!-- School Logo -->
         <div>
-          <img src="https://res.cloudinary.com/dzajrh9z7/image/upload/v1726781636/beryl/epfme50v5t4l66i6fzx3.jpg" alt="School Logo" style="height: 80px;" />
+          <img src="${
+            process.env.SCHOOL_LOGO
+          }" alt="School Logo" style="height: 80px;" />
         </div>
       </div>
 
