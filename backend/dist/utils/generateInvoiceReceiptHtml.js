@@ -1,42 +1,33 @@
-import { Invoice, FeeItem, Payment, Student } from '@prisma/client';
-import { formatCurrency, formatDateAndTime } from './formatUtils';
-
-type InvoiceWithRelations = Invoice & {
-  items: FeeItem[];
-  payments: (Payment & { recordedBy?: { firstName: string | null; lastName: string | null } | null })[];
-  student?: Student | null;
-};
-
-export function generateInvoiceReceiptHtml(inv: InvoiceWithRelations) {
-  const paid = (inv.payments || []).reduce((s, p) => s + Number(p.amount), 0);
-  const balance = Number(inv.balance);
-  const studentName = inv.student ? `${inv.student.firstName} ${inv.student.lastName}` : inv.studentId;
-  const studentLevel = inv.student ? `${inv.student.level} ${inv.student.subLevel}` : inv.studentId;
-  const createdAt = formatDateAndTime(inv.createdAt);
-
-  const itemsRows = inv.items
-    .map(
-      (it) => `
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateInvoiceReceiptHtml = generateInvoiceReceiptHtml;
+const formatUtils_1 = require("./formatUtils");
+function generateInvoiceReceiptHtml(inv) {
+    const paid = (inv.payments || []).reduce((s, p) => s + Number(p.amount), 0);
+    const balance = Number(inv.balance);
+    const studentName = inv.student ? `${inv.student.firstName} ${inv.student.lastName}` : inv.studentId;
+    const studentLevel = inv.student ? `${inv.student.level} ${inv.student.subLevel}` : inv.studentId;
+    const createdAt = (0, formatUtils_1.formatDateAndTime)(inv.createdAt);
+    const itemsRows = inv.items
+        .map((it) => `
         <tr>
           <td style="padding:8px;border-bottom:1px solid #eee;">${escapeHtml(it.name)}</td>
-          <td style="padding:8px;text-align:right;border-bottom:1px solid #eee;">${formatCurrency(it.amount)}</td>
-        </tr>`
-    )
-    .join('');
-
-  const paymentsRows = (inv.payments || [])
-    .map(
-      (p) => `
+          <td style="padding:8px;text-align:right;border-bottom:1px solid #eee;">${(0, formatUtils_1.formatCurrency)(it.amount)}</td>
+        </tr>`)
+        .join('');
+    const paymentsRows = (inv.payments || [])
+        .map((p) => {
+        var _a, _b;
+        return `
         <tr>
-          <td style="padding:8px;border-bottom:1px solid #eee;">${p.paidAt ? formatDateAndTime(p.paidAt) : '-'}</td>
-          <td style="padding:8px;text-align:right;border-bottom:1px solid #eee;">${formatCurrency(p.amount)}</td>
+          <td style="padding:8px;border-bottom:1px solid #eee;">${p.paidAt ? (0, formatUtils_1.formatDateAndTime)(p.paidAt) : '-'}</td>
+          <td style="padding:8px;text-align:right;border-bottom:1px solid #eee;">${(0, formatUtils_1.formatCurrency)(p.amount)}</td>
           <td style="padding:8px;border-bottom:1px solid #eee;">${escapeHtml(p.method)}</td>
-          <td style="padding:8px;border-bottom:1px solid #eee;">${escapeHtml(((p.recordedBy?.firstName || '') + ' ' + (p.recordedBy?.lastName || '')).trim())}</td>
-        </tr>`
-    )
-    .join('');
-
-  return `
+          <td style="padding:8px;border-bottom:1px solid #eee;">${escapeHtml(((((_a = p.recordedBy) === null || _a === void 0 ? void 0 : _a.firstName) || '') + ' ' + (((_b = p.recordedBy) === null || _b === void 0 ? void 0 : _b.lastName) || '')).trim())}</td>
+        </tr>`;
+    })
+        .join('');
+    return `
 <!DOCTYPE html>
 <html>
   <head>
@@ -87,7 +78,7 @@ export function generateInvoiceReceiptHtml(inv: InvoiceWithRelations) {
             ${itemsRows}
             <tr>
               <td style="padding:8px;text-align:right;"><strong>Total</strong></td>
-              <td style="padding:8px;text-align:right;">${formatCurrency(inv.totalAmount)}</td>
+              <td style="padding:8px;text-align:right;">${(0, formatUtils_1.formatCurrency)(inv.totalAmount)}</td>
             </tr>
           </tbody>
         </table>
@@ -109,7 +100,7 @@ export function generateInvoiceReceiptHtml(inv: InvoiceWithRelations) {
           </tbody>
         </table>
         <div style="margin-top:12px;text-align:right;">
-            <div><strong>Paid:</strong> ${formatCurrency(paid)}</div>
+            <div><strong>Paid:</strong> ${(0, formatUtils_1.formatCurrency)(paid)}</div>
             ${balance > 0 ? '<div><strong>Balance:</strong> ${formatCurrency(balance)}</div>' : ''}
           
         </div>
@@ -123,14 +114,11 @@ export function generateInvoiceReceiptHtml(inv: InvoiceWithRelations) {
   </html>
 `;
 }
-
-function escapeHtml(s: any) {
-  return String(s || '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#039;');
+function escapeHtml(s) {
+    return String(s || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
 }
-
-

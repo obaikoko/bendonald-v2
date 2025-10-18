@@ -31,15 +31,15 @@ const sendSingleMail = (_a) => __awaiter(void 0, [_a], void 0, function* ({ emai
         });
         const mailOptions = {
             from: {
-                name: 'BERYL INTERNATIONAL SCHOOLS',
-                address: 'berylintlschl@gmail.com',
+                name: "BENDONALDS INTERNATIONAL SCHOOLS",
+                address: "bendonaldsschools@gmail.com",
             },
             to: email,
             subject,
             html: `
        <div style="font-family: Arial, sans-serif; color: #333; padding: 24px; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; border-radius: 12px; background-color: #ffffff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
   <div style="text-align: center; margin-bottom: 20px;">
-    <img src="https://res.cloudinary.com/dzajrh9z7/image/upload/v1726781636/beryl/epfme50v5t4l66i6fzx3.jpg" alt="Beryl International School Logo" style="width: 120px; border-radius: 8px;">
+    <img src="https://res.cloudinary.com/dzajrh9z7/image/upload/v1726781636/beryl/epfme50v5t4l66i6fzx3.jpg" alt="Bendonalds International Schools Logo" style="width: 120px; border-radius: 8px;">
   </div>
 
   <h2 style="color: #004b87; text-align: center; font-size: 24px; margin-bottom: 16px;">Welcome Back</h2>
@@ -55,9 +55,9 @@ const sendSingleMail = (_a) => __awaiter(void 0, [_a], void 0, function* ({ emai
 
   <div style="text-align: center; font-size: 13px; color: #999;">
     <p>If you have any questions, contact us at 
-      <a href="mailto:berylintlschl@gmail.com" style="color: #004b87; text-decoration: none;">berylintlschl@gmail.com</a>.
+      <a href="mailto:bendonaldsschools@gmail.com" style="color: #004b87; text-decoration: none;">bendonaldsschools@gmail.com</a>.
     </p>
-    <p style="margin-top: 4px;">&copy; 2025 Beryl International Schools. All rights reserved.</p>
+    <p style="margin-top: 4px;">&copy; 2025 Bendonalds International Schools. All rights reserved.</p>
   </div>
 </div>
 

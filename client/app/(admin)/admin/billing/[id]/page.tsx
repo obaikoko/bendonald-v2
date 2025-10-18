@@ -100,7 +100,8 @@ toast.error('Failed to record payment');
           <h1 className="text-2xl md:text-3xl font-bold">Invoice #{invoice.id}</h1>
           <Button variant="outline" onClick={printInvoicePdf}>Print Receipt (PDF)</Button>
         </div>
-        <p className="text-sm text-muted-foreground">Student: {invoice.student ? `${invoice.student.firstName} ${invoice.student.lastName}` : invoice.studentId}</p>
+        <p className="text-sm text-muted-foreground">Name: {invoice.student ? `${invoice.student.firstName} ${invoice.student.lastName}` : invoice.studentId}</p>
+        <p className="text-sm text-muted-foreground">Class: {invoice.student ? `${invoice.student.level}${invoice.student.subLevel}` : invoice.studentId}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -112,8 +113,8 @@ toast.error('Failed to record payment');
               <div>Paid: ₦{paid.toLocaleString()}</div>
               <div>Balance: ₦{balance.toLocaleString()}</div>
               <div>Status: <span className="capitalize">{invoice.status}</span></div>
-              <div>Term/Session: {invoice.term} / {invoice.session}</div>
-              {invoice.dueDate && <div>Due: {new Date(invoice.dueDate).toLocaleDateString()}</div>}
+              <div>Term/Session: {invoice.term} Term, {invoice.session}</div>
+          
             </div>
           </CardContent>
         </Card>

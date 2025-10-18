@@ -16,16 +16,17 @@ const eventRoutes_1 = __importDefault(require("./routes/eventRoutes"));
 const announcementRoute_1 = __importDefault(require("./routes/announcementRoute"));
 const schemeOfWorkRoute_1 = __importDefault(require("./routes/schemeOfWorkRoute"));
 const timeTableRoute_1 = __importDefault(require("./routes/timeTableRoute"));
+const billingRoutes_1 = __importDefault(require("./routes/billingRoutes"));
 const errorMiddleware_1 = require("./middleware/errorMiddleware");
 const cookieParser = require("cookie-parser");
 const cors_1 = __importDefault(require("cors"));
 dotenv_1.default.config();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8000;
 const app = (0, express_1.default)();
 app.set("trust proxy", true);
 const corsOptions = {
     origin: process.env.NODE_ENV === "production"
-        ? ["https://www.berylintlschl.com", "https://berylintlschl.com"]
+        ? ["https://www.bendonaldschools.com", "https://bendonaldschools.com"]
         : "http://localhost:3000",
     credentials: true,
 };
@@ -44,6 +45,7 @@ app.use("/api/events", eventRoutes_1.default);
 app.use("/api/announcements", announcementRoute_1.default);
 app.use("/api/schemes", schemeOfWorkRoute_1.default);
 app.use("/api/timeTable", timeTableRoute_1.default);
+app.use("/api/billing", billingRoutes_1.default);
 app.use(errorMiddleware_1.errorHandler);
 app.use(errorMiddleware_1.notFound);
 app.listen(port, () => console.log(`Server running on port ${port}`));

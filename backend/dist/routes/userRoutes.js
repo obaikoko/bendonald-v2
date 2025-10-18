@@ -8,7 +8,7 @@ const authMiddleware_1 = require("../middleware/authMiddleware");
 const express_1 = __importDefault(require("express"));
 const router = express_1.default.Router();
 router.route('/').get(authMiddleware_1.protect, authMiddleware_1.admin, userController_1.getUsers);
-router.route('/register').post(userController_1.registerUser);
+router.route('/register').post(authMiddleware_1.protect, userController_1.registerUser);
 router.route('/auth').post(userController_1.authUser);
 router.post('/mails-bulk', authMiddleware_1.protect, authMiddleware_1.admin, userController_1.sendMultipleMails);
 router.post('/mails', authMiddleware_1.protect, authMiddleware_1.admin, userController_1.sendMail);

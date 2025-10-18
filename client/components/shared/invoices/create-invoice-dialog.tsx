@@ -15,7 +15,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCreateInvoiceMutation } from "@/src/features/billing/billingApiSlice";
 import { toast } from "sonner";
-import { showZodErrors } from "@/lib/utils";
+import { sessions, showZodErrors, terms } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type ItemRow = { name: string; amount: string };
 
@@ -76,6 +83,7 @@ const CreateInvoiceDialog = ({
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Create Invoice</DialogTitle>
+          <DialogDescription>ID: {studentId}</DialogDescription>
           <DialogDescription>
             Fill out invoice details and click &quot;Create Invoice&quot; to
             continue.
@@ -85,28 +93,36 @@ const CreateInvoiceDialog = ({
         {/* Invoice Form */}
         <div className="space-y-4 mt-4">
           <Card>
-            <CardContent className="p-4 grid grid-cols-1 md:grid-cols-4 gap-3">
-              <Input
-                placeholder="Student ID"
-                value={studentId}
-                readOnly
-                className="bg-gray-100 cursor-not-allowed"
-              />
-              <Input
-                placeholder="Term (e.g., First)"
-                value={term}
-                onChange={(e) => setTerm(e.target.value)}
-              />
-              <Input
-                placeholder="Session (e.g., 2024/2025)"
-                value={session}
-                onChange={(e) => setSession(e.target.value)}
-              />
+            <CardContent className="flex flex-col md:flex-row gap-x-3">
+              <Select onValueChange={setTerm}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Term" />
+                </SelectTrigger>
+                <SelectContent>
+                  {terms.map((trm, index) => (
+                    <SelectItem key={index} value={trm}>
+                      {trm}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Select onValueChange={setSession}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Session" />
+                </SelectTrigger>
+                <SelectContent>
+                  {sessions.map((session, index) => (
+                    <SelectItem key={index} value={session}>
+                      {session}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </CardContent>
           </Card>
 
           <Card>
-            <CardContent className="p-4 space-y-3">
+            <CardContent className="p-4 space-y-3 max-h-80 overflow-y-auto">
               <div className="flex items-center justify-between">
                 <div className="font-semibold">Fee Items</div>
                 <Button variant="outline" size="sm" onClick={addItem}>
@@ -135,6 +151,7 @@ const CreateInvoiceDialog = ({
                     <div className="flex items-center gap-2">
                       <Button
                         variant="ghost"
+                        className="text-red-700 hover:text-red-300"
                         onClick={() => removeItem(idx)}
                         disabled={items.length === 1}
                       >

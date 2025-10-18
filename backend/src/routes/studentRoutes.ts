@@ -20,7 +20,7 @@ router.route('/export-cvs').get(protect, admin, exportStudentsCSV);
 router.route('/profile').get(protect, getStudentProfile);
 router
 .route('/search/registered-user')
-.get(protect, getStudentsRegisteredByUser);
+.get(protect, admin, getStudentsRegisteredByUser);
 router.route('/register').post(protect, admin, registerStudent);
 router.route('/forget-password').post(forgetPassword);
 router.route('/reset-password').put(resetPassword);
@@ -31,7 +31,7 @@ router
 .route('/:id')
 .get(protect, getStudent)
 .put(protect, updateStudent)
-.delete(protect, deleteStudent);
+.delete(protect, admin,  deleteStudent);
 router.route('/').get(protect, getAllStudents);
 
 export default router;

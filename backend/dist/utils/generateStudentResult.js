@@ -12,25 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateStudentResultHTML = void 0;
 const prisma_1 = require("../config/db/prisma");
 const generateLetterHead_1 = require("./generateLetterHead");
-function formatCurrency(value) {
-    if (!value || isNaN(Number(value)))
-        return '₦-';
-    return new Intl.NumberFormat('en-NG', {
-        style: 'currency',
-        currency: 'NGN',
-        minimumFractionDigits: 0,
-    }).format(Number(value));
-}
-function formatDate(value) {
-    if (!value)
-        return '-';
-    const date = new Date(value);
-    return date.toLocaleDateString('en-NG', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-    });
-}
+const formatUtils_1 = require("./formatUtils");
 const generateStudentResultHTML = (result) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c, _d, _e, _f;
     const mathScore = result.subjectResults.filter((x) => x.subject === 'Mathematics');
@@ -158,7 +140,7 @@ ${(0, generateLetterHead_1.generateLetterHeadHTML)(result)}
   ${subjectRows}
 
   <tr class="footer">
-    <td colspan="8">NUMBER OF PEOPLE IN CLASS: ${(_c = result.numberInClass) !== null && _c !== void 0 ? _c : '-'}</td>
+    <td colspan="8">NUMBER OF PEOPLE IN CLASS: ${(_c = result.numberInClass) !== null && _c !== void 0 ? _c : "-"}</td>
   </tr>
   <tr class="footer">
     <td colspan="8">
@@ -173,27 +155,27 @@ ${(0, generateLetterHead_1.generateLetterHeadHTML)(result)}
   <tr class="footer">
     <td colspan="8">
       Pass/Fail:    ${(mathTotalScore <= 40 && engTotalScore <= 40) ||
-        result.averageScore && result.averageScore < 40
-        ? 'FAILED'
-        : 'PASS'} &nbsp;&nbsp;&nbsp;&nbsp; 
+        (result.averageScore && result.averageScore < 40)
+        ? "FAILED"
+        : "PASS"} &nbsp;&nbsp;&nbsp;&nbsp; 
       Conduct: ____________ &nbsp;&nbsp;&nbsp;&nbsp; 
       Signature: ____________
     </td>
   </tr>
   <tr class="footer">
     <td colspan="8">
-      Re-Opening Date: ${formatDate((_d = nextTermInfo.reOpeningDate) !== null && _d !== void 0 ? _d : '-')} &nbsp;&nbsp;&nbsp;&nbsp;
-      Next Term Fee: ${formatCurrency((_e = nextTermInfo.nextTermFee) !== null && _e !== void 0 ? _e : '-')} &nbsp;&nbsp;&nbsp;&nbsp;
-      Bus Fare: ${formatCurrency((_f = nextTermInfo.busFee) !== null && _f !== void 0 ? _f : '-')} &nbsp;&nbsp;&nbsp;&nbsp;
-      Other Charges: ${formatCurrency(nextTermInfo.otherCharges && '-')} 
+      Re-Opening Date: ${(0, formatUtils_1.formatDate)((_d = nextTermInfo.reOpeningDate) !== null && _d !== void 0 ? _d : "-")} &nbsp;&nbsp;&nbsp;&nbsp;
+      Next Term Fee: ${(0, formatUtils_1.formatCurrency)((_e = nextTermInfo.nextTermFee) !== null && _e !== void 0 ? _e : "-")} &nbsp;&nbsp;&nbsp;&nbsp;
+      Bus Fare: ${(0, formatUtils_1.formatCurrency)((_f = nextTermInfo.busFee) !== null && _f !== void 0 ? _f : "-")} &nbsp;&nbsp;&nbsp;&nbsp;
+      Other Charges: ${(0, formatUtils_1.formatCurrency)(nextTermInfo.otherCharges && "-")} 
     </td>
   
   </tr>
   <tr class="footer">
      <td colspan="8">
-      ACCOUNT NAME: BERYL INTERNATIONAL SCHOOLS &nbsp;&nbsp;&nbsp;&nbsp;
-      ACCOUNT NUMBER: 2035177616 &nbsp;&nbsp;&nbsp;&nbsp;
-      BANK NAME: FIRST BANK OF NIGERIA &nbsp;&nbsp;&nbsp;&nbsp;
+      ACCOUNT NAME: ${process.env.SCHOOL_ACC_NAME} &nbsp;&nbsp;&nbsp;&nbsp;
+      ACCOUNT NUMBER: ${process.env.SCHOOL_ACC_NO} &nbsp;&nbsp;&nbsp;&nbsp;
+      BANK NAME: ${process.env.SCHOOL_BANK_NAME} &nbsp;&nbsp;&nbsp;&nbsp;
     </td>
   
   </tr>

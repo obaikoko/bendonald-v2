@@ -6,7 +6,7 @@ const SignInButton = () => {
   return (
     <Button 
       asChild 
-      className=" hover:from-blue-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 rounded-lg px-6 py-2"
+      className=" hover:from-blue-700 hover:to-purple-700 shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 rounded-lg px-6 py-2"
     >
       <Link href='/students/sign-in' className="flex items-center space-x-2">
         <UserIcon className="h-4 w-4" />
