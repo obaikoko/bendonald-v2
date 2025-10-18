@@ -97,7 +97,7 @@ toast.error('Failed to record payment');
     <div className="wrapper py-8 space-y-6">
       <div>
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl md:text-3xl font-bold">Invoice #{invoice.id}</h1>
+          <p className="text-sm md:text-3xl font-bold">Invoice #{invoice.id}</p>
           <Button variant="outline" onClick={printInvoicePdf}>Print Receipt (PDF)</Button>
         </div>
         <p className="text-sm text-muted-foreground">Name: {invoice.student ? `${invoice.student.firstName} ${invoice.student.lastName}` : invoice.studentId}</p>
