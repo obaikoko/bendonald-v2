@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { sessions, terms } from '@/lib/utils';
 
 const BillingListPage = () => {
   const [studentId, setStudentId] = useState('');
@@ -32,9 +33,33 @@ const BillingListPage = () => {
 
       <Card className="mb-6">
         <CardContent className="p-4 grid grid-cols-1 md:grid-cols-5 gap-3">
-          <Input placeholder="Student ID" value={studentId} onChange={(e) => setStudentId(e.target.value)} />
-          <Input placeholder="Term (e.g., First)" value={term} onChange={(e) => setTerm(e.target.value)} />
-          <Input placeholder="Session (e.g., 2024/2025)" value={session} onChange={(e) => setSession(e.target.value)} />
+          {/* <Input placeholder="Student ID" value={studentId} onChange={(e) => setStudentId(e.target.value)} /> */}
+
+           <Select onValueChange={setTerm}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Term" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {terms.map((trm, index) => (
+                              <SelectItem key={index} value={trm}>
+                                {trm}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <Select onValueChange={setSession}>
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select Session" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {sessions.map((session, index) => (
+                              <SelectItem key={index} value={session}>
+                                {session}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+     
           <Select onValueChange={(v) => setStatus(v)} value={status}>
             <SelectTrigger>
               <SelectValue placeholder="Status" />

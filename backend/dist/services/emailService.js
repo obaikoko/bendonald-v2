@@ -39,7 +39,7 @@ const sendSingleMail = (_a) => __awaiter(void 0, [_a], void 0, function* ({ emai
             html: `
        <div style="font-family: Arial, sans-serif; color: #333; padding: 24px; max-width: 600px; margin: 0 auto; border: 1px solid #ddd; border-radius: 12px; background-color: #ffffff; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);">
   <div style="text-align: center; margin-bottom: 20px;">
-    <img src="https://res.cloudinary.com/dzajrh9z7/image/upload/v1726781636/beryl/epfme50v5t4l66i6fzx3.jpg" alt="Bendonalds International Schools Logo" style="width: 120px; border-radius: 8px;">
+    <img src="https://res.cloudinary.com/dzajrh9z7/image/upload/v1721855840/Bendonalds/m5eqmos5mf6tq1pg7lrg.jpg" alt="Bendonalds International Schools Logo" style="width: 120px; border-radius: 8px;">
   </div>
 
   <h2 style="color: #004b87; text-align: center; font-size: 24px; margin-bottom: 16px;">Welcome Back</h2>
@@ -49,7 +49,7 @@ const sendSingleMail = (_a) => __awaiter(void 0, [_a], void 0, function* ({ emai
   </p>
 
   <p style="font-size: 15px; line-height: 1.7; color: #444; margin-bottom: 6px;">Best regards,</p>
-  <p style="font-weight: bold; color: #004b87; margin-bottom: 24px;">The Beryl International Schools Team</p>
+  <p style="font-weight: bold; color: #004b87; margin-bottom: 24px;"> Bendonalds International Schools Team</p>
 
   <hr style="border: none; height: 1px; background-color: #e0e0e0; margin: 30px 0;">
 

@@ -110,7 +110,7 @@ export function generateInvoiceReceiptHtml(inv: InvoiceWithRelations) {
         </table>
         <div style="margin-top:12px;text-align:right;">
             <div><strong>Paid:</strong> ${formatCurrency(paid)}</div>
-            ${balance > 0 ? '<div><strong>Balance:</strong> ${formatCurrency(balance)}</div>' : ''}
+            ${balance > 0 ? `<div><strong>Balance:</strong> ${formatCurrency(balance)}</div>` : ''}
           
         </div>
       </div>

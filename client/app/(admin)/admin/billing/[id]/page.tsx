@@ -148,6 +148,7 @@ toast.error('Failed to record payment');
         <Card>
           <CardContent className="p-4 space-y-3">
             <div className="font-semibold">Record Payment</div>
+            <p></p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               <Input type="number" placeholder="Amount" value={amount} onChange={(e) => setAmount(e.target.value)} />
               <Select value={method} onValueChange={(v) => setMethod(v)}>
@@ -155,9 +156,9 @@ toast.error('Failed to record payment');
                   <SelectValue placeholder="Method" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="cash">Cash</SelectItem>
-                  <SelectItem value="transfer">Transfer</SelectItem>
-                  <SelectItem value="pos">POS</SelectItem>
+                  <SelectItem value="Cash">Cash</SelectItem>
+                  <SelectItem value="Transfer">Transfer</SelectItem>
+                  <SelectItem value="Pos">POS</SelectItem>
                 </SelectContent>
               </Select>
               <Input placeholder="Note (optional)" value={note} onChange={(e) => setNote(e.target.value)} className="md:col-span-2" />
