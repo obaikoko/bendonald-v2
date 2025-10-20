@@ -1,17 +1,17 @@
-import { Request, Response } from 'express';
-import { prisma } from '../config/db/prisma';
-import asyncHandler from 'express-async-handler';
-import { eventSchema, updateEventSchema } from '../validators/eventValidator';
-import cloudinary from '../config/cloudinary';
+import { Request, Response } from "express";
+import { prisma } from "../config/db/prisma";
+import asyncHandler from "express-async-handler";
+import { eventSchema, updateEventSchema } from "../validators/eventValidator";
+import cloudinary from "../config/cloudinary";
 
 const getEvents = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const events = await prisma.event.findMany({
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     });
     if (!events) {
       res.status(404);
-      throw new Error('No Event found!');
+      throw new Error("No Event found!");
     } else {
       res.status(200);
       res.json(events);
@@ -27,11 +27,11 @@ const addEvent = asyncHandler(
     let uploadedResponse;
     try {
       uploadedResponse = await cloudinary.uploader.upload(imageUrl, {
-        folder: 'samples',
+        folder: "Bendonald",
       });
     } catch (error) {
       console.log(error);
-      throw new Error('Unable to upload Image');
+      throw new Error("Unable to upload Image");
     }
 
     const event = await prisma.event.create({
@@ -48,7 +48,7 @@ const addEvent = asyncHandler(
       res.status(200).json(event);
     } else {
       res.status(500);
-      throw new Error('Something went wrong');
+      throw new Error("Something went wrong");
     }
   }
 );
@@ -64,18 +64,18 @@ const updateEvent = asyncHandler(async (req: Request, res: Response) => {
 
   if (!event) {
     res.status(404);
-    throw new Error('Event not found');
+    throw new Error("Event not found");
   }
   if (imageUrl) {
-    const existingImageId = event?.imagePublicId || '';
+    const existingImageId = event?.imagePublicId || "";
 
     if (existingImageId) {
       const newImageId = existingImageId.substring(
-        existingImageId.indexOf('samples') + 'samples/'.length
+        existingImageId.indexOf("Bendonald") + "Bendonald/".length
       );
 
       const uploadedResponse = await cloudinary.uploader.upload(imageUrl, {
-        folder: 'samples',
+        folder: "Bendonald",
         public_id: newImageId,
       });
 
@@ -95,7 +95,7 @@ const updateEvent = asyncHandler(async (req: Request, res: Response) => {
       res.status(200).json(updatedEvent);
     } else {
       const uploadedResponse = await cloudinary.uploader.upload(imageUrl, {
-        folder: 'samples',
+        folder: "Bendonald",
       });
 
       const updatedEvent = await prisma.event.update({
@@ -138,8 +138,11 @@ const deleteEvent = asyncHandler(async (req, res) => {
 
     if (!event) {
       res.status(404);
-      throw new Error('Event not found!');
+      throw new Error("Event not found!");
     }
+
+    event.imagePublicId &&
+      (await cloudinary.uploader.destroy(event.imagePublicId));
 
     await prisma.event.delete({
       where: {
@@ -147,7 +150,7 @@ const deleteEvent = asyncHandler(async (req, res) => {
       },
     });
 
-    res.status(200).json('Event deleted successfully');
+    res.status(200).json("Event deleted successfully");
   } catch (error) {
     throw error;
   }

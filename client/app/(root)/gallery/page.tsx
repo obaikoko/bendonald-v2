@@ -10,22 +10,23 @@ const GalleryPage = () => {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
 
   const images = [
-    { src: '/images/chemistry1.jpg', title: 'Chemistry Laboratory', category: 'Laboratory', description: 'Students conducting chemistry experiments in our state-of-the-art laboratory.' },
-    { src: '/images/chemistry2.jpg', title: 'Advanced Chemistry', category: 'Laboratory', description: 'Advanced chemistry experiments showcasing student innovation.' },
-    { src: '/images/computer1.jpg', title: 'Computer Lab Session', category: 'Technology', description: 'Students learning computer skills in our modern computer laboratory.' },
-    { src: '/images/lab7.jpg', title: 'Physics Laboratory', category: 'Laboratory', description: 'Physics experiments demonstrating scientific principles.' },
-    { src: '/images/lab1.jpg', title: 'Biology Laboratory', category: 'Laboratory', description: 'Biology students exploring the wonders of life sciences.' },
-    { src: '/images/lab2.jpg', title: 'Science Research', category: 'Laboratory', description: 'Students engaged in scientific research and discovery.' },
-    { src: '/images/lab3.jpg', title: 'Laboratory Work', category: 'Laboratory', description: 'Hands-on laboratory experience for practical learning.' },
-    { src: '/images/bus2.jpg', title: 'School Transportation', category: 'Transportation', description: 'Safe and reliable transportation for our students.' },
-    { src: '/images/class1.jpg', title: 'Modern Classroom', category: 'Academic', description: 'Well-equipped classrooms designed for effective learning.' },
-    { src: '/images/class3.jpg', title: 'Learning Environment', category: 'Academic', description: 'Conducive learning environment for academic excellence.' },
-    { src: '/images/creche1.jpg', title: 'Early Years Program', category: 'Early Years', description: 'Nurturing environment for our youngest learners.' },
-    { src: '/images/assemble1.jpg', title: 'Morning Assembly', category: 'School Life', description: 'Daily morning assembly fostering community spirit.' },
-    { src: '/images/assemble2.jpg', title: 'School Community', category: 'School Life', description: 'Building a strong school community through shared experiences.' },
+  //   { src: '/images/chemistry1.jpg', title: 'Chemistry Laboratory', category: 'Laboratory', description: 'Students conducting chemistry experiments in our state-of-the-art laboratory.' },
+  //   { src: '/images/chemistry2.jpg', title: 'Advanced Chemistry', category: 'Laboratory', description: 'Advanced chemistry experiments showcasing student innovation.' },
+  //   { src: '/images/computer1.jpg', title: 'Computer Lab Session', category: 'Technology', description: 'Students learning computer skills in our modern computer laboratory.' },
+  //   { src: '/images/lab7.jpg', title: 'Physics Laboratory', category: 'Laboratory', description: 'Physics experiments demonstrating scientific principles.' },
+  //   { src: '/images/lab1.jpg', title: 'Biology Laboratory', category: 'Laboratory', description: 'Biology students exploring the wonders of life sciences.' },
+  //   { src: '/images/lab2.jpg', title: 'Science Research', category: 'Laboratory', description: 'Students engaged in scientific research and discovery.' },
+  //   { src: '/images/lab3.jpg', title: 'Laboratory Work', category: 'Laboratory', description: 'Hands-on laboratory experience for practical learning.' },
+  //   { src: '/images/bus2.jpg', title: 'School Transportation', category: 'Transportation', description: 'Safe and reliable transportation for our students.' },
+  //   { src: '/images/class1.jpg', title: 'Modern Classroom', category: 'Academic', description: 'Well-equipped classrooms designed for effective learning.' },
+  //   { src: '/images/class3.jpg', title: 'Learning Environment', category: 'Academic', description: 'Conducive learning environment for academic excellence.' },
+  //   { src: '/images/creche1.jpg', title: 'Early Years Program', category: 'Early Years', description: 'Nurturing environment for our youngest learners.' },
+  //   { src: '/images/assemble1.jpg', title: 'Morning Assembly', category: 'School Life', description: 'Daily morning assembly fostering community spirit.' },
+  //   { src: '/images/assemble2.jpg', title: 'School Community', category: 'School Life', description: 'Building a strong school community through shared experiences.' },
     { src: '/images/building1.jpg', title: 'School Campus', category: 'Campus', description: 'Beautiful campus environment for learning and growth.' },
-    { src: '/images/building2.jpg', title: 'School Facilities', category: 'Campus', description: 'Modern facilities supporting educational excellence.' },
-    { src: '/images/building3.jpg', title: 'Learning Spaces', category: 'Campus', description: 'Diverse learning spaces for different educational needs.' },
+    { src: '/images/building2.jpg', title: 'School Facilities', category: 'Campus', description: 'Wonderful presentation from our learners.' },
+    { src: '/images/building3.jpg', title: 'Learning Spaces', category: 'Independence Day', description: 'Winners of 2024 independence day matching parade.' },
+    
   ];
 
   const categories = ['All', ...Array.from(new Set(images.map(img => img.category)))];

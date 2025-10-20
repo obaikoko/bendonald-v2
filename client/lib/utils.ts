@@ -1,7 +1,7 @@
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
-import { toast } from 'sonner';
-import { ZodError } from 'zod';
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
+import { toast } from "sonner";
+import { ZodError } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -9,17 +9,17 @@ export function cn(...inputs: ClassValue[]) {
 
 export const formatDateTime = (dateString: string | Date) => {
   const date = new Date(dateString);
-  return date.toLocaleString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+  return date.toLocaleString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 };
 
 export function showZodErrors(error: unknown) {
   if (error instanceof ZodError) {
     error.errors.forEach((e) => toast.error(e.message));
-  } else if (typeof error === 'object' && error !== null && 'data' in error) {
+  } else if (typeof error === "object" && error !== null && "data" in error) {
     const err = error as {
       data?: { message?: string; errors?: Record<string, string> };
     };
@@ -30,151 +30,150 @@ export function showZodErrors(error: unknown) {
     } else if (err.data?.message) {
       toast.error(err.data.message);
     } else {
-      toast.error('Something went wrong');
+      toast.error("Something went wrong");
     }
   } else {
-    toast.error('An unknown error occurred');
+    toast.error("An unknown error occurred");
     console.log(error);
   }
 }
 
 export const levels: string[] = [
-  'All',
-  'Creche',
-  'Day Care',
-  'Reception',
-  'Pre School',
-  'Pre KG',
-  'KG',
-  'Grade 1',
-  'Grade 2',
-  'Grade 3',
-  'Grade 4',
-  'Grade 5',
-  'JSS 1',
-  'JSS 2',
-  'JSS 3',
-  'SSS 1',
-  'SSS 2',
-  'SSS 3',
-  'GRADUATED',
+  "All",
+  "Creche",
+  "Lower Reception",
+  "Upper Reception",
+  "Nursery 1",
+  "Nursery 2",
+  "Grade 1",
+  "Grade 2",
+  "Grade 3",
+  "Grade 4",
+  "Grade 5",
+  "JSS 1",
+  "JSS 2",
+  "JSS 3",
+  "SSS 1",
+  "SSS 2",
+  "SSS 3",
+  "GRADUATED",
 ];
 
-export const subLevels: string[] = ['A', 'B', 'C', 'D', 'E'];
-export const grade: string[] = ['A', 'B', 'C', 'D', 'E', 'F'];
+export const subLevels: string[] = ["A", "B", "C", "D", "E"];
+export const grade: string[] = ["A", "B", "C", "D", "E", "F"];
 export const categories: string[] = [
-  'Attendance',
-  'Carefulness',
-  'Honesty',
-  'Neatness',
-  'Obedience',
-  'Politeness',
-  'Punctuality',
-  'Responsibility',
+  "Attendance",
+  "Carefulness",
+  "Honesty",
+  "Neatness",
+  "Obedience",
+  "Politeness",
+  "Punctuality",
+  "Responsibility",
 ];
 export const psychomotorCategories = [
-  'Handwriting',
-  'Drawing',
-  'Sport',
-  'Speaking',
-  'Music',
-  'Craft',
-  'ComputerPractice',
+  "Handwriting",
+  "Drawing",
+  "Sport",
+  "Speaking",
+  "Music",
+  "Craft",
+  "ComputerPractice",
 ];
 
 export const sessions: string[] = [
-  '2024/2025',
-  '2025/2026',
-  '2026/2027',
-  '2027/2028',
-  '2028/2029',
-  '2029/2030',
+  "2024/2025",
+  "2025/2026",
+  "2026/2027",
+  "2027/2028",
+  "2028/2029",
+  "2029/2030",
 ];
-export const terms: string[] = ['First', 'Second', 'Third'];
+export const terms: string[] = ["First", "Second", "Third"];
 export const subjects: string[] = [
-  'Agricultural Science',
-  'Basic Science',
-  'Basic Technology',
-  'Biology',
-  'Civic Education',
-  'Christian Religious Studies',
-  'Commerce',
-  'Computer Studies',
-  'Cultural and Creative Arts',
-  'Economics',
-  'English Language',
-  'Financial Accounting',
-  'Further Mathematics',
-  'Geography',
-  'Government',
-  'Home Economics',
-  'Integrated Science',
-  'Islamic Religious Studies',
-  'Literature in English',
-  'Mathematics',
-  'Music',
-  'Physical and Health Education',
-  'Physics',
-  'Pre-Vocational Studies',
-  'Quantitative Reasoning',
-  'Social Studies',
-  'Verbal Reasoning',
-  'Vocational Aptitude',
-  'Yoruba Language',
+  "Agricultural Science",
+  "Basic Science",
+  "Basic Technology",
+  "Biology",
+  "Civic Education",
+  "Christian Religious Studies",
+  "Commerce",
+  "Computer Studies",
+  "Cultural and Creative Arts",
+  "Economics",
+  "English Language",
+  "Financial Accounting",
+  "Further Mathematics",
+  "Geography",
+  "Government",
+  "Home Economics",
+  "Integrated Science",
+  "Islamic Religious Studies",
+  "Literature in English",
+  "Mathematics",
+  "Music",
+  "Physical and Health Education",
+  "Physics",
+  "Pre-Vocational Studies",
+  "Quantitative Reasoning",
+  "Social Studies",
+  "Verbal Reasoning",
+  "Vocational Aptitude",
+  "Yoruba Language",
 ];
 
 export const roles: string[] = [
-  'Admin',
-  'Principal',
-  'HM',
-  'Head Of Department',
-  'Teacher',
+  "Admin",
+  "Principal",
+  "HM",
+  "Head Of Department",
+  "Teacher",
 ];
 
-export const statuses: string[] = ['active', 'suspended'];
+export const statuses: string[] = ["active", "suspended"];
 export const relationships: string[] = [
-  'Father',
-  'Mother',
-  'Uncle',
-  'Aunty',
-  'Guardian',
+  "Father",
+  "Mother",
+  "Uncle",
+  "Aunty",
+  "Guardian",
 ];
 export const days: string[] = [
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
 ];
 
-export const genders: string[] = ['Male', 'Female'];
+export const genders: string[] = ["Male", "Female"];
 export const subjectColors: Record<string, string> = {
-  Mathematics: 'bg-blue-100 text-blue-800',
-  English: 'bg-green-100 text-green-800',
-  'English Language': 'bg-green-100 text-green-800',
-  Biology: 'bg-pink-100 text-pink-800',
-  Chemistry: 'bg-yellow-100 text-yellow-800',
-  Physics: 'bg-purple-100 text-purple-800',
-  'Civic Education': 'bg-orange-100 text-orange-800',
-  'Free Period': 'bg-muted text-muted-foreground',
+  Mathematics: "bg-blue-100 text-blue-800",
+  English: "bg-green-100 text-green-800",
+  "English Language": "bg-green-100 text-green-800",
+  Biology: "bg-pink-100 text-pink-800",
+  Chemistry: "bg-yellow-100 text-yellow-800",
+  Physics: "bg-purple-100 text-purple-800",
+  "Civic Education": "bg-orange-100 text-orange-800",
+  "Free Period": "bg-muted text-muted-foreground",
 };
 
 export const invoiceItems: string[] = [
-  'Registration',
-  'Tuition',
-  'Report Card',
-  'Text Books',
-  'Exam Fee',
-  'Social Fee',
-  'Lesson',
-  'First  AID',
-  'Laboratory',
-  'Sport',
-  'Uniform',
-  'Computer',
-  'P.T.A',
-  'Development',
-  'Library',
-  'Caution',
-  'Continuous Assesment'
-]
+  "Registration",
+  "Tuition",
+  "Report Card",
+  "Text Books",
+  "Exam Fee",
+  "Social Fee",
+  "Lesson",
+  "First  AID",
+  "Laboratory",
+  "Sport",
+  "Uniform",
+  "Computer",
+  "P.T.A",
+  "Development",
+  "Library",
+  "Caution",
+  "Continuous Assesment",
+];

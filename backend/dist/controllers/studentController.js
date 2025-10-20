@@ -547,6 +547,8 @@ const deleteStudent = (0, express_async_handler_1.default)((req, res) => __await
     yield prisma_1.prisma.result.deleteMany({
         where: { studentId: student.id },
     });
+    student.imagePublicId &&
+        (yield cloudinary_1.default.uploader.destroy(student.imagePublicId));
     // Then delete student
     yield prisma_1.prisma.student.delete({
         where: { id: student.id },

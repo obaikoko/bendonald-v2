@@ -641,6 +641,9 @@ const deleteStudent = asyncHandler(
       where: { studentId: student.id },
     });
 
+        student.imagePublicId &&
+          (await cloudinary.uploader.destroy(student.imagePublicId));
+
     // Then delete student
     await prisma.student.delete({
       where: { id: student.id },

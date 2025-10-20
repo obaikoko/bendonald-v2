@@ -19,11 +19,11 @@ const eventValidator_1 = require("../validators/eventValidator");
 const cloudinary_1 = __importDefault(require("../config/cloudinary"));
 const getEvents = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const events = yield prisma_1.prisma.event.findMany({
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: "desc" },
     });
     if (!events) {
         res.status(404);
-        throw new Error('No Event found!');
+        throw new Error("No Event found!");
     }
     else {
         res.status(200);
@@ -37,12 +37,12 @@ const addEvent = (0, express_async_handler_1.default)((req, res) => __awaiter(vo
     let uploadedResponse;
     try {
         uploadedResponse = yield cloudinary_1.default.uploader.upload(imageUrl, {
-            folder: 'samples',
+            folder: "Bendonald",
         });
     }
     catch (error) {
         console.log(error);
-        throw new Error('Unable to upload Image');
+        throw new Error("Unable to upload Image");
     }
     const event = yield prisma_1.prisma.event.create({
         data: {
@@ -58,7 +58,7 @@ const addEvent = (0, express_async_handler_1.default)((req, res) => __awaiter(vo
     }
     else {
         res.status(500);
-        throw new Error('Something went wrong');
+        throw new Error("Something went wrong");
     }
 }));
 exports.addEvent = addEvent;
@@ -72,14 +72,14 @@ const updateEvent = (0, express_async_handler_1.default)((req, res) => __awaiter
     });
     if (!event) {
         res.status(404);
-        throw new Error('Event not found');
+        throw new Error("Event not found");
     }
     if (imageUrl) {
-        const existingImageId = (event === null || event === void 0 ? void 0 : event.imagePublicId) || '';
+        const existingImageId = (event === null || event === void 0 ? void 0 : event.imagePublicId) || "";
         if (existingImageId) {
-            const newImageId = existingImageId.substring(existingImageId.indexOf('samples') + 'samples/'.length);
+            const newImageId = existingImageId.substring(existingImageId.indexOf("Bendonald") + "Bendonald/".length);
             const uploadedResponse = yield cloudinary_1.default.uploader.upload(imageUrl, {
-                folder: 'samples',
+                folder: "Bendonald",
                 public_id: newImageId,
             });
             const updatedEvent = yield prisma_1.prisma.event.update({
@@ -98,7 +98,7 @@ const updateEvent = (0, express_async_handler_1.default)((req, res) => __awaiter
         }
         else {
             const uploadedResponse = yield cloudinary_1.default.uploader.upload(imageUrl, {
-                folder: 'samples',
+                folder: "Bendonald",
             });
             const updatedEvent = yield prisma_1.prisma.event.update({
                 where: {
@@ -137,14 +137,16 @@ const deleteEvent = (0, express_async_handler_1.default)((req, res) => __awaiter
         });
         if (!event) {
             res.status(404);
-            throw new Error('Event not found!');
+            throw new Error("Event not found!");
         }
+        event.imagePublicId &&
+            (yield cloudinary_1.default.uploader.destroy(event.imagePublicId));
         yield prisma_1.prisma.event.delete({
             where: {
                 id: event.id,
             },
         });
-        res.status(200).json('Event deleted successfully');
+        res.status(200).json("Event deleted successfully");
     }
     catch (error) {
         throw error;

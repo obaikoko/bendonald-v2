@@ -156,9 +156,9 @@ toast.error('Failed to record payment');
                   <SelectValue placeholder="Method" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Cash">Cash</SelectItem>
-                  <SelectItem value="Transfer">Transfer</SelectItem>
-                  <SelectItem value="Pos">POS</SelectItem>
+                  <SelectItem value="cash">Cash</SelectItem>
+                  <SelectItem value="transfer">Transfer</SelectItem>
+                  <SelectItem value="POS">POS</SelectItem>
                 </SelectContent>
               </Select>
               <Input placeholder="Note (optional)" value={note} onChange={(e) => setNote(e.target.value)} className="md:col-span-2" />
