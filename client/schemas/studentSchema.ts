@@ -31,6 +31,7 @@ export type NextTermDetailsForm = z.infer<typeof nextTermDetailsSchema>;
 
 export type StudentFormData = {
   studentId?: string;
+  schoolId?: string;
   firstName: string;
   lastName: string;
   otherName?: string;

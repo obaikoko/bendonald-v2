@@ -42,7 +42,7 @@ const RegisterStudentsForm = () => {
   const onSubmit = async (data: RegisterStudentForm) => {
     try {
       await registerStudent(data).unwrap();
-      toast.success(` registered successfully`);
+      toast.success(`registered successfully`);
     } catch (err) {
       showZodErrors(err);
     }
@@ -51,6 +51,7 @@ const RegisterStudentsForm = () => {
   return (
     <form className='space-y-6' onSubmit={handleSubmit(onSubmit)}>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+       
         <div>
           <Label htmlFor='firstName'>First Name</Label>
           <Input id='firstName' {...register('firstName')} />

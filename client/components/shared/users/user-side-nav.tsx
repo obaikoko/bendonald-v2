@@ -10,6 +10,7 @@ import {
   X,
   SpeakerIcon,
   CalendarArrowDown,
+  Hammer,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -17,37 +18,37 @@ import ModeToggle from '../header/mode-toggle';
 import SignOutButton from '../sign-out';
 
 const teacherNavItems = [
-  { id: 'dashboard', label: 'Dashboard', href: '/user/dashboard', icon: Home },
+  { id: "dashboard", label: "Dashboard", href: "/user/dashboard", icon: Home },
   {
-    id: 'classes',
-    label: 'My Classes',
-    href: '/user/students',
+    id: "classes",
+    label: "My Classes",
+    href: "/user/students",
     icon: ClipboardList,
   },
-  { id: 'results', label: 'Results', href: '/user/results', icon: BookOpen },
+  { id: "results", label: "Results", href: "/user/results", icon: BookOpen },
   {
-    id: 'announcement',
-    label: 'Announcement',
-    href: '/user/announcement',
+    id: "announcement",
+    label: "Announcement",
+    href: "/user/announcement",
     icon: SpeakerIcon,
   },
   {
-    id: 'scheme',
-    label: 'Scheme of work',
-    href: '/user/scheme',
+    id: "scheme",
+    label: "Scheme of work",
+    href: "/user/scheme",
     icon: BookOpen,
   },
   {
-    id: 'timeTable',
-    label: 'Time Table ',
-    href: '/user/time-table',
+    id: "timeTable",
+    label: "Time Table ",
+    href: "/user/time-table",
     icon: CalendarArrowDown,
   },
   {
-    id: 'settings',
-    label: 'Settings',
-    href: '/user/settings',
-    icon: Settings,
+    id: "actions",
+    label: "Actions",
+    href: "/user/actions",
+    icon: Hammer,
   },
 ];
 
