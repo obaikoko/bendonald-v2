@@ -23,18 +23,37 @@ export function generateInvoiceReceiptHtml(inv: InvoiceWithRelations) {
         </tr>`
     )
     .join('');
+const paymentsRows = (inv.payments || [])
+  .map(
+    (p) => `
+      <tr>
+        <td style="padding:8px;border-bottom:1px solid #eee; td:nth-child(5) {
+  color: #555;
+  font-style: italic;
+  max-width: 250px;
+  word-wrap: break-word;
+}
+">${p.paidAt ? formatDateAndTime(p.paidAt) : "-"}</td>
+        <td style="padding:8px;text-align:right;border-bottom:1px solid #eee;">${formatCurrency(
+          p.amount
+        )}</td>
+        <td style="padding:8px;border-bottom:1px solid #eee;">${escapeHtml(
+          p.method
+        )}</td>
+        <td style="padding:8px;border-bottom:1px solid #eee;">${escapeHtml(
+          (
+            (p.recordedBy?.firstName || "") +
+            " " +
+            (p.recordedBy?.lastName || "")
+          ).trim()
+        )}</td>
+        <td style="padding:8px;border-bottom:1px solid #eee;color:#555;font-style:italic;">
+          ${p.note ? escapeHtml(p.note) : "-"}
+        </td>
+      </tr>`
+  )
+  .join("");
 
-  const paymentsRows = (inv.payments || [])
-    .map(
-      (p) => `
-        <tr>
-          <td style="padding:8px;border-bottom:1px solid #eee;">${p.paidAt ? formatDateAndTime(p.paidAt) : '-'}</td>
-          <td style="padding:8px;text-align:right;border-bottom:1px solid #eee;">${formatCurrency(p.amount)}</td>
-          <td style="padding:8px;border-bottom:1px solid #eee;">${escapeHtml(p.method)}</td>
-          <td style="padding:8px;border-bottom:1px solid #eee;">${escapeHtml(((p.recordedBy?.firstName || '') + ' ' + (p.recordedBy?.lastName || '')).trim())}</td>
-        </tr>`
-    )
-    .join('');
 
   return `
 <!DOCTYPE html>
@@ -70,7 +89,9 @@ export function generateInvoiceReceiptHtml(inv: InvoiceWithRelations) {
         <h2>Student</h2>
         <div><strong>Name:</strong> ${escapeHtml(studentName)}</div>
         <div><strong>Class:</strong> ${escapeHtml(studentLevel)}</div>
-        <div><strong>Term/Session:</strong> ${escapeHtml(inv.term)} Term, ${escapeHtml(inv.session)}</div>
+        <div><strong>Term/Session:</strong> ${escapeHtml(
+          inv.term
+        )} Term, ${escapeHtml(inv.session)}</div>
         <div><strong>Payment Status:</strong> ${escapeHtml(inv.status)}</div>
       </div>
 
@@ -87,7 +108,9 @@ export function generateInvoiceReceiptHtml(inv: InvoiceWithRelations) {
             ${itemsRows}
             <tr>
               <td style="padding:8px;text-align:right;"><strong>Total</strong></td>
-              <td style="padding:8px;text-align:right;">${formatCurrency(inv.totalAmount)}</td>
+              <td style="padding:8px;text-align:right;">${formatCurrency(
+                inv.totalAmount
+              )}</td>
             </tr>
           </tbody>
         </table>
@@ -96,24 +119,36 @@ export function generateInvoiceReceiptHtml(inv: InvoiceWithRelations) {
       <div class="section">
         <h2>Payments</h2>
         <table>
-          <thead>
-            <tr>
-              <th style="text-align:left;padding:8px;border-bottom:1px solid #ccc;">Date</th>
-              <th style="text-align:right;padding:8px;border-bottom:1px solid #ccc;">Amount</th>
-              <th style="text-align:left;padding:8px;border-bottom:1px solid #ccc;">Method</th>
-              <th style="text-align:left;padding:8px;border-bottom:1px solid #ccc;">Recorded By</th>
-            </tr>
-          </thead>
+       <thead>
+  <tr>
+    <th style="text-align:left;padding:8px;border-bottom:1px solid #ccc;">Date</th>
+    <th style="text-align:right;padding:8px;border-bottom:1px solid #ccc;">Amount</th>
+    <th style="text-align:left;padding:8px;border-bottom:1px solid #ccc;">Method</th>
+    <th style="text-align:left;padding:8px;border-bottom:1px solid #ccc;">Recorded By</th>
+    <th style="text-align:left;padding:8px;border-bottom:1px solid #ccc;">Note</th>
+  </tr>
+</thead>
+
           <tbody>
-            ${paymentsRows || '<tr><td colspan="4" style="padding:8px;" class="muted">No payments recorded</td></tr>'}
+            ${
+              paymentsRows ||
+              '<tr><td colspan="4" style="padding:8px;" class="muted">No payments recorded</td></tr>'
+            }
           </tbody>
         </table>
         <div style="margin-top:12px;text-align:right;">
             <div><strong>Paid:</strong> ${formatCurrency(paid)}</div>
-            ${balance > 0 ? `<div><strong>Balance:</strong> ${formatCurrency(balance)}</div>` : ''}
+            ${
+              balance > 0
+                ? `<div><strong>Balance:</strong> ${formatCurrency(
+                    balance
+                  )}</div>`
+                : ""
+            }
           
         </div>
       </div>
+      
 
       <div class="section muted" style="font-size:12px;">
         This receipt is computer generated and does not require a signature.
