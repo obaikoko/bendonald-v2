@@ -3,8 +3,9 @@
 @tailwind utilities;
 
 @import "tailwindcss";
-/* @import "tw-animate-css"; */
 
+@import "tw-animate-css";
+/* @import "tw-animate-css"; */
 
 .hero-overlay {
   position: absolute;
@@ -312,7 +313,6 @@ button.next:hover {
   margin: 20px 0px;
 }
 
-
 @media (max-width: 960px) {
   .navbar__menu {
     display: none;
@@ -399,7 +399,6 @@ button.next:hover {
     flex-direction: column;
   }
 
-
   .section5-body {
     grid-template-columns: 1fr;
   }
@@ -421,7 +420,6 @@ button.next:hover {
     font-size: 12px;
   }
 }
-
 
 @layer utilities {
   .wrapper {
@@ -496,8 +494,6 @@ button.next:hover {
 
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
@@ -527,6 +523,8 @@ button.next:hover {
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
 }
 
 .dark {

@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { showZodErrors } from '@/lib/utils';
 import { toast } from 'sonner';
+import { Textarea } from '@/components/ui/textarea';
 
 const InvoiceDetailPage = () => {
   const params = useParams();
@@ -98,10 +99,22 @@ toast.error('Failed to record payment');
       <div>
         <div className="flex items-center justify-between">
           <p className="text-sm md:text-3xl font-bold">Invoice #{invoice.id}</p>
-          <Button variant="outline" onClick={printInvoicePdf}>Print Receipt (PDF)</Button>
+          <Button variant="outline" onClick={printInvoicePdf}>
+            Print Receipt (PDF)
+          </Button>
         </div>
-        <p className="text-sm text-muted-foreground">Name: {invoice.student ? `${invoice.student.firstName} ${invoice.student.lastName}` : invoice.studentId}</p>
-        <p className="text-sm text-muted-foreground">Class: {invoice.student ? `${invoice.student.level}${invoice.student.subLevel}` : invoice.studentId}</p>
+        <p className="text-sm text-muted-foreground">
+          Name:{" "}
+          {invoice.student
+            ? `${invoice.student.firstName} ${invoice.student.lastName}`
+            : invoice.studentId}
+        </p>
+        <p className="text-sm text-muted-foreground">
+          Class:{" "}
+          {invoice.student
+            ? `${invoice.student.level}${invoice.student.subLevel}`
+            : invoice.studentId}
+        </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -112,9 +125,12 @@ toast.error('Failed to record payment');
               <div>Total: ₦{Number(invoice.totalAmount).toLocaleString()}</div>
               <div>Paid: ₦{paid.toLocaleString()}</div>
               <div>Balance: ₦{balance.toLocaleString()}</div>
-              <div>Status: <span className="capitalize">{invoice.status}</span></div>
-              <div>Term/Session: {invoice.term} Term, {invoice.session}</div>
-          
+              <div>
+                Status: <span className="capitalize">{invoice.status}</span>
+              </div>
+              <div>
+                Term/Session: {invoice.term} Term, {invoice.session}
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -134,7 +150,9 @@ toast.error('Failed to record payment');
                   {invoice.items.map((it) => (
                     <tr key={it.id || it.name} className="border-b">
                       <td className="py-2 pr-4">{it.name}</td>
-                      <td className="py-2 pr-4">₦{Number(it.amount).toLocaleString()}</td>
+                      <td className="py-2 pr-4">
+                        ₦{Number(it.amount).toLocaleString()}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -150,7 +168,12 @@ toast.error('Failed to record payment');
             <div className="font-semibold">Record Payment</div>
             <p></p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <Input type="number" placeholder="Amount" value={amount} onChange={(e) => setAmount(e.target.value)} />
+              <Input
+                type="number"
+                placeholder="Amount"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+              />
               <Select value={method} onValueChange={(v) => setMethod(v)}>
                 <SelectTrigger>
                   <SelectValue placeholder="Method" />
@@ -161,9 +184,19 @@ toast.error('Failed to record payment');
                   <SelectItem value="POS">POS</SelectItem>
                 </SelectContent>
               </Select>
-              <Input placeholder="Note (optional)" value={note} onChange={(e) => setNote(e.target.value)} className="md:col-span-2" />
+              <Textarea
+                placeholder="Note (optional)"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                className="md:col-span-2"
+              />
             </div>
-            <Button disabled={!amount || Number(amount) <= 0 || isRecording} onClick={submitPayment}>{isRecording ? 'Processing...' : 'Record Payment'}</Button>
+            <Button
+              disabled={!amount || Number(amount) <= 0 || isRecording}
+              onClick={submitPayment}
+            >
+              {isRecording ? "Processing..." : "Record Payment"}
+            </Button>
           </CardContent>
         </Card>
 
@@ -183,10 +216,18 @@ toast.error('Failed to record payment');
                 <tbody>
                   {(invoice.payments || []).map((p) => (
                     <tr key={p.id} className="border-b">
-                      <td className="py-2 pr-4">{p.paidAt ? new Date(p.paidAt).toLocaleString() : '-'}</td>
-                      <td className="py-2 pr-4">₦{Number(p.amount).toLocaleString()}</td>
+                      <td className="py-2 pr-4">
+                        {p.paidAt ? new Date(p.paidAt).toLocaleString() : "-"}
+                      </td>
+                      <td className="py-2 pr-4">
+                        ₦{Number(p.amount).toLocaleString()}
+                      </td>
                       <td className="py-2 pr-4 capitalize">{p.method}</td>
-                      <td className="py-2 pr-4">{p.recordedBy ? `${p.recordedBy.firstName} ${p.recordedBy.lastName}` : '-'}</td>
+                      <td className="py-2 pr-4">
+                        {p.recordedBy
+                          ? `${p.recordedBy.firstName} ${p.recordedBy.lastName}`
+                          : "-"}
+                      </td>
                     </tr>
                   ))}
                 </tbody>

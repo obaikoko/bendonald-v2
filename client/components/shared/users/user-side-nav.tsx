@@ -6,7 +6,6 @@ import {
   Home,
   ClipboardList,
   BookOpen,
-  Settings,
   X,
   SpeakerIcon,
   CalendarArrowDown,
