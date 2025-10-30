@@ -21,7 +21,7 @@ router.route('/profile').get(protect, getStudentProfile);
 router
 .route('/search/registered-user')
 .get(protect, admin, getStudentsRegisteredByUser);
-router.route('/register').post(protect, admin, registerStudent);
+router.route('/register').post(protect, registerStudent);
 router.route('/forget-password').post(forgetPassword);
 router.route('/reset-password').put(resetPassword);
 router.route('/graduate').put(protect, admin, graduateStudent);

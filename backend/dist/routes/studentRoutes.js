@@ -12,7 +12,7 @@ router.route('/profile').get(authMiddleware_1.protect, studentController_1.getSt
 router
     .route('/search/registered-user')
     .get(authMiddleware_1.protect, authMiddleware_1.admin, studentController_1.getStudentsRegisteredByUser);
-router.route('/register').post(authMiddleware_1.protect, authMiddleware_1.admin, studentController_1.registerStudent);
+router.route('/register').post(authMiddleware_1.protect, studentController_1.registerStudent);
 router.route('/forget-password').post(studentController_1.forgetPassword);
 router.route('/reset-password').put(studentController_1.resetPassword);
 router.route('/graduate').put(authMiddleware_1.protect, authMiddleware_1.admin, studentController_1.graduateStudent);
