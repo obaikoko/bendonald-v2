@@ -442,7 +442,9 @@ exports.getStudentProfile = getStudentProfile;
 // @privacy Private ADMIN
 const updateStudent = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const validateData = studentValidators_1.updateStudentSchema.parse(req.body);
-    const { firstName, lastName, otherName, studentId, dateOfBirth, level, subLevel, gender, yearAdmitted, stateOfOrigin, localGvt, homeTown, sponsorName, sponsorRelationship, sponsorPhoneNumber, sponsorEmail, image, } = validateData;
+    const { firstName, lastName, otherName, 
+    // studentId,
+    dateOfBirth, level, subLevel, gender, yearAdmitted, stateOfOrigin, localGvt, homeTown, sponsorName, sponsorRelationship, sponsorPhoneNumber, sponsorEmail, image, } = validateData;
     if (!req.user) {
         res.status(401);
         throw new Error("Unauthorized User");
@@ -507,7 +509,7 @@ const updateStudent = (0, express_async_handler_1.default)((req, res) => __await
             firstName: firstName !== null && firstName !== void 0 ? firstName : student.firstName,
             lastName: lastName !== null && lastName !== void 0 ? lastName : student.lastName,
             otherName: otherName !== null && otherName !== void 0 ? otherName : student.otherName,
-            studentId: studentId !== null && studentId !== void 0 ? studentId : student.studentId,
+            // studentId: studentId ?? student.studentId,
             dateOfBirth: dateOfBirth !== null && dateOfBirth !== void 0 ? dateOfBirth : student.dateOfBirth,
             level: level !== null && level !== void 0 ? level : student.level,
             subLevel: subLevel !== null && subLevel !== void 0 ? subLevel : student.subLevel,
