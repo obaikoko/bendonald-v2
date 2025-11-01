@@ -47,6 +47,7 @@ export const billingApiSlice = apiSlice.injectEndpoints({
     listInvoices: builder.query<
       ListInvoicesResponse,
       {
+        keyword?: string;
         studentId?: string;
         term?: string;
         session?: string;
@@ -162,6 +163,15 @@ export const billingApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ["Billing"] ,
     }),
+    deleteInvoice: builder.mutation({
+  query: (id: string) => ({
+    url: `${BILLING_URL}/${id}`,
+    method: "DELETE",
+    credentials: "include",
+  }),
+  invalidatesTags: ["Billing"],
+}),
+
   }),
 });
 
@@ -172,6 +182,7 @@ export const {
   useRecordPaymentMutation,
   useSummaryReportQuery,
   useStudentStatementQuery,
+  useDeleteInvoiceMutation,
 } = billingApiSlice;
 
 

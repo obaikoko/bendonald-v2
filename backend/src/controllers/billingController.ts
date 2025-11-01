@@ -83,15 +83,23 @@ const updateInvoice = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const listInvoices = asyncHandler(async (req: Request, res: Response) => {
-  const { studentId, term, session, status, pageNumber } = listInvoicesQuerySchema.parse(
-    req.query
-  );
+  const { keyword, studentId, term, session, status, pageNumber } =
+    listInvoicesQuerySchema.parse(req.query);
 
   const page = Number(pageNumber) || 1;
   const pageSize = 30;
 
   const where: any = {
-    ...(studentId && { studentId }),
+    ...(keyword && {
+      student: {
+        OR: [
+          { firstName: { contains: keyword, mode: "insensitive" } },
+          { lastName: { contains: keyword, mode: "insensitive" } },
+          { otherName: { contains: keyword, mode: "insensitive" } },
+        ],
+      },
+    }),
+    ...(studentId && { student: { studentId } }),
     ...(term && { term }),
     ...(session && { session }),
     ...(status && { status }),
@@ -100,7 +108,11 @@ const listInvoices = asyncHandler(async (req: Request, res: Response) => {
   const [invoices, totalCount] = await Promise.all([
     prisma.invoice.findMany({
       where,
-      include: { items: true, payments: { include: { recordedBy: true } }, student: true },
+      include: {
+        items: true,
+        payments: { include: { recordedBy: true } },
+        student: true,
+      },
       orderBy: { createdAt: "desc" },
       skip: pageSize * (page - 1),
       take: pageSize,
@@ -108,7 +120,9 @@ const listInvoices = asyncHandler(async (req: Request, res: Response) => {
     prisma.invoice.count({ where }),
   ]);
 
-  res.status(200).json({ invoices, page, totalPages: Math.ceil(totalCount / pageSize) });
+  res
+    .status(200)
+    .json({ invoices, page, totalPages: Math.ceil(totalCount / pageSize) });
 });
 
 const recordPayment = asyncHandler(async (req: Request, res: Response) => {
@@ -134,7 +148,6 @@ const recordPayment = asyncHandler(async (req: Request, res: Response) => {
     res.status(400);
     throw new Error("Amount is greater than invoice balance");
   }
-  
 
   const payment = await prisma.payment.create({
     data: {
@@ -148,23 +161,26 @@ const recordPayment = asyncHandler(async (req: Request, res: Response) => {
     include: { recordedBy: true, invoice: true },
   });
 
-  const sumPaid = (invoice.payments || []).reduce((s, p) => s + Number(p.amount), 0) + Number(amount);
+  const sumPaid =
+    (invoice.payments || []).reduce((s, p) => s + Number(p.amount), 0) +
+    Number(amount);
   const newBalance = Number(invoice.totalAmount) - sumPaid;
   let newStatus: "unpaid" | "partial" | "paid" = "unpaid";
   if (sumPaid <= 0) newStatus = "unpaid";
   else if (sumPaid < Number(invoice.totalAmount)) newStatus = "partial";
-  
   else newStatus = "paid";
 
-  await prisma.invoice.update({ where: { id: invoiceId }, data: { status: newStatus, balance: newBalance } });
+  await prisma.invoice.update({
+    where: { id: invoiceId },
+    data: { status: newStatus, balance: newBalance },
+  });
 
   res.status(201).json(payment);
 });
 
 const reportSummary = asyncHandler(async (req: Request, res: Response) => {
-  const { startDate, endDate, term, session, level, subLevel } = reportSummaryQuerySchema.parse(
-    req.query
-  );
+  const { startDate, endDate, term, session, level, subLevel } =
+    reportSummaryQuerySchema.parse(req.query);
 
   const paymentWhere: any = {
     ...(startDate || endDate ? { paidAt: {} as any } : {}),
@@ -199,15 +215,21 @@ const reportSummary = asyncHandler(async (req: Request, res: Response) => {
 
   for (const p of filtered) {
     byMethod[p.method] = (byMethod[p.method] || 0) + Number(p.amount);
-    const recorderName = `${p.recordedBy.firstName} ${p.recordedBy.lastName}`.trim();
-    byRecorder[recorderName] = (byRecorder[recorderName] || 0) + Number(p.amount);
+    const recorderName =
+      `${p.recordedBy.firstName} ${p.recordedBy.lastName}`.trim();
+    byRecorder[recorderName] =
+      (byRecorder[recorderName] || 0) + Number(p.amount);
   }
 
-  res.status(200).json({ totalCollected, byMethod, byRecorder, count: filtered.length });
+  res
+    .status(200)
+    .json({ totalCollected, byMethod, byRecorder, count: filtered.length });
 });
 
 const studentStatement = asyncHandler(async (req: Request, res: Response) => {
-  const { studentId, term, session } = studentStatementQuerySchema.parse(req.query);
+  const { studentId, term, session } = studentStatementQuerySchema.parse(
+    req.query
+  );
 
   const whereInv: any = { studentId };
   if (term) whereInv.term = term;
@@ -238,33 +260,60 @@ const studentStatement = asyncHandler(async (req: Request, res: Response) => {
   res.status(200).json({ statement, totals });
 });
 
+const exportInvoiceReceipt = asyncHandler(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const invoice = await prisma.invoice.findUnique({
+      where: { id },
+      include: {
+        items: true,
+        payments: { include: { recordedBy: true } },
+        student: true,
+      },
+    });
 
-const exportInvoiceReceipt = asyncHandler(async (req: Request, res: Response) => {
+    if (!invoice) {
+      res.status(404);
+      throw new Error("Invoice not found");
+    }
+
+    const html = generateInvoiceReceiptHtml(invoice as any);
+    const pdfBuffer = await generateInvoiceReceiptPdf(html);
+
+    const fileName = `invoice-${invoice.id}.pdf`;
+    res.set({
+      "Content-Type": "application/pdf",
+      "Content-Disposition": `attachment; filename="${fileName}"`,
+    });
+    res.send(pdfBuffer);
+  }
+);
+
+// @desc Delete invoice
+// @route DELETE /api/billing/invoices/:id
+// @privacy Private SUPER ADMIN
+const deleteInvoice = asyncHandler(async (req: Request, res: Response) => {
   const { id } = req.params;
-  const invoice = await prisma.invoice.findUnique({
-    where: { id },
-    include: {
-      items: true,
-      payments: { include: { recordedBy: true } },
-      student: true,
-    },
-  });
-
+  if (!req.user.superAdmin) {
+    res.status(401);
+    throw new Error("Forbidden! You are not authorized to delete this invoice");
+  }
+  const invoice = await prisma.invoice.findUnique({ where: { id } });
   if (!invoice) {
     res.status(404);
     throw new Error("Invoice not found");
   }
-
-  const html = generateInvoiceReceiptHtml(invoice as any);
-  const pdfBuffer = await generateInvoiceReceiptPdf(html);
-
-  const fileName = `invoice-${invoice.id}.pdf`;
-  res.set({
-    "Content-Type": "application/pdf",
-    "Content-Disposition": `attachment; filename="${fileName}"`,
-  });
-  res.send(pdfBuffer);
+  await prisma.invoice.delete({ where: { id } });
+  res.status(200).json({ message: "Invoice deleted successfully" });
 });
 
-export { exportInvoiceReceipt, createInvoice, updateInvoice, listInvoices, recordPayment, reportSummary, studentStatement };
-
+export {
+  exportInvoiceReceipt,
+  createInvoice,
+  updateInvoice,
+  listInvoices,
+  recordPayment,
+  reportSummary,
+  studentStatement,
+  deleteInvoice,
+};

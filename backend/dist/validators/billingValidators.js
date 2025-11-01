@@ -34,6 +34,7 @@ exports.recordPaymentSchema = zod_1.z.object({
     paidAt: zod_1.z.coerce.date().optional(),
 });
 exports.listInvoicesQuerySchema = zod_1.z.object({
+    keyword: zod_1.z.string().optional(),
     studentId: zod_1.z.string().optional(),
     term: zod_1.z.string().optional(),
     session: zod_1.z.string().optional(),

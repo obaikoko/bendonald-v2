@@ -26,6 +26,7 @@ import Resizer from "react-image-file-resizer";
 
 interface EditStudentFormData {
   studentId?: string;
+  schoolId?: string;
   firstName: string;
   lastName: string;
   otherName?: string;
@@ -43,7 +44,7 @@ interface EditStudentFormData {
   sponsorPhoneNumber: string;
   sponsorRelationship: string;
   yearAdmitted: string;
-  image?: string; // ✅ added image field
+  image?: string; 
 }
 
 interface EditStudentDialogProps {
@@ -64,6 +65,7 @@ export default function EditStudentDialog({
   isLoading,
 }: EditStudentDialogProps) {
   const [lgas, setLgas] = useState<string[]>([]);
+
 
   useEffect(() => {
     if (formData.stateOfOrigin) {
@@ -148,6 +150,12 @@ export default function EditStudentDialog({
         </DialogHeader>
 
         <form onSubmit={onSubmit} className="space-y-3">
+          <Input
+            name="schoolId"
+            value={formData.schoolId}
+            onChange={handleInputChange}
+            placeholder="Student ID"
+          />
           <Input
             name="firstName"
             value={formData.firstName}

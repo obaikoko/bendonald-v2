@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.studentStatement = exports.reportSummary = exports.recordPayment = exports.listInvoices = exports.updateInvoice = exports.createInvoice = exports.exportInvoiceReceipt = void 0;
+exports.deleteInvoice = exports.studentStatement = exports.reportSummary = exports.recordPayment = exports.listInvoices = exports.updateInvoice = exports.createInvoice = exports.exportInvoiceReceipt = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const prisma_1 = require("../config/db/prisma");
 const generateStudentPdf_1 = require("../utils/generateStudentPdf");
@@ -79,21 +79,35 @@ const updateInvoice = (0, express_async_handler_1.default)((req, res) => __await
 }));
 exports.updateInvoice = updateInvoice;
 const listInvoices = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { studentId, term, session, status, pageNumber } = billingValidators_1.listInvoicesQuerySchema.parse(req.query);
+    const { keyword, studentId, term, session, status, pageNumber } = billingValidators_1.listInvoicesQuerySchema.parse(req.query);
     const page = Number(pageNumber) || 1;
     const pageSize = 30;
-    const where = Object.assign(Object.assign(Object.assign(Object.assign({}, (studentId && { studentId })), (term && { term })), (session && { session })), (status && { status }));
+    const where = Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, (keyword && {
+        student: {
+            OR: [
+                { firstName: { contains: keyword, mode: "insensitive" } },
+                { lastName: { contains: keyword, mode: "insensitive" } },
+                { otherName: { contains: keyword, mode: "insensitive" } },
+            ],
+        },
+    })), (studentId && { student: { studentId } })), (term && { term })), (session && { session })), (status && { status }));
     const [invoices, totalCount] = yield Promise.all([
         prisma_1.prisma.invoice.findMany({
             where,
-            include: { items: true, payments: { include: { recordedBy: true } }, student: true },
+            include: {
+                items: true,
+                payments: { include: { recordedBy: true } },
+                student: true,
+            },
             orderBy: { createdAt: "desc" },
             skip: pageSize * (page - 1),
             take: pageSize,
         }),
         prisma_1.prisma.invoice.count({ where }),
     ]);
-    res.status(200).json({ invoices, page, totalPages: Math.ceil(totalCount / pageSize) });
+    res
+        .status(200)
+        .json({ invoices, page, totalPages: Math.ceil(totalCount / pageSize) });
 }));
 exports.listInvoices = listInvoices;
 const recordPayment = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -125,7 +139,8 @@ const recordPayment = (0, express_async_handler_1.default)((req, res) => __await
         },
         include: { recordedBy: true, invoice: true },
     });
-    const sumPaid = (invoice.payments || []).reduce((s, p) => s + Number(p.amount), 0) + Number(amount);
+    const sumPaid = (invoice.payments || []).reduce((s, p) => s + Number(p.amount), 0) +
+        Number(amount);
     const newBalance = Number(invoice.totalAmount) - sumPaid;
     let newStatus = "unpaid";
     if (sumPaid <= 0)
@@ -134,7 +149,10 @@ const recordPayment = (0, express_async_handler_1.default)((req, res) => __await
         newStatus = "partial";
     else
         newStatus = "paid";
-    yield prisma_1.prisma.invoice.update({ where: { id: invoiceId }, data: { status: newStatus, balance: newBalance } });
+    yield prisma_1.prisma.invoice.update({
+        where: { id: invoiceId },
+        data: { status: newStatus, balance: newBalance },
+    });
     res.status(201).json(payment);
 }));
 exports.recordPayment = recordPayment;
@@ -174,9 +192,12 @@ const reportSummary = (0, express_async_handler_1.default)((req, res) => __await
     for (const p of filtered) {
         byMethod[p.method] = (byMethod[p.method] || 0) + Number(p.amount);
         const recorderName = `${p.recordedBy.firstName} ${p.recordedBy.lastName}`.trim();
-        byRecorder[recorderName] = (byRecorder[recorderName] || 0) + Number(p.amount);
+        byRecorder[recorderName] =
+            (byRecorder[recorderName] || 0) + Number(p.amount);
     }
-    res.status(200).json({ totalCollected, byMethod, byRecorder, count: filtered.length });
+    res
+        .status(200)
+        .json({ totalCollected, byMethod, byRecorder, count: filtered.length });
 }));
 exports.reportSummary = reportSummary;
 const studentStatement = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -229,3 +250,21 @@ const exportInvoiceReceipt = (0, express_async_handler_1.default)((req, res) => 
     res.send(pdfBuffer);
 }));
 exports.exportInvoiceReceipt = exportInvoiceReceipt;
+// @desc Delete invoice
+// @route DELETE /api/billing/invoices/:id
+// @privacy Private SUPER ADMIN
+const deleteInvoice = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    if (!req.user.superAdmin) {
+        res.status(401);
+        throw new Error("Forbidden! You are not authorized to delete this invoice");
+    }
+    const invoice = yield prisma_1.prisma.invoice.findUnique({ where: { id } });
+    if (!invoice) {
+        res.status(404);
+        throw new Error("Invoice not found");
+    }
+    yield prisma_1.prisma.invoice.delete({ where: { id } });
+    res.status(200).json({ message: "Invoice deleted successfully" });
+}));
+exports.deleteInvoice = deleteInvoice;

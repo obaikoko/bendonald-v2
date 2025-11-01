@@ -6,8 +6,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { sessions, terms } from '@/lib/utils';
+import { Input } from '@/components/ui/input';
 
 const BillingListPage = () => {
+  const [name, setName] = useState('');
   const [studentId, setStudentId] = useState('');
   const [status, setStatus] = useState<string | undefined>(undefined);
   const [term, setTerm] = useState('');
@@ -15,6 +17,7 @@ const BillingListPage = () => {
 
   const { data, isLoading, isError, refetch } = useListInvoicesQuery({
     studentId: studentId || undefined,
+    keyword: name || undefined,
     status: status || undefined,
     term: term || undefined,
     session: session || undefined,
@@ -32,7 +35,8 @@ const BillingListPage = () => {
 
       <Card className="mb-6">
         <CardContent className="p-4 grid grid-cols-1 md:grid-cols-5 gap-3">
-          {/* <Input placeholder="Student ID" value={studentId} onChange={(e) => setStudentId(e.target.value)} /> */}
+          <Input placeholder="Student ID" value={studentId} onChange={(e) => setStudentId(e.target.value)} />
+          <Input placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
 
            <Select onValueChange={setTerm}>
                           <SelectTrigger>

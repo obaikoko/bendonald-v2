@@ -251,7 +251,7 @@ model Invoice {
 model FeeItem {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   invoiceId String   @db.ObjectId
-  invoice   Invoice  @relation(fields: [invoiceId], references: [id])
+  invoice   Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
   name      String
   amount    Float
 }
@@ -259,11 +259,11 @@ model FeeItem {
 model Payment {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
   invoiceId    String   @db.ObjectId
-  invoice      Invoice  @relation(fields: [invoiceId], references: [id])
+  invoice      Invoice  @relation(fields: [invoiceId], references: [id], onDelete: Cascade)
   amount       Float
   method       String   // e.g. "cash" | "transfer" | "POS"
   recordedById String   @db.ObjectId
-  recordedBy   User     @relation(fields: [recordedById], references: [id])
+  recordedBy   User     @relation(fields: [recordedById], references: [id], onDelete: Restrict)
   note         String?
   paidAt       DateTime @default(now())
 }

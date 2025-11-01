@@ -10,7 +10,7 @@ const router = express_1.default.Router();
 router.route("/").get(authMiddleware_1.protect, authMiddleware_1.admin, billingController_1.listInvoices).post(authMiddleware_1.protect, authMiddleware_1.admin, billingController_1.createInvoice);
 router.route("/reports/summary").get(authMiddleware_1.protect, authMiddleware_1.admin, billingController_1.reportSummary);
 router.route("/reports/statement").get(authMiddleware_1.protect, authMiddleware_1.admin, billingController_1.studentStatement);
-router.route("/:id").put(authMiddleware_1.protect, authMiddleware_1.admin, billingController_1.updateInvoice);
+router.route("/:id").put(authMiddleware_1.protect, authMiddleware_1.admin, billingController_1.updateInvoice).delete(authMiddleware_1.protect, authMiddleware_1.admin, billingController_1.deleteInvoice);
 router.route("/payments").post(authMiddleware_1.protect, authMiddleware_1.admin, billingController_1.recordPayment);
 router.route("/:id/receipt").get(authMiddleware_1.protect, authMiddleware_1.admin, billingController_1.exportInvoiceReceipt);
 exports.default = router;

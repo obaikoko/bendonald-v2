@@ -1,7 +1,7 @@
 'use client';
 import { useParams } from 'next/navigation';
 import { useMemo, useState } from 'react';
-import { useListInvoicesQuery, useRecordPaymentMutation } from '@/src/features/billing/billingApiSlice';
+import { useListInvoicesQuery, useRecordPaymentMutation, useDeleteInvoiceMutation } from '@/src/features/billing/billingApiSlice';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,8 +9,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { showZodErrors } from '@/lib/utils';
 import { toast } from 'sonner';
 import { Textarea } from '@/components/ui/textarea';
-
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Trash2 } from "lucide-react";
+import Spinner from '@/components/shared/spinner';
+import { useRouter } from 'next/navigation';
 const InvoiceDetailPage = () => {
+  const router = useRouter();
   const params = useParams();
   const id = params?.id as string;
   const { data, isLoading, isError, refetch } = useListInvoicesQuery({});
@@ -20,7 +24,7 @@ const InvoiceDetailPage = () => {
   const [method, setMethod] = useState<string>('cash');
   const [note, setNote] = useState('');
   const [recordPayment, { isLoading: isRecording }] = useRecordPaymentMutation();
-
+  const [deleteInvoice, { isLoading: isDeleting }] = useDeleteInvoiceMutation();
   const paid = (invoice?.payments || []).reduce((s, p) => s + Number(p.amount), 0);
   const balance = Math.max(0, Number(invoice?.totalAmount || 0) - paid);
 
@@ -89,20 +93,62 @@ toast.error('Failed to record payment');
     console.error(error);
     toast.error('An unexpected error occurred while generating PDF.', { id: toastId });
   } finally {
-    toast.dismiss(toastId); // optional; Sonner auto-replaces if you used same ID
+    toast.dismiss(toastId); 
   }
 };
 
 
+  const handleDeleteInvoice = async () => {
+    try {
+      await deleteInvoice(invoice.id).unwrap();
+      toast.success('Invoice deleted successfully');
+      refetch();
+      router.push('/admin/billing');
+    } catch (error) {
+      showZodErrors(error);
+    }
+  };
+
   return (
     <div className="wrapper py-8 space-y-6">
       <div>
-        <div className="flex items-center justify-between">
-          <p className="text-sm md:text-3xl font-bold">Invoice #{invoice.id}</p>
-          <Button variant="outline" onClick={printInvoicePdf}>
-            Print Receipt (PDF)
-          </Button>
-        </div>
+       <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+  <p className="text-sm md:text-3xl font-bold">Invoice #{invoice.id}</p>
+  <div className="flex items-center gap-2">
+    <Button variant="outline" onClick={printInvoicePdf}>
+      Print Receipt (PDF)
+    </Button>
+
+    {/* Delete button with confirmation */}
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="destructive" disabled={isDeleting}>
+          <Trash2 className="w-4 h-4 mr-1" />
+                      {isDeleting ? <Spinner /> : "Delete Invoice"}
+
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. It will permanently delete this invoice and all related payments.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            className="bg-red-600 hover:bg-red-700"
+            onClick={handleDeleteInvoice}
+          >
+            {isDeleting ? <Spinner /> : "Delete"}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  </div>
+</div>
+
         <p className="text-sm text-muted-foreground">
           Name:{" "}
           {invoice.student

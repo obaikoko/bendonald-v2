@@ -37,6 +37,7 @@ exports.updateStudentSchema = zod_1.z.object({
         .nullable(),
     otherName: zod_1.z.string().optional().nullable(),
     studentId: zod_1.z.string().optional().nullable(),
+    schoolId: zod_1.z.string().optional().nullable(),
     dateOfBirth: zod_1.z.coerce
         .date({ message: "Invalid date of birth" })
         .optional()

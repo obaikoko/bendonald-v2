@@ -37,6 +37,7 @@ export const updateStudentSchema = z.object({
     .nullable(),
   otherName: z.string().optional().nullable(),
   studentId: z.string().optional().nullable(),
+  schoolId: z.string().optional().nullable(),
 
   dateOfBirth: z.coerce
     .date({ message: "Invalid date of birth" })

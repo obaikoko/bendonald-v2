@@ -39,6 +39,7 @@ export const recordPaymentSchema = z.object({
 });
 
 export const listInvoicesQuerySchema = z.object({
+  keyword: z.string().optional(),
   studentId: z.string().optional(),
   term: z.string().optional(),
   session: z.string().optional(),
@@ -63,4 +64,3 @@ export const studentStatementQuerySchema = z.object({
 
 export type CreateInvoiceInput = z.infer<typeof createInvoiceSchema>;
 export type RecordPaymentInput = z.infer<typeof recordPaymentSchema>;
-

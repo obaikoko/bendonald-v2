@@ -31,7 +31,9 @@ const StudentDetails = ({ studentId }: StudentId) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [open, setOpen] = useState(false);
 
+
   const [formData, setFormData] = useState<StudentFormData>({
+    schoolId: '',
     firstName: '',
     lastName: '',
     otherName: '',
@@ -72,6 +74,7 @@ const StudentDetails = ({ studentId }: StudentId) => {
   }
   const handleEditClick = () => {
     setFormData({
+      schoolId: student.studentId,
       studentId: student.id,
       firstName: student.firstName || '',
       lastName: student.lastName || '',
