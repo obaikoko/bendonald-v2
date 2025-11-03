@@ -19,6 +19,10 @@ import { resetPasswordSchema } from "../validators/usersValidators";
 import { classCodeMapping, classProgression } from "../utils/classUtils";
 import cloudinary from "../config/cloudinary";
 
+import { generateStudentIdCard } from "../utils/generateStudentIdCard";
+import { error } from "console";
+import { Student } from "../schemas/studentSchema";
+
 // Authenticate Student
 // @route POST api/student/auth
 // privacy Public
@@ -520,7 +524,6 @@ const updateStudent = asyncHandler(
       sponsorEmail,
       image,
     } = validateData;
-    
 
     if (!req.user) {
       res.status(401);
@@ -610,7 +613,7 @@ const updateStudent = asyncHandler(
         sponsorEmail: sponsorEmail ?? student.sponsorEmail,
         sponsorPhoneNumber: sponsorPhoneNumber ?? student.sponsorPhoneNumber,
         imageUrl: student.imageUrl,
-        imagePublicId: student.imagePublicId
+        imagePublicId: student.imagePublicId,
       },
     });
 
@@ -641,8 +644,8 @@ const deleteStudent = asyncHandler(
       where: { studentId: student.id },
     });
 
-        student.imagePublicId &&
-          (await cloudinary.uploader.destroy(student.imagePublicId));
+    student.imagePublicId &&
+      (await cloudinary.uploader.destroy(student.imagePublicId));
 
     // Then delete student
     await prisma.student.delete({
@@ -805,6 +808,23 @@ const graduateStudent = asyncHandler(
     });
   }
 );
+
+export const downloadStudentIdCard = async (req: Request, res: Response) => {
+  try {
+
+    const { id } = req.params;
+
+    // 🔹 Get student data
+    const student = await prisma.student.findUnique({ where: { id } });
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+    generateStudentIdCard(res, student as Student);
+  } catch (error) {
+    console.error("PDF generation error:", error);
+    res.status(500).json({ message: "Failed to generate ID card" });
+  }
+};
 export {
   authStudent,
   registerStudent,
