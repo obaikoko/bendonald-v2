@@ -45,7 +45,7 @@ const DownloadStudentDataButton = () => {
     } catch (err) {
       showZodErrors(err);
     } finally {
-      setLoading(false); // ✅ stop loading
+      setLoading(false); 
     }
   };
 
@@ -65,7 +65,7 @@ const DownloadStudentDataButton = () => {
           <div className='flex justify-end'>
             <Button
               onClick={handleDownloadCSV}
-              disabled={loading} // ✅ disable while loading
+              disabled={loading} 
             >
               {loading ? 'Downloading...' : 'Download CSV'}
             </Button>

@@ -5,14 +5,15 @@ const generateLetterHeadHTML = (result) => {
     var _a;
     const fullName = [result.firstName, result.otherName, result.lastName]
         .filter(Boolean)
-        .join(' ');
+        .join(" ");
     return `
     <div style="margin-bottom: 20px; font-family: Arial, sans-serif;">
       <!-- Header Section -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-        <!-- Student Passport -->
+      
+       <!-- School Logo -->
         <div>
-          <img src="${result.image || "https://via.placeholder.com/80"}" alt="Student Passport" style="height: 80px; width: 80px; object-fit: cover; border: 1px solid #ccc; border-radius: 4px;" />
+          <img src="${process.env.SCHOOL_LOGO}" alt="School Logo" style="height: 80px;" />
         </div>
 
         <!-- School Info -->
@@ -25,10 +26,12 @@ const generateLetterHeadHTML = (result) => {
           <p> TEL:   07038307768, 08169866808 </p>
         </div>
  
-        <!-- School Logo -->
+
+          <!-- Student Passport -->
         <div>
-          <img src="${process.env.SCHOOL_LOGO}" alt="School Logo" style="height: 80px;" />
+          <img src="${result.image || "https://via.placeholder.com/80"}" alt="Student Passport" style="height: 80px; width: 80px; object-fit: cover; border: 1px solid #ccc; border-radius: 4px;" />
         </div>
+       
       </div>
 
       <!-- Student Info Table -->

@@ -22,6 +22,8 @@ import UpdatePsychomotor from './update-psychomotor';
 import NextTermDetails from './next-term-details';
 import DownloadResult from './download-result-button';
 import UpdateResultPaymentButton from './update-result-payment-button';
+import { Button } from '@/components/ui/button';
+import AddSubjectToStudentResult from './add-subject-to-student';
 
 const ResultDetails = ({ resultId }: { resultId: string }) => {
   const { data: result, isLoading, isError } = useGetResultQuery(resultId);
@@ -46,11 +48,11 @@ const ResultDetails = ({ resultId }: { resultId: string }) => {
   }
 
   return (
-    <div className='space-y-6'>
+    <div className="space-y-6">
       {/* Page Title */}
-      <div className='flex items-center gap-2'>
-        <BookOpen className='text-purple-600' />
-        <h2 className='text-2xl font-semibold'>Student Results</h2>
+      <div className="flex items-center gap-2">
+        <BookOpen className="text-purple-600" />
+        <h2 className="text-2xl font-semibold">Student Results</h2>
       </div>
 
       {/* Header Info */}
@@ -69,9 +71,9 @@ const ResultDetails = ({ resultId }: { resultId: string }) => {
           <CardTitle>Subjects & Scores</CardTitle>
         </CardHeader>
 
-        <CardContent className='flex flex-col lg:flex-row gap-6'>
+        <CardContent className="flex flex-col lg:flex-row gap-6">
           {/* Left: Result Table (2/3 width) */}
-          <div className='lg:w-2/3 w-full'>
+          <div className="lg:w-2/3 w-full">
             <ResultTable results={result.subjectResults} />
             <NextTermDetails
               session={result.session}
@@ -81,7 +83,7 @@ const ResultDetails = ({ resultId }: { resultId: string }) => {
           </div>
 
           {/* Right: Assessments (1/3 width) */}
-          <div className='lg:w-1/3 w-full flex flex-col gap-4'>
+          <div className="lg:w-1/3 w-full flex flex-col gap-4">
             <AffectiveAssessment data={result.affectiveAssessment} />
             <Psychomotor data={result.psychomotor} />
           </div>
@@ -94,16 +96,18 @@ const ResultDetails = ({ resultId }: { resultId: string }) => {
           <CardTitle>Actions</CardTitle>
         </CardHeader>
         {pathName === `/student/results/${resultId}` ? (
-          <CardContent className='flex flex-col sm:flex-row items-start sm:items-center gap-4'>
+          <CardContent className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
             <DownloadResult resultId={resultId} />
           </CardContent>
         ) : (
           <>
-            <CardContent className='flex flex-col sm:flex-row items-start sm:items-center gap-4'>
+            <CardContent className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
               <UpdateAffectiveAssessment resultId={resultId} />
               <UpdatePsychomotor resultId={resultId} />
             </CardContent>
-            <CardContent className='flex flex-col sm:flex-row items-start sm:items-center gap-4'>
+            <CardContent className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+              <AddSubjectToStudentResult resultId={resultId} />
+              <Button>Remove Subject</Button>
               <DownloadResult resultId={resultId} />
 
               <UpdateSubjectScore resultId={resultId} />

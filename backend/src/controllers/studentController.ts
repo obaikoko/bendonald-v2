@@ -809,8 +809,11 @@ const graduateStudent = asyncHandler(
   }
 );
 
-export const downloadStudentIdCard = async (req: Request, res: Response) => {
+ const downloadStudentIdCard = async (req: Request, res: Response) => {
   try {
+    if (!req.user.superAdmin) {
+      throw new Error("Forbidden! User not allowed");
+    }
 
     const { id } = req.params;
 
@@ -838,4 +841,5 @@ export {
   updateStudent,
   exportStudentsCSV,
   graduateStudent,
+  downloadStudentIdCard,
 };

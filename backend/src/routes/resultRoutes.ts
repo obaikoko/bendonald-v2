@@ -1,5 +1,5 @@
-import express from 'express';
-import { protect } from '../middleware/authMiddleware';
+import express from "express";
+import { protect, admin } from "../middleware/authMiddleware";
 import {
   createResult,
   getResult,
@@ -16,28 +16,36 @@ import {
   resultData,
   exportManyResults,
   studentResultData,
-} from '../controllers/resultController';
+  removeSubjectFromStudentResult,
+  AddSubjectToStudentResult,
+} from "../controllers/resultController";
 
 const router = express.Router();
-router.route('/positions').post(protect, generatePositions);
-router.route('/broadsheet').post(protect, generateBroadsheet);
-router.route('/payment').put(protect, updateResultPayment);
+router.route("/positions").post(protect, admin, generatePositions);
+router.route("/broadsheet").post(protect, generateBroadsheet);
+router.route("/payment").put(protect, admin, updateResultPayment);
 router
-  .route('/subjects')
-  .put(protect, manualSubjectRemoval)
-  .post(protect, addSubjectToResults);
-router.route('/data').get(protect, resultData);
-router.route('/data/student-results').get(protect, studentResultData);
-router.route('/pdf').get(exportManyResults);
+  .route("/subjects")
+  .put(protect, admin, manualSubjectRemoval)
+  .post(protect, admin, addSubjectToResults);
+router.route("/data").get(protect, admin, resultData);
+router.route("/data/student-results").get(protect, studentResultData);
+router.route("/pdf").get(protect, admin, exportManyResults);
 router
-  .route('/:id')
+  .route("/:id")
   .post(protect, createResult)
   .get(protect, getResult)
   .put(protect, updateResult)
   .delete(protect, deleteResult);
-router.route('/student/:id').get(protect, getStudentResults);
-router.route('/pdf/:id').get(exportResult);
+router
+  .route("/student/:id")
+  .get(protect, getStudentResults)
+  .put(protect, admin, removeSubjectFromStudentResult);
+router
+  .route("/student/:id/add")
+  .put(protect, admin, AddSubjectToStudentResult);
+router.route("/pdf/:id").get(exportResult);
 
-router.route('/').get(protect, getResults);
+router.route("/").get(protect, getResults);
 
 export default router;

@@ -1,4 +1,4 @@
-import StudentDetails from '@/components/shared/students/student-details';
+import StudentDetails from "@/components/shared/students/student-details";
 
 const StudentProfilePage = async (props: {
   params: Promise<{ id: string }>;
