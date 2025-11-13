@@ -14,14 +14,15 @@ import {
 } from "@/src/features/results/resultApiSlice";
 import { showZodErrors, subjects } from "@/lib/utils";
 import { toast } from "sonner";
+import { StudentResult } from "@/schemas/resultSchema";
 
-const AddSubjectToStudentResult = ({ resultId }: { resultId: string }) => {
+const ManageSubjects = ({ resultId }: { resultId: string }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedSubject, setSelectedSubject] = useState("");
   const [selectedAction, setSelectedAction] = useState("");
   const [addSubject, { isError, isLoading }] =
     useManageStudentSubjectsMutation();
-  const { refetch } = useGetResultQuery(resultId);
+  const { data, refetch } = useGetResultQuery(resultId);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // ✅ Correct usage
@@ -100,11 +101,15 @@ const AddSubjectToStudentResult = ({ resultId }: { resultId: string }) => {
               <option value="" disabled>
                 Select a subject
               </option>
-              {subjects.map((subject, index) => (
-                <option key={index} value={subject}>
-                  {subject}
-                </option>
-              ))}
+              {selectedAction === "add"
+                ? subjects.map((subject, index) => (
+                    <option key={index} value={subject}>
+                      {subject}
+                    </option>
+                  ))
+                : data?.subjectResults.map((sr, index) => (
+                    <option key={index} value={sr.subject}> {sr.subject}</option>
+                  ))}
             </select>
 
             <Button
@@ -122,4 +127,4 @@ const AddSubjectToStudentResult = ({ resultId }: { resultId: string }) => {
   );
 };
 
-export default AddSubjectToStudentResult;
+export default ManageSubjects;
