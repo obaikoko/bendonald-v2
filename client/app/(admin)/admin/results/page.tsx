@@ -40,7 +40,7 @@ const AdminResultsPage = () => {
     );
   }
 
-  if (isError || !results) {
+  if (isError && !results) {
     return (
       <Card>
         <CardHeader>Error fetching data</CardHeader>

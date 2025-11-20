@@ -1,1 +1,1 @@
-export const APP_NAME = 'Beryl International Schools';
+export const APP_NAME = 'Bendonalds International Schools';
