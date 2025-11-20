@@ -56,7 +56,9 @@ export const levels: string[] = [
   "SSS 1",
   "SSS 2",
   "SSS 3",
-  "GRADUATED",
+  "Graduated",
+  "Withdrawn",
+
 ];
 
 export const subLevels: string[] = ["A", "B", "C", "D", "E"];

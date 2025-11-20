@@ -43,6 +43,7 @@ const authStudent = (0, express_async_handler_1.default)((req, res) => __awaiter
                 firstName: true,
                 lastName: true,
                 otherName: true,
+                level: true,
                 password: true,
             },
         });
@@ -53,6 +54,10 @@ const authStudent = (0, express_async_handler_1.default)((req, res) => __awaiter
         if (!student || !(yield bcrypt_1.default.compare(password, student.password))) {
             res.status(401);
             throw new Error("Invalid Email or Password");
+        }
+        if (student.level === "Withdrawn") {
+            res.status(401);
+            throw new Error("Your account has been withdrawn and cannot be accessed. Please contact the school administrator for assistance.");
         }
         const authenticatedStudent = yield prisma_1.prisma.student.findFirst({
             where: {

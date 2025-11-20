@@ -43,6 +43,7 @@ const authStudent = asyncHandler(
           firstName: true,
           lastName: true,
           otherName: true,
+          level: true,
           password: true,
         },
       });
@@ -54,6 +55,12 @@ const authStudent = asyncHandler(
       if (!student || !(await bcrypt.compare(password, student.password))) {
         res.status(401);
         throw new Error("Invalid Email or Password");
+      }
+      if (student.level === "Withdrawn") {
+        res.status(401);
+        throw new Error(
+          "Your account has been withdrawn and cannot be accessed. Please contact the school administrator for assistance."
+        );
       }
 
       const authenticatedStudent = await prisma.student.findFirst({
@@ -809,7 +816,7 @@ const graduateStudent = asyncHandler(
   }
 );
 
- const downloadStudentIdCard = async (req: Request, res: Response) => {
+const downloadStudentIdCard = async (req: Request, res: Response) => {
   try {
     if (!req.user.superAdmin) {
       throw new Error("Forbidden! User not allowed");
