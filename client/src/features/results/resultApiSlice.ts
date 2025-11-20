@@ -95,14 +95,7 @@ export const resultsApiSlice = apiSlice.injectEndpoints({
         credentials: "include",
       }),
     }),
-    // removeSubjectFromStudent: builder.mutation({
-    //   query: (data) => ({
-    //     url: `${RESULTS_URL}/student/${data.resultId}`,
-    //     method: "PUT",
-    //     body: data,
-    //     credentials: "include",
-    //   }),
-    // }),
+
     generatePositions: builder.mutation({
       query: (data) => ({
         url: `${RESULTS_URL}/positions`,
@@ -152,8 +145,7 @@ export const {
   useRemoveSubjectMutation,
   useAddSubjectMutation,
   useManageStudentSubjectsMutation,
-  // useAddSubjectToStudentMutation,
-  // useRemoveSubjectFromStudentMutation,
+
   useResultPaymentMutation,
   useGenerateBroadsheetMutation,
 } = resultsApiSlice;

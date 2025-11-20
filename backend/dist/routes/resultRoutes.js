@@ -26,10 +26,10 @@ router
 router
     .route("/student/:id")
     .get(authMiddleware_1.protect, resultController_1.getStudentResults)
-    .put(authMiddleware_1.protect, authMiddleware_1.admin, resultController_1.removeSubjectFromStudentResult);
+    .put(authMiddleware_1.protect, resultController_1.removeSubjectFromStudentResult);
 router
     .route("/student/:id/add")
-    .put(authMiddleware_1.protect, authMiddleware_1.admin, resultController_1.AddSubjectToStudentResult);
+    .put(authMiddleware_1.protect, resultController_1.AddSubjectToStudentResult);
 router.route("/pdf/:id").get(resultController_1.exportResult);
 router.route("/").get(authMiddleware_1.protect, resultController_1.getResults);
 exports.default = router;

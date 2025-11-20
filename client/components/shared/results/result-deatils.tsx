@@ -22,7 +22,8 @@ import UpdatePsychomotor from "./update-psychomotor";
 import NextTermDetails from "./next-term-details";
 import DownloadResult from "./download-result-button";
 import UpdateResultPaymentButton from "./update-result-payment-button";
-import ManageSubjects from "./add-subject-to-student";
+import ManageSubjects from "./manage-subjects";
+import UpdateRemark from "./update-remark";
 
 const ResultDetails = ({ resultId }: { resultId: string }) => {
   const { data: result, isLoading, isError } = useGetResultQuery(resultId);
@@ -105,11 +106,13 @@ const ResultDetails = ({ resultId }: { resultId: string }) => {
               <UpdatePsychomotor resultId={resultId} />
             </CardContent>
             <CardContent className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-              <ManageSubjects resultId={resultId}  />
+              <ManageSubjects resultId={resultId} />
+
+              <UpdateSubjectScore resultId={resultId} />
+              <UpdateRemark resultId={resultId} />
 
               <DownloadResult resultId={resultId} />
 
-              <UpdateSubjectScore resultId={resultId} />
               <DeleteResultButton
                 resultId={resultId}
                 studentId={result.studentId}

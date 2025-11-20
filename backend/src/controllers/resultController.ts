@@ -626,6 +626,8 @@ const manualSubjectRemoval = asyncHandler(
       );
   }
 );
+
+
 const AddSubjectToStudentResult = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const { subjectName } = req.body;

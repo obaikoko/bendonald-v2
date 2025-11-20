@@ -40,10 +40,10 @@ router
 router
   .route("/student/:id")
   .get(protect, getStudentResults)
-  .put(protect, admin, removeSubjectFromStudentResult);
+  .put(protect, removeSubjectFromStudentResult);
 router
   .route("/student/:id/add")
-  .put(protect, admin, AddSubjectToStudentResult);
+  .put(protect, AddSubjectToStudentResult);
 router.route("/pdf/:id").get(exportResult);
 
 router.route("/").get(protect, getResults);

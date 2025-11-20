@@ -121,6 +121,7 @@ export const subjects: string[] = [
   "Prevocational Studies",
   "Quantitative Reasoning",
   "Social Studies",
+  "Social/Health Habit",
   "Verbal Reasoning",
   "Vocational Aptitude",
   "Yoruba Language",
