@@ -90,6 +90,16 @@ const ResultDetails = ({ resultId }: { resultId: string }) => {
         </CardContent>
       </Card>
 
+      <Card>
+        <CardContent>
+          <p>
+            Class Teacher&apos;s Remark: {result.principalRemark ?? "_______"}
+          </p>
+        </CardContent>
+        <CardContent>
+          <p>Principal&apos;s Remark: {result.principalRemark ?? "_______"}</p>
+        </CardContent>
+      </Card>
       {/* Action Buttons */}
       <Card>
         <CardHeader>
