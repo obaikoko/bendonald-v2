@@ -140,16 +140,16 @@ ${(0, generateLetterHead_1.generateLetterHeadHTML)(result)}
   ${subjectRows}
 
   <tr class="footer">
-    <td colspan="8">NUMBER OF PEOPLE IN CLASS: ${(_c = result.numberInClass) !== null && _c !== void 0 ? _c : "-"}</td>
+    <td colspan="8">NUMBER  IN CLASS: ${(_c = result.numberInClass) !== null && _c !== void 0 ? _c : "-"}</td>
   </tr>
   <tr class="footer">
     <td colspan="8">
-    Teachers' Remark: ${result.teacherRemark}
+    Class Teacher's Remark: ${result.teacherRemark}
     </td>
   </tr>
   <tr class="footer">
     <td colspan="8">
-     Principals/Head: ${result.principalRemark}
+     Principal/Head of Schools' Remark: ${result.principalRemark}
     </td>
   </tr>
   <tr class="footer">
@@ -158,7 +158,7 @@ ${(0, generateLetterHead_1.generateLetterHeadHTML)(result)}
         (result.averageScore && result.averageScore < 40)
         ? "FAILED"
         : "PASS"} &nbsp;&nbsp;&nbsp;&nbsp; 
-      Conduct: ____________ &nbsp;&nbsp;&nbsp;&nbsp; 
+      
       Signature: ____________
     </td>
   </tr>

@@ -134,18 +134,16 @@ ${generateLetterHeadHTML(result)}
   ${subjectRows}
 
   <tr class="footer">
-    <td colspan="8">NUMBER OF PEOPLE IN CLASS: ${
-      result.numberInClass ?? "-"
-    }</td>
+    <td colspan="8">NUMBER  IN CLASS: ${result.numberInClass ?? "-"}</td>
   </tr>
   <tr class="footer">
     <td colspan="8">
-    Teachers' Remark: ${result.teacherRemark}
+    Class Teacher's Remark: ${result.teacherRemark}
     </td>
   </tr>
   <tr class="footer">
     <td colspan="8">
-     Principals/Head: ${result.principalRemark}
+     Principal/Head of Schools' Remark: ${result.principalRemark}
     </td>
   </tr>
   <tr class="footer">
@@ -156,7 +154,7 @@ ${generateLetterHeadHTML(result)}
           ? "FAILED"
           : "PASS"
       } &nbsp;&nbsp;&nbsp;&nbsp; 
-      Conduct: ____________ &nbsp;&nbsp;&nbsp;&nbsp; 
+      
       Signature: ____________
     </td>
   </tr>
