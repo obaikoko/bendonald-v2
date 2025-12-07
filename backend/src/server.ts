@@ -23,10 +23,8 @@ const app = express();
 app.set("trust proxy", true);
 
 const corsOptions = {
-  origin:
-    process.env.NODE_ENV === "production"
-      ? ["https://www.bendonaldschools.com", "https://bendonaldschools.com"]
-      : "http://localhost:3000",
+  origin: ["https://www.bendonaldschools.com", "https://bendonaldschools.com"],
+
   credentials: true,
 };
 
