@@ -627,7 +627,7 @@ const manualSubjectRemoval = asyncHandler(
   }
 );
 
-const AddSubjectToStudentResult = asyncHandler(
+const addSubjectToStudentResult = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const { subjectName } = req.body;
 
@@ -872,7 +872,7 @@ export {
   generateBroadsheet,
   addSubjectToResults,
   manualSubjectRemoval,
-  AddSubjectToStudentResult,
+  addSubjectToStudentResult,
   removeSubjectFromStudentResult,
   resultData,
   studentResultData,

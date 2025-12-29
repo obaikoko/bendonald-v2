@@ -17,7 +17,7 @@ import {
   exportManyResults,
   studentResultData,
   removeSubjectFromStudentResult,
-  AddSubjectToStudentResult,
+  addSubjectToStudentResult,
 } from "../controllers/resultController";
 
 const router = express.Router();
@@ -43,7 +43,7 @@ router
   .put(protect, removeSubjectFromStudentResult);
 router
   .route("/student/:id/add")
-  .put(protect, AddSubjectToStudentResult);
+  .put(protect, addSubjectToStudentResult);
 router.route("/pdf/:id").get(exportResult);
 
 router.route("/").get(protect, getResults);
