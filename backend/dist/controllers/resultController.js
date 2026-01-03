@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.exportManyResults = exports.exportResult = exports.studentResultData = exports.resultData = exports.removeSubjectFromStudentResult = exports.AddSubjectToStudentResult = exports.manualSubjectRemoval = exports.addSubjectToResults = exports.generateBroadsheet = exports.generatePositions = exports.updateResultPayment = exports.deleteResult = exports.updateResult = exports.getStudentResults = exports.getResults = exports.getResult = exports.createResult = void 0;
+exports.exportManyResults = exports.exportResult = exports.studentResultData = exports.resultData = exports.removeSubjectFromStudentResult = exports.addSubjectToStudentResult = exports.manualSubjectRemoval = exports.addSubjectToResults = exports.generateBroadsheet = exports.generatePositions = exports.updateResultPayment = exports.deleteResult = exports.updateResult = exports.getStudentResults = exports.getResults = exports.getResult = exports.createResult = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const prisma_1 = require("../config/db/prisma");
 const subjectResults_1 = require("../utils/subjectResults"); // adjust the import path
@@ -485,7 +485,7 @@ const manualSubjectRemoval = (0, express_async_handler_1.default)((req, res) => 
         .json(`${subjectName} removed from ${updatedResults.length} result(s) successfully.`);
 }));
 exports.manualSubjectRemoval = manualSubjectRemoval;
-const AddSubjectToStudentResult = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const addSubjectToStudentResult = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { subjectName } = req.body;
     const result = yield prisma_1.prisma.result.findUnique({
         where: { id: req.params.id },
@@ -516,7 +516,7 @@ const AddSubjectToStudentResult = (0, express_async_handler_1.default)((req, res
         .status(200)
         .json(`${subjectName} added to ${result.firstName}'s result successfully.`);
 }));
-exports.AddSubjectToStudentResult = AddSubjectToStudentResult;
+exports.addSubjectToStudentResult = addSubjectToStudentResult;
 const removeSubjectFromStudentResult = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { subjectName } = req.body;
     const result = yield prisma_1.prisma.result.findUnique({

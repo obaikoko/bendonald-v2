@@ -29,7 +29,7 @@ router
     .put(authMiddleware_1.protect, resultController_1.removeSubjectFromStudentResult);
 router
     .route("/student/:id/add")
-    .put(authMiddleware_1.protect, resultController_1.AddSubjectToStudentResult);
+    .put(authMiddleware_1.protect, resultController_1.addSubjectToStudentResult);
 router.route("/pdf/:id").get(resultController_1.exportResult);
 router.route("/").get(authMiddleware_1.protect, resultController_1.getResults);
 exports.default = router;
