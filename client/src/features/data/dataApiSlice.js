@@ -19,6 +19,14 @@ export const dataApiSlice = apiSlice.injectEndpoints({
       providesTags: ['Data'],
       keepUnusedDataFor: 5,
     }),
+    getStudentsClassData: builder.query({
+      query: () => ({
+        url: `${DATA_URL}/students-level`,
+        credentials: 'include',
+      }),
+      providesTags: ['Data'],
+      keepUnusedDataFor: 5,
+    }),
     getUsersData: builder.query({
       query: () => ({
         url: `${DATA_URL}/users`,
@@ -30,4 +38,4 @@ export const dataApiSlice = apiSlice.injectEndpoints({
   }),
 });
 
-export const { useGetStaffDataQuery, useGetStudentsDataQuery, useGetUsersDataQuery } = dataApiSlice;
+export const { useGetStaffDataQuery, useGetStudentsDataQuery, useGetStudentsClassDataQuery, useGetUsersDataQuery } = dataApiSlice;

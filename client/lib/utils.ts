@@ -56,7 +56,7 @@ export const levels: string[] = [
   "SSS 1",
   "SSS 2",
   "SSS 3",
-  "Graduated",
+  "Graduate",
   "Withdrawn",
 
 ];

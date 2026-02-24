@@ -12,9 +12,10 @@ import {
   useManageStudentSubjectsMutation,
   useGetResultQuery,
 } from "@/src/features/results/resultApiSlice";
-import { showZodErrors, subjects } from "@/lib/utils";
+import { showZodErrors} from "@/lib/utils";
 import { toast } from "sonner";
-import { StudentResult } from "@/schemas/resultSchema";
+import { useGetSubjectsQuery } from "@/src/features/subjects/subjectsApiSlice";
+import { SubjectSchema } from "@/schemas/subjectSchema";
 
 const ManageSubjects = ({ resultId }: { resultId: string }) => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -23,9 +24,11 @@ const ManageSubjects = ({ resultId }: { resultId: string }) => {
   const [addSubject, { isError, isLoading }] =
     useManageStudentSubjectsMutation();
   const { data, refetch } = useGetResultQuery(resultId);
+    const { data: subjects = [], isLoading: loadingSubjects } =
+      useGetSubjectsQuery({});
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault(); // ✅ Correct usage
+    e.preventDefault(); 
 
     if (!selectedSubject) {
       toast.error("Subject required");
@@ -34,7 +37,7 @@ const ManageSubjects = ({ resultId }: { resultId: string }) => {
 
     try {
       const res = await addSubject({
-        subjectName: selectedSubject, // ✅ Match backend
+        subjectName: selectedSubject, 
         resultId,
         selectedAction,
       }).unwrap();
@@ -102,9 +105,9 @@ const ManageSubjects = ({ resultId }: { resultId: string }) => {
                 Select a subject
               </option>
               {selectedAction === "add"
-                ? subjects.map((subject, index) => (
-                    <option key={index} value={subject}>
-                      {subject}
+                ? subjects.map((subject: SubjectSchema, index: number) => (
+                    <option key={index} value={subject.name}>
+                      {subject.name}
                     </option>
                   ))
                 : data?.subjectResults.map((sr, index) => (
