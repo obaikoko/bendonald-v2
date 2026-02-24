@@ -186,5 +186,3 @@ ${generateLetterHeadHTML(result)}
 </body>
 </html>`;
 };
-
-

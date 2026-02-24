@@ -146,12 +146,12 @@ const DashboardPage = () => {
       </div>
 
       <div>
-        <Card>{loadingclassData ? (
+       {loadingclassData ? (
         <CardContent>Loading Chart...</CardContent>
         ): (
           
           <LevelGenderChart data={classData?.data} />
-        )}</Card>
+        )}
       </div>
 
 
