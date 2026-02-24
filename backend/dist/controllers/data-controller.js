@@ -12,14 +12,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.userData = exports.studentsData = void 0;
+exports.levelData = exports.userData = exports.studentsData = void 0;
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const prisma_1 = require("../config/db/prisma");
 const classUtils_1 = require("../utils/classUtils");
 const studentsData = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.user) {
         res.status(401);
-        throw new Error('Unauthorized User');
+        throw new Error("Unauthorized User");
     }
     let allStudents;
     if (req.user.isAdmin) {
@@ -28,8 +28,8 @@ const studentsData = (0, express_async_handler_1.default)((req, res) => __awaite
     else {
         allStudents = yield prisma_1.prisma.student.findMany({
             where: {
-                level: req.user.level || '',
-                subLevel: req.user.subLevel || '',
+                level: req.user.level || "",
+                subLevel: req.user.subLevel || "",
             },
         });
     }
@@ -43,7 +43,7 @@ const studentsData = (0, express_async_handler_1.default)((req, res) => __awaite
     for (const student of allStudents) {
         const gender = student.gender;
         const level = student.level;
-        if (gender === 'Male' || gender === 'Female') {
+        if (gender === "Male" || gender === "Female") {
             genderCounts[gender]++;
         }
         if (classUtils_1.levels.includes(level)) {
@@ -60,11 +60,11 @@ const studentsData = (0, express_async_handler_1.default)((req, res) => __awaite
         Female: genderCounts.Female,
     };
     // Append each level/gender count to the response
-    for (const level of classUtils_1.levels) {
-        const safeKey = level.replace(/\s+/g, '');
-        response[`${safeKey}Males`] = levelGenderCounts[level].Male;
-        response[`${safeKey}Females`] = levelGenderCounts[level].Female;
-    }
+    // for (const level of levels) {
+    // const safeKey = level.replace(/\s+/g, "");
+    // response[`${safeKey}Males`] = levelGenderCounts[level].Male;
+    // response[`${safeKey}Females`] = levelGenderCounts[level].Female;
+    // }
     res.json(response);
 }));
 exports.studentsData = studentsData;
@@ -78,12 +78,12 @@ const userData = (0, express_async_handler_1.default)((req, res) => __awaiter(vo
         }),
         prisma_1.prisma.user.count({
             where: {
-                status: 'active',
+                status: "active",
             },
         }),
         prisma_1.prisma.user.count({
             where: {
-                status: 'suspended',
+                status: "suspended",
             },
         }),
     ]);
@@ -95,3 +95,57 @@ const userData = (0, express_async_handler_1.default)((req, res) => __awaiter(vo
     });
 }));
 exports.userData = userData;
+const levelData = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const grouped = yield prisma_1.prisma.student.groupBy({
+        by: ["level", "gender"],
+        _count: {
+            id: true,
+        },
+    });
+    // Transform into chart-friendly format
+    const result = {};
+    grouped.forEach((item) => {
+        const level = item.level;
+        if (!result[level]) {
+            result[level] = { boys: 0, girls: 0 };
+        }
+        if (item.gender === "Male") {
+            result[level].boys = item._count.id;
+        }
+        else if (item.gender === "Female") {
+            result[level].girls = item._count.id;
+        }
+    });
+    const levelOrder = [
+        "Creche",
+        "Lower Reception",
+        "Upper Reception",
+        "Nursery 1",
+        "Nursery 2",
+        "Grade 1",
+        "Grade 2",
+        "Grade 3",
+        "Grade 4",
+        "Grade 5",
+        "JSS 1",
+        "JSS 2",
+        "JSS 3",
+        "SSS 1",
+        "SSS 2",
+        "SSS 3",
+        "Graduate",
+        "Withdrawn",
+    ];
+    const chartData = Object.entries(result)
+        .map(([level, value]) => ({
+        level,
+        boys: value.boys,
+        girls: value.girls,
+    }))
+        .sort((a, b) => levelOrder.indexOf(a.level) - levelOrder.indexOf(b.level));
+    res.status(200).json({
+        success: true,
+        data: chartData,
+    });
+}));
+exports.levelData = levelData;

@@ -17,6 +17,7 @@ const announcementRoute_1 = __importDefault(require("./routes/announcementRoute"
 const schemeOfWorkRoute_1 = __importDefault(require("./routes/schemeOfWorkRoute"));
 const timeTableRoute_1 = __importDefault(require("./routes/timeTableRoute"));
 const billingRoutes_1 = __importDefault(require("./routes/billingRoutes"));
+const subjectRoutes_1 = __importDefault(require("./routes/subjectRoutes"));
 const errorMiddleware_1 = require("./middleware/errorMiddleware");
 const cookieParser = require("cookie-parser");
 const cors_1 = __importDefault(require("cors"));
@@ -46,6 +47,7 @@ app.use("/api/announcements", announcementRoute_1.default);
 app.use("/api/schemes", schemeOfWorkRoute_1.default);
 app.use("/api/timeTable", timeTableRoute_1.default);
 app.use("/api/billing", billingRoutes_1.default);
+app.use("/api/subjects", subjectRoutes_1.default);
 app.use(errorMiddleware_1.errorHandler);
 app.use(errorMiddleware_1.notFound);
 app.listen(port, () => console.log(`Server running on port ${port}`));
