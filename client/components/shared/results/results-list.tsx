@@ -5,12 +5,12 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { StudentResult } from '@/schemas/resultSchema';
-import Link from 'next/link';
-import { useAppSelector } from '@/src/app/hooks';
-import Spinner from '../spinner';
-import { Card, CardHeader } from '@/components/ui/card';
+} from "@/components/ui/table";
+import { StudentResult } from "@/schemas/resultSchema";
+import Link from "next/link";
+import { useAppSelector } from "@/src/app/hooks";
+import Spinner from "../spinner";
+import { Card, CardHeader } from "@/components/ui/card";
 
 const ResultList = ({
   results,
@@ -40,7 +40,7 @@ const ResultList = ({
     );
   }
   return (
-    <div className='overflow-x-auto max-h-[300px] overflow-y-auto border rounded-md'>
+    <div className="overflow-x-auto max-h-[300px] overflow-y-auto border rounded-md">
       <Table>
         <TableHeader>
           <TableRow>
@@ -57,7 +57,7 @@ const ResultList = ({
             <TableRow key={r.id}>
               <TableCell>
                 <Link
-                  className='underline'
+                  className="underline"
                   href={
                     user.isAdmin
                       ? `/admin/results/${r.id}`
@@ -69,7 +69,7 @@ const ResultList = ({
               </TableCell>
               <TableCell>
                 <Link
-                  className='underline'
+                  className="underline"
                   href={
                     user.isAdmin
                       ? `/admin/students/${r.studentId}`
@@ -87,10 +87,10 @@ const ResultList = ({
               <TableCell>{r.session}</TableCell>
               <TableCell
                 className={`${
-                  r.isPublished ? 'text-green-600 ' : 'text-red-600 '
+                  r.isPublished ? "text-green-600 " : "text-red-600 "
                 }font-medium`}
               >
-                {r.isPublished ? 'Published' : 'Not published'}
+                {r.isPublished ? "Published" : "Not published"}
               </TableCell>
             </TableRow>
           ))}
@@ -98,7 +98,7 @@ const ResultList = ({
             <TableRow>
               <TableCell
                 colSpan={6}
-                className='text-center py-4 text-muted-foreground'
+                className="text-center py-4 text-muted-foreground"
               >
                 No matching results found.
               </TableCell>

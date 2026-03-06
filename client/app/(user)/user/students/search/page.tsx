@@ -17,10 +17,16 @@ const UserStudentSearchPage = () => {
   const searchParams = useSearchParams();
   const keyword = searchParams.get('keyword');
   const level = searchParams.get('level');
+  const gender = searchParams.get('gender');
+  const subLevel = searchParams.get('subLevel');
+  const studentId = searchParams.get('studentId');
 
   const { data, isLoading, isError } = useSearchStudentsQuery({
-    keyword,
-    level,
+    keyword: keyword || undefined,
+    level: level || undefined,
+    studentId: studentId || undefined,
+    gender: gender || undefined,
+    subLevel: subLevel || undefined,
     page: 1,
   });
   const students = data?.students ?? [];
@@ -28,7 +34,7 @@ const UserStudentSearchPage = () => {
   return (
     <>
       <div className='mb-10'>
-        <StudentsSearch />
+        {/* <StudentsSearch /> */}
       </div>
       <Card>
         <CardHeader>

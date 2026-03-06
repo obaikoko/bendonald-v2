@@ -23,8 +23,10 @@ export type Students = {
   students: Student[];
   page: number;
   totalPages: number;
+  totalStudents: number;
 };
 export type SearchForm = z.infer<typeof searchSchema>;
+
 export type ForgetPassword = z.infer<typeof forgetPasswordSchema>;
 export type StudentId = z.infer<typeof studentIdSchema>;
 export type NextTermDetailsForm = z.infer<typeof nextTermDetailsSchema>;

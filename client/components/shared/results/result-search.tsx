@@ -1,100 +1,220 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Search } from 'lucide-react';
-import { searchSchema } from '@/validators/studentValidation';
-import { SearchForm } from '@/schemas/studentSchema';
-import { useRouter } from 'next/navigation';
-import { levels } from '@/lib/utils';
+} from "@/components/ui/select";
 
-const ResultSearch = () => {
-  const router = useRouter();
-  const {
-    register,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm<SearchForm>({
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import { Loader2, Search } from "lucide-react";
+
+import { searchSchema } from "@/validators/studentValidation";
+import { SearchForm } from "@/schemas/studentSchema";
+import { levels, terms, sessions } from "@/lib/utils";
+
+const publishStatus = ["ALL", "Published", "Unpublished"];
+
+
+const ResultSearchDialog = ({
+  onSearch,
+  loading,
+}: {
+  loading: boolean;
+  onSearch: (data: any) => void;
+}) => {
+  const [open, setOpen] = useState(false);
+
+  const { register, handleSubmit, control } = useForm<SearchForm>({
     resolver: zodResolver(searchSchema),
     defaultValues: {
-      name: '',
-      level: 'All',
+      name: "",
+      level: "ALL",
+      session: "ALL",
+      term: "ALL",
+      isPublished: "ALL",
     },
   });
 
   const handleSearch = (data: SearchForm) => {
-    const { name, level } = data;
-    if ((!name || name.trim() === '') && level === 'All') {
-      router.push(`/admin/results`);
-    } else {
-      const query = `?keyword=${encodeURIComponent(
-        name ?? ''
-      )}&level=${encodeURIComponent(level)}`;
-      router.push(`/admin/results/search${query}`);
-    }
+    onSearch({
+      keyword: data.name ?? "",
+      level: data.level === "ALL" ? "" : data.level,
+      session: data.session === "ALL" ? "" : data.session,
+      term: data.term === "ALL" ? "" : data.term,
+      isPublished:
+        data.isPublished === "ALL" ? "" : data.isPublished === "Published",
+    });
+
+    setOpen(false); 
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(handleSearch)}
-      className='bg-background p-6 mt-1 shadow-md flex flex-col sm:flex-row items-center justify-between gap-4 text-foreground max-w-4xl mx-auto rounded-md'
-    >
-      <div className='flex flex-col sm:flex-row items-center gap-4 w-full'>
-        <div className='relative w-full sm:flex-1'>
-          <Input
-            {...register('name')}
-            placeholder='Enter Name (First, Last, Other)'
-            className={`w-full pr-10 ${
-              errors.name ? 'border-destructive' : ''
-            }`}
-            aria-invalid={!!errors.name}
-          />
-          <Search
-            className='absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none'
-            size={18}
-          />
-        </div>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="flex items-center gap-2 shadow-sm">
+          <Search size={16} />
+          Search Results
+        </Button>
+      </DialogTrigger>
 
-        <Controller
-          control={control}
-          name='level'
-          render={({ field }) => (
-            <Select onValueChange={field.onChange} value={field.value}>
-              <SelectTrigger className='w-full sm:w-auto flex-1'>
-                <SelectValue placeholder='Select level' />
-              </SelectTrigger>
-              <SelectContent>
-                {levels.map((lvl: string) => (
-                  <SelectItem key={lvl} value={lvl}>
-                    {lvl}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          )}
-        />
-      </div>
+      <DialogContent className="sm:max-w-xl">
+        <DialogHeader className="pb-2">
+          <DialogTitle className="text-lg font-semibold">
+            Search Student Results
+          </DialogTitle>
+        </DialogHeader>
 
-      <Button
-        type='submit'
-        className='flex items-center gap-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-black hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors cursor-pointer'
-      >
-        <Search size={16} />
-        Search
-      </Button>
-    </form>
+        <form onSubmit={handleSubmit(handleSearch)} className="space-y-6 pt-2">
+          {/* Student Name */}
+          <div className="space-y-2">
+            <Label>Student Name</Label>
+            <Input
+              {...register("name")}
+              placeholder="e.g John Doe"
+              className="focus-visible:ring-2"
+            />
+          </div>
+
+          {/* GRID SECTION */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Level */}
+            <div className="space-y-2">
+              <Label>Class Level</Label>
+              <Controller
+                control={control}
+                name="level"
+                render={({ field }) => (
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Level" />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                      <SelectItem value="ALL">All</SelectItem>
+
+                      {levels.map((lvl: string) => (
+                        <SelectItem key={lvl} value={lvl}>
+                          {lvl}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+            </div>
+
+            {/* Session */}
+            <div className="space-y-2">
+              <Label>Session</Label>
+              <Controller
+                control={control}
+                name="session"
+                render={({ field }) => (
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Session" />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                      {sessions.map((session) => (
+                        <SelectItem key={session} value={session}>
+                          {session}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+            </div>
+
+            {/* Term */}
+            <div className="space-y-2 sm:col-span-2">
+              <Label>Term</Label>
+              <Controller
+                control={control}
+                name="term"
+                render={({ field }) => (
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Term" />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                      {terms.map((term) => (
+                        <SelectItem key={term} value={term}>
+                          {term}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+            </div>
+
+            <div className="space-y-2 sm:col-span-2">
+              <Label>Result Status</Label>
+              <Controller
+                control={control}
+                name="isPublished"
+                render={({ field }) => (
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select Status" />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                      {publishStatus.map((status) => (
+                        <SelectItem key={status} value={status}>
+                          {status}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                )}
+              />
+            </div>
+          </div>
+
+          {/* BUTTON */}
+          <Button
+            type="submit"
+            disabled={loading}
+            className="w-full flex items-center justify-center gap-2"
+          >
+            {loading ? (
+              <>
+                <Loader2 className="animate-spin" size={16} />
+                Fetching Results...
+              </>
+            ) : (
+              <>
+                <Search size={16} />
+                Search
+              </>
+            )}
+          </Button>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
 
-export default ResultSearch;
+export default ResultSearchDialog;

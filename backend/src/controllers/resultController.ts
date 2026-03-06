@@ -109,7 +109,7 @@ const createResult = asyncHandler(
     }
 
     res.status(200).json(result);
-  }
+  },
 );
 
 // @GET ALL RESULT
@@ -123,12 +123,19 @@ const getResults = asyncHandler(
       throw new Error("Unauthorized User");
     }
 
+
     const level = req.query.level as string | undefined;
     const keyword = req.query.keyword as string | undefined;
+    const session = req.query.session as string | undefined;
+    const term = req.query.term as string | undefined;
+    const isPublished =
+      req.query.isPublished !== undefined
+        ? req.query.isPublished === "true"
+        : undefined;
+
     const page = parseInt(req.query.pageNumber as string) || 1;
     const pageSize = 30;
 
-    // Prisma filter
     const whereClause: any = {
       ...(keyword && {
         OR: [
@@ -137,13 +144,27 @@ const getResults = asyncHandler(
           { otherName: { contains: keyword, mode: "insensitive" } },
         ],
       }),
+
       ...(level &&
         level !== "All" && {
           level: { contains: level, mode: "insensitive" },
         }),
+
+      ...(session &&
+        session !== "ALL" && {
+          session: { equals: session },
+        }),
+
+      ...(term &&
+        term !== "ALL" && {
+          term: { equals: term },
+        }),
+      ...(isPublished !== undefined && {
+        isPublished: isPublished,
+      }),
     };
 
-    // If not admin, filter by their level/subLevel
+    // Restrict non-admin users
     if (!user.isAdmin) {
       whereClause.level = user.level;
       whereClause.subLevel = user.subLevel;
@@ -163,10 +184,11 @@ const getResults = asyncHandler(
 
     res.status(200).json({
       results,
+      totalResults: totalCount,
       page,
       totalPages: Math.ceil(totalCount / pageSize),
     });
-  }
+  },
 );
 
 // @GET STUDENT RESULT
@@ -241,7 +263,7 @@ const getStudentResults = asyncHandler(
       console.log(error);
       throw error;
     }
-  }
+  },
 );
 
 const updateResult = asyncHandler(
@@ -281,7 +303,7 @@ const updateResult = asyncHandler(
     ) {
       res.status(401);
       throw new Error(
-        "Unable to update this result, Please contact the class teacher"
+        "Unable to update this result, Please contact the class teacher",
       );
     }
 
@@ -290,7 +312,7 @@ const updateResult = asyncHandler(
 
     if (subject) {
       const index = updatedSubjectResults.findIndex(
-        (s) => s.subject === subject
+        (s) => s.subject === subject,
       );
 
       if (index === -1) {
@@ -321,7 +343,7 @@ const updateResult = asyncHandler(
     if (affectiveAssessments?.length) {
       updatedAffective = updatedAffective.map((a) => {
         const incoming = affectiveAssessments.find(
-          (x) => x.aCategory === a.aCategory
+          (x) => x.aCategory === a.aCategory,
         );
         return incoming ? { ...a, grade: incoming.grade } : a;
       });
@@ -332,7 +354,7 @@ const updateResult = asyncHandler(
     if (psychomotorAssessments?.length) {
       updatedPsychomotor = updatedPsychomotor.map((p) => {
         const incoming = psychomotorAssessments.find(
-          (x) => x.pCategory === p.pCategory
+          (x) => x.pCategory === p.pCategory,
         );
         return incoming ? { ...p, grade: incoming.grade } : p;
       });
@@ -341,7 +363,7 @@ const updateResult = asyncHandler(
     // --- Recalculate total and average ---
     const totalScore = updatedSubjectResults.reduce(
       (acc, s) => acc + s.totalScore,
-      0
+      0,
     );
     const averageScore = totalScore / updatedSubjectResults.length;
 
@@ -359,7 +381,7 @@ const updateResult = asyncHandler(
     });
 
     res.status(200).json(updatedResult);
-  }
+  },
 );
 
 const deleteResult = asyncHandler(
@@ -382,7 +404,7 @@ const deleteResult = asyncHandler(
     });
 
     res.status(200).json({ message: "Result Deleted successfully" });
-  }
+  },
 );
 
 // @desc updates result to paid and makes it visible to student
@@ -417,7 +439,7 @@ const updateResultPayment = asyncHandler(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 const generatePositions = asyncHandler(
@@ -443,7 +465,7 @@ const generatePositions = asyncHandler(
     if (!results || results.length === 0) {
       res.status(404);
       throw new Error(
-        `No results found for ${level}${subLevel} ${session} session`
+        `No results found for ${level}${subLevel} ${session} session`,
       );
     }
 
@@ -471,14 +493,14 @@ const generatePositions = asyncHandler(
             numberInClass,
             isPublished: true,
           },
-        })
-      )
+        }),
+      ),
     );
 
     res.status(200).json({
       message: `${level}${subLevel} ${session} Results Ranked Successfully`,
     });
-  }
+  },
 );
 
 const generateBroadsheet = asyncHandler(
@@ -502,7 +524,7 @@ const generateBroadsheet = asyncHandler(
     if (!results || results.length === 0) {
       res.status(404);
       throw new Error(
-        `No results found for ${level}${subLevel} ${session} session`
+        `No results found for ${level}${subLevel} ${session} session`,
       );
     }
 
@@ -520,7 +542,7 @@ const generateBroadsheet = asyncHandler(
     }));
 
     res.status(200).json(broadsheet);
-  }
+  },
 );
 
 const addSubjectToResults = asyncHandler(
@@ -547,14 +569,14 @@ const addSubjectToResults = asyncHandler(
     const updatedResults = await Promise.all(
       results.map(async (result) => {
         const exists = result.subjectResults.some(
-          (s: any) => s.subject.toLowerCase() === subjectName.toLowerCase()
+          (s: any) => s.subject.toLowerCase() === subjectName.toLowerCase(),
         );
 
         if (!exists) {
           const updatedSubjects = [...result.subjectResults, newSubject];
           const totalScore = updatedSubjects.reduce(
             (acc: number, s: any) => acc + (s.totalScore || 0),
-            0
+            0,
           );
           const averageScore =
             updatedSubjects.length > 0
@@ -572,13 +594,13 @@ const addSubjectToResults = asyncHandler(
         }
 
         return result;
-      })
+      }),
     );
 
     res.json({
       message: `${subjectName} added to ${updatedResults.length} result(s) for ${level} - ${term} term.`,
     });
-  }
+  },
 );
 
 const manualSubjectRemoval = asyncHandler(
@@ -598,12 +620,12 @@ const manualSubjectRemoval = asyncHandler(
     const updatedResults = await Promise.all(
       results.map(async (result) => {
         const updatedSubjects = result.subjectResults.filter(
-          (s: any) => s.subject !== subjectName
+          (s: any) => s.subject !== subjectName,
         );
 
         const totalScore = updatedSubjects.reduce(
           (acc: number, s: any) => acc + (s.totalScore || 0),
-          0
+          0,
         );
         const averageScore =
           updatedSubjects.length > 0 ? totalScore / updatedSubjects.length : 0;
@@ -616,15 +638,15 @@ const manualSubjectRemoval = asyncHandler(
             averageScore,
           },
         });
-      })
+      }),
     );
 
     res
       .status(200)
       .json(
-        `${subjectName} removed from ${updatedResults.length} result(s) successfully.`
+        `${subjectName} removed from ${updatedResults.length} result(s) successfully.`,
       );
-  }
+  },
 );
 
 const addSubjectToStudentResult = asyncHandler(
@@ -665,9 +687,9 @@ const addSubjectToStudentResult = asyncHandler(
     res
       .status(200)
       .json(
-        `${subjectName} added to ${result.firstName}'s result successfully.`
+        `${subjectName} added to ${result.firstName}'s result successfully.`,
       );
-  }
+  },
 );
 
 const removeSubjectFromStudentResult = asyncHandler(
@@ -690,7 +712,7 @@ const removeSubjectFromStudentResult = asyncHandler(
     }
 
     const updatedSubjects = result.subjectResults.filter(
-      (s: any) => s.subject !== subjectName
+      (s: any) => s.subject !== subjectName,
     );
 
     await prisma.result.update({
@@ -706,9 +728,9 @@ const removeSubjectFromStudentResult = asyncHandler(
     res
       .status(200)
       .json(
-        `${subjectName} removed from ${result.firstName}'s result successfully.`
+        `${subjectName} removed from ${result.firstName}'s result successfully.`,
       );
-  }
+  },
 );
 
 const resultData = asyncHandler(
@@ -753,7 +775,7 @@ const resultData = asyncHandler(
       publishedResults,
       unpublishedResults,
     });
-  }
+  },
 );
 
 const studentResultData = asyncHandler(
@@ -779,7 +801,7 @@ const studentResultData = asyncHandler(
       result: previousResult[0] || null,
       results: previousResult,
     });
-  }
+  },
 );
 
 const exportResult = asyncHandler(
@@ -812,7 +834,7 @@ const exportResult = asyncHandler(
     });
 
     res.send(pdfBuffer);
-  }
+  },
 );
 const exportManyResults = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
@@ -838,11 +860,11 @@ const exportManyResults = asyncHandler(
 
     // Generate HTML for all results, separated by page breaks
     const htmlSections = await Promise.all(
-      results.map(generateStudentResultHTML)
+      results.map(generateStudentResultHTML),
     );
 
     const html = htmlSections.join(
-      '<div style="page-break-after: always;"></div>'
+      '<div style="page-break-after: always;"></div>',
     );
 
     const pdfBuffer = await generateStudentPdf(html);
@@ -857,7 +879,7 @@ const exportManyResults = asyncHandler(
     });
 
     res.send(pdfBuffer);
-  }
+  },
 );
 
 export {

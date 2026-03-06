@@ -84,6 +84,7 @@ export const psychomotorCategories = [
 ];
 
 export const sessions: string[] = [
+  "ALL",
   "2024/2025",
   "2025/2026",
   "2026/2027",
@@ -91,7 +92,7 @@ export const sessions: string[] = [
   "2028/2029",
   "2029/2030",
 ];
-export const terms: string[] = ["First", "Second", "Third"];
+export const terms: string[] = ["ALL", "First", "Second", "Third"];
 export const subjects: string[] = [
   "Agricultural Science",
   "Basic Science",

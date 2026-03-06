@@ -1,105 +1,139 @@
-import { STUDENTS_URL } from '../constants';
-import { apiSlice } from '../apiSlice';
-import { Student, Students } from '@/schemas/studentSchema';
+import { STUDENTS_URL } from "../constants";
+import { apiSlice } from "../apiSlice";
+import { Student, Students } from "@/schemas/studentSchema";
 
 export const studentsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getStudentProfile: builder.query<Student, void>({
       query: () => ({
         url: `${STUDENTS_URL}/profile`,
-        credentials: 'include',
+        credentials: "include",
       }),
-      providesTags: ['Students'],
+      providesTags: ["Students"],
       keepUnusedDataFor: 5,
     }),
     getStudents: builder.query<Students, number>({
       query: (page) => ({
         url: `${STUDENTS_URL}?pageNumber=${page}`,
-        credentials: 'include',
+        credentials: "include",
       }),
-      providesTags: ['Students'],
+      providesTags: ["Students"],
       keepUnusedDataFor: 5,
     }),
     getStudentResults: builder.query({
       query: () => ({
         url: `${STUDENTS_URL}/results`,
-        credentials: 'include',
+        credentials: "include",
       }),
-      providesTags: ['Students'],
+      providesTags: ["Students"],
       keepUnusedDataFor: 5,
     }),
+    // searchStudents: builder.query<
+    //   Students,
+    //   { keyword: string | null; level: string | null; page: number | null }
+    // >({
+    //   query: ({ keyword, level, page }) => ({
+    //     url: `${STUDENTS_URL}/?keyword=${keyword}&level=${level}&pageNumber=${page}`,
+    //     credentials: 'include',
+    //   }),
+    //   providesTags: ['Students'],
+    //   keepUnusedDataFor: 5,
+    // }),
+
     searchStudents: builder.query<
       Students,
-      { keyword: string | null; level: string | null; page: number | null }
+      {
+        keyword?: string;
+        studentId?: string;
+        gender?: string;
+        level?: string;
+        subLevel?: string;
+        page?: number;
+      }
     >({
-      query: ({ keyword, level, page }) => ({
-        url: `${STUDENTS_URL}/?keyword=${keyword}&level=${level}&pageNumber=${page}`,
-        credentials: 'include',
-      }),
-      providesTags: ['Students'],
+      query: ({ keyword, studentId, gender, level, subLevel, page }) => {
+        const params = new URLSearchParams();
+
+        if (keyword) params.append("keyword", keyword);
+        if (studentId) params.append("studentId", studentId);
+        if (gender) params.append("gender", gender);
+        if (level) params.append("level", level);
+        if (subLevel) params.append("subLevel", subLevel);
+        if (page) params.append("pageNumber", page.toString());
+
+        return {
+          url: `${STUDENTS_URL}?${params.toString()}`,
+          credentials: "include",
+        };
+      },
+
+      providesTags: ["Students"],
       keepUnusedDataFor: 5,
     }),
+
+
+    
     getStudent: builder.query<Student, string>({
       query: (studentId) => ({
         url: `${STUDENTS_URL}/${studentId}`,
-        credentials: 'include',
+        credentials: "include",
       }),
-      providesTags: ['Students'],
+      providesTags: ["Students"],
       keepUnusedDataFor: 5,
     }),
     registerStudent: builder.mutation({
       query: (data) => ({
         url: `${STUDENTS_URL}/register`,
-        method: 'POST',
+        method: "POST",
         body: data,
-        credentials: 'include',
+        credentials: "include",
       }),
     }),
     updateStudent: builder.mutation({
       query: (data) => ({
         url: `${STUDENTS_URL}/${data.studentId}`,
-        method: 'PUT',
+        method: "PUT",
         body: data,
-        credentials: 'include',
+        credentials: "include",
       }),
     }),
     deleteStudent: builder.mutation({
       query: (studentId) => ({
         url: `${STUDENTS_URL}/${studentId}`,
-        method: 'DELETE',
-        credentials: 'include',
+        method: "DELETE",
+        credentials: "include",
       }),
-      invalidatesTags: ['Students'],
+      invalidatesTags: ["Students"],
     }),
     graduateStudents: builder.mutation({
       query: () => ({
         url: `${STUDENTS_URL}/graduate`,
-        method: 'PUT',
-        credentials: 'include',
+        method: "PUT",
+        credentials: "include",
       }),
-      invalidatesTags: ['Students'],
+      invalidatesTags: ["Students"],
     }),
     reserStudentsFee: builder.mutation({
       query: (data) => ({
         url: `${STUDENTS_URL}/fees`,
-        method: 'POST',
+        method: "POST",
         body: data,
-        credentials: 'include',
+        credentials: "include",
       }),
-      invalidatesTags: ['Students'],
+      invalidatesTags: ["Students"],
     }),
 
     forgetStudentPassword: builder.mutation({
       query: (data) => ({
         url: `${STUDENTS_URL}/forget-password`,
-        method: 'POST',
+        method: "POST",
         body: data,
       }),
     }),
     resetStudentPassword: builder.mutation({
       query: (data) => ({
         url: `${STUDENTS_URL}/reset-password?token=${data.token}`,
-        method: 'PUT',
+        method: "PUT",
         body: data,
       }),
     }),

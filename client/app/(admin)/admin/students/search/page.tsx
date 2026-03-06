@@ -12,21 +12,27 @@ import { useSearchStudentsQuery } from '@/src/features/students/studentApiSlice'
 import { useSearchParams } from 'next/navigation';
 
 const StudentSearchPage = () => {
-  const searchParams = useSearchParams();
-  const keyword = searchParams.get('keyword');
-  const level = searchParams.get('level');
+ const searchParams = useSearchParams();
+ const keyword = searchParams.get("keyword");
+ const level = searchParams.get("level");
+ const gender = searchParams.get("gender");
+ const subLevel = searchParams.get("subLevel");
+ const studentId = searchParams.get("studentId");
 
-  const { data, isLoading, isError } = useSearchStudentsQuery({
-    keyword,
-    level,
-    page: 1,
-  });
-  const students = data?.students ?? [];
+ const { data, isLoading, isError } = useSearchStudentsQuery({
+   keyword: keyword || undefined,
+   level: level || undefined,
+   studentId: studentId || undefined,
+   gender: gender || undefined,
+   subLevel: subLevel || undefined,
+   page: 1,
+ });
+ const students = data?.students ?? [];
 
   return (
     <>
       <div className='mb-10'>
-        <StudentsSearch />
+        {/* <StudentsSearch /> */}
       </div>
       <Card>
         <CardHeader>

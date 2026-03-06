@@ -2,7 +2,7 @@
 
 import {
   useGetResultsDataQuery,
-  useGetResultsQuery,
+  useSearchResultsQuery,
 } from "@/src/features/results/resultApiSlice";
 
 import {
@@ -18,42 +18,37 @@ import Spinner from "@/components/shared/spinner";
 import Pagination from "@/components/shared/pagination";
 import { useState } from "react";
 import DownloadResults from "@/components/shared/results/download-results-button";
-import ResultSearch from "@/components/shared/results/result-search";
+import ResultSearchDialog from "@/components/shared/results/result-search";
 
 const AdminResultsPage = () => {
-  const [page, setPage] = useState<number>(1);
+  const [page, setPage] = useState(1);
 
-  // Summary stats
-  const {
-    data: resultsData,
-    isLoading: isLoadingStats,
-    isError: statsError,
-  } = useGetResultsDataQuery({});
+  const [filters, setFilters] = useState({
+    keyword: "",
+    level: "",
+    term: "",
+    session: "",
+    isPublished: "",
+  });
 
-  // Paginated results
-  const {
-    data: results,
-    isLoading: loadingResults,
-    isError: resultsError,
-  } = useGetResultsQuery(page);
+  const { data: resultsData, isLoading: isLoadingStats } =
+    useGetResultsDataQuery({});
 
-  const totalPages = results?.totalPages ?? 1;
+  const { data, isLoading, isError, isFetching } = useSearchResultsQuery({
+    keyword: filters.keyword,
+    level: filters.level,
+    term: filters.term,
+    session: filters.session,
+    isPublished: filters.isPublished,
+    page,
+  });
 
-  /** -------------------------------
-   * HANDLE GLOBAL / CRITICAL ERRORS
-   -------------------------------- */
-  if (statsError) {
-    return (
-      <Card className="p-6">
-        <CardHeader>
-          <CardTitle>Error Loading Summary Stats</CardTitle>
-          <CardDescription>
-            Could not load results overview. Please try again.
-          </CardDescription>
-        </CardHeader>
-      </Card>
-    );
-  }
+  const totalPages = data?.totalPages ?? 1;
+
+  const handleSearch = (values: any) => {
+    setPage(1);
+    setFilters(values);
+  };
 
   return (
     <div className="p-4 space-y-6">
@@ -61,7 +56,6 @@ const AdminResultsPage = () => {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {/* Total */}
         <Card>
           <CardHeader>
             <CardTitle>Total Results</CardTitle>
@@ -72,7 +66,6 @@ const AdminResultsPage = () => {
           </CardContent>
         </Card>
 
-        {/* Published */}
         <Card>
           <CardHeader>
             <CardTitle>Published</CardTitle>
@@ -83,7 +76,6 @@ const AdminResultsPage = () => {
           </CardContent>
         </Card>
 
-        {/* Unpublished */}
         <Card>
           <CardHeader>
             <CardTitle>Unpublished</CardTitle>
@@ -95,16 +87,28 @@ const AdminResultsPage = () => {
         </Card>
       </div>
 
-      <ResultSearch />
+      {/* SEARCH */}
+      <ResultSearchDialog onSearch={handleSearch} loading={isFetching} />
+      
 
       <DownloadResults />
 
-      {/* Results table */}
-      <ResultList
-        results={results?.results ?? []}
-        loading={loadingResults}
-        error={resultsError}
-      />
+      <p>Total Search results <span>{ data?.totalResults}</span></p>
+
+      {isFetching ? (
+        <div className="p-6 space-y-3">
+          <div className="h-4 bg-muted rounded w-full animate-pulse" />
+          <div className="h-4 bg-muted rounded w-full animate-pulse" />
+          <p className="text-center">Fetching data...</p>
+          <div className="h-4 bg-muted rounded w-full animate-pulse" />
+        </div>
+      ) : (
+        <ResultList
+          results={data?.results ?? []}
+          loading={isLoading}
+          error={isError}
+        />
+      )}
 
       <Pagination
         currentPage={page}

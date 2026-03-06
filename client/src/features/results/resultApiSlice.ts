@@ -45,10 +45,21 @@ export const resultsApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 5,
     }),
     searchResults: builder.query({
-      query: ({ keyword, level, page }) => ({
-        url: `${RESULTS_URL}?keyword=${keyword}&level=${level}&pageNumber=${page}`,
-        credentials: "include",
-      }),
+      query: ({ keyword, level, term, session, page, isPublished }) => {
+        const params = new URLSearchParams();
+
+        if (keyword) params.append("keyword", keyword);
+        if (level) params.append("level", level);
+        if (term) params.append("term", term);
+        if (session) params.append("session", session);
+        if (isPublished) params.append("isPublished", isPublished);
+        if (page) params.append("pageNumber", page);
+
+        return {
+          url: `${RESULTS_URL}?${params.toString()}`,
+          credentials: "include",
+        };
+      },
       providesTags: ["Results"],
       keepUnusedDataFor: 5,
     }),

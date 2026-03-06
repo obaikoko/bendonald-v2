@@ -73,9 +73,14 @@ export const studentSchema = z.object({
 });
 
 export const searchSchema = z.object({
-  name: z.string().optional().nullable(),
-  level: z.string(),
+  name: z.string().optional(),
+  level: z.string().optional(),
+  term: z.string().optional(),
+  session: z.string().optional(),
+  isPublished: z.string().optional(),
 });
+
+
 export const forgetPasswordSchema = z.object({
   studentId: z.string().min(3, 'StudentId should be at least 3 characters'),
 });

@@ -17,10 +17,14 @@ const ResultsSearchPage = () => {
   const searchParams = useSearchParams();
   const keyword = searchParams.get('keyword');
   const level = searchParams.get('level');
+  const term = searchParams.get('term');
+  const session = searchParams.get('session');
 
   const { data, isLoading, isError } = useSearchResultsQuery({
-    keyword,
-    level,
+    keyword: keyword || undefined,
+    level: level || undefined,
+    term: term || undefined,
+    session: session || undefined,
     page: 1,
   });
   const results = data?.results ?? [];
@@ -28,7 +32,7 @@ const ResultsSearchPage = () => {
   return (
     <>
       <div className='mb-10'>
-        <ResultSearch />
+        {/* <ResultSearch /> */}
       </div>
       <Card>
         <CardHeader>

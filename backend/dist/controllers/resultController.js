@@ -111,10 +111,14 @@ const getResults = (0, express_async_handler_1.default)((req, res) => __awaiter(
     }
     const level = req.query.level;
     const keyword = req.query.keyword;
+    const session = req.query.session;
+    const term = req.query.term;
+    const isPublished = req.query.isPublished !== undefined
+        ? req.query.isPublished === "true"
+        : undefined;
     const page = parseInt(req.query.pageNumber) || 1;
     const pageSize = 30;
-    // Prisma filter
-    const whereClause = Object.assign(Object.assign({}, (keyword && {
+    const whereClause = Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, (keyword && {
         OR: [
             { firstName: { contains: keyword, mode: "insensitive" } },
             { lastName: { contains: keyword, mode: "insensitive" } },
@@ -123,8 +127,16 @@ const getResults = (0, express_async_handler_1.default)((req, res) => __awaiter(
     })), (level &&
         level !== "All" && {
         level: { contains: level, mode: "insensitive" },
+    })), (session &&
+        session !== "ALL" && {
+        session: { equals: session },
+    })), (term &&
+        term !== "ALL" && {
+        term: { equals: term },
+    })), (isPublished !== undefined && {
+        isPublished: isPublished,
     }));
-    // If not admin, filter by their level/subLevel
+    // Restrict non-admin users
     if (!user.isAdmin) {
         whereClause.level = user.level;
         whereClause.subLevel = user.subLevel;
@@ -142,6 +154,7 @@ const getResults = (0, express_async_handler_1.default)((req, res) => __awaiter(
     ]);
     res.status(200).json({
         results,
+        totalResults: totalCount,
         page,
         totalPages: Math.ceil(totalCount / pageSize),
     });
