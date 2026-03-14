@@ -60,7 +60,11 @@ const ResultSearchDialog = ({
       session: data.session === "ALL" ? "" : data.session,
       term: data.term === "ALL" ? "" : data.term,
       isPublished:
-        data.isPublished === "ALL" ? "" : data.isPublished === "Published",
+        data.isPublished === "ALL"
+          ? undefined
+          : data.isPublished === "Published"
+            ? "true"
+            : "false",
     });
 
     setOpen(false); 

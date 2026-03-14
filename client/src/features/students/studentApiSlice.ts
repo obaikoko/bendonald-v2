@@ -28,17 +28,7 @@ export const studentsApiSlice = apiSlice.injectEndpoints({
       providesTags: ["Students"],
       keepUnusedDataFor: 5,
     }),
-    // searchStudents: builder.query<
-    //   Students,
-    //   { keyword: string | null; level: string | null; page: number | null }
-    // >({
-    //   query: ({ keyword, level, page }) => ({
-    //     url: `${STUDENTS_URL}/?keyword=${keyword}&level=${level}&pageNumber=${page}`,
-    //     credentials: 'include',
-    //   }),
-    //   providesTags: ['Students'],
-    //   keepUnusedDataFor: 5,
-    // }),
+   
 
     searchStudents: builder.query<
       Students,

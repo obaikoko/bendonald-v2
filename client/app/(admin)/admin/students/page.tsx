@@ -81,18 +81,29 @@ const StudentsPage = () => {
 
       <StudentsSearch onSearch={handleSearch} loading={isFetching} />
 
-      <div className="overflow-x-auto">
-        <StudentsTable
-          students={data?.students ?? []}
-          isLoading={isLoading}
-          isError={isError}
-        />
-        <Pagination
-          currentPage={page}
-          totalPages={totalPages}
-          onPageChange={(newPage) => setPage(newPage)}
-        />
-      </div>
+      {isFetching ? (
+        <div className="p-6 space-y-3">
+          <div className="h-4 bg-muted rounded w-full animate-pulse" />
+          <div className="h-4 bg-muted rounded w-full animate-pulse" />
+          <p className="text-center">Fetching data...</p>
+          <div className="h-4 bg-muted rounded w-full animate-pulse" />
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <StudentsTable
+            students={data?.students ?? []}
+            isLoading={isLoading}
+              isError={isError}
+              
+          />
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={(newPage) => setPage(newPage)}
+          />
+        </div>
+      )}
+
       <Card>
         <CardHeader>
           <CardTitle>Important Buttons</CardTitle>

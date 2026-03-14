@@ -59,7 +59,7 @@ const authStudent = asyncHandler(
       if (student.level === "Withdrawn") {
         res.status(401);
         throw new Error(
-          "Your account has been withdrawn and cannot be accessed. Please contact the school administrator for assistance."
+          "Your account has been withdrawn and cannot be accessed. Please contact the school administrator for assistance.",
         );
       }
 
@@ -96,7 +96,7 @@ const authStudent = asyncHandler(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 // ADD  STUDENT
@@ -178,7 +178,7 @@ const registerStudent = asyncHandler(
 
       const hashedPassword = await bcrypt.hash(
         process.env.DEFAULTPASSWORD as string,
-        10
+        10,
       );
 
       const student = await prisma.student.create({
@@ -231,94 +231,11 @@ const registerStudent = asyncHandler(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
-
-
-// // @route   GET /api/students
-// // @access  Private (Admin or Owner)
-// const getAllStudents = asyncHandler(
-//   async (req: Request, res: Response): Promise<void> => {
-//     const user = req.user;
-//     if (!user) {
-//       res.status(401);
-//       throw new Error("Unauthorized User");
-//     }
-
-//     const level = req.query.level as string | undefined;
-//     const keyword = req.query.keyword as string | undefined;
-//     const page = parseInt(req.query.pageNumber as string) || 1;
-//     const pageSize = 30;
-
-//     // Prisma filter
-//     const whereClause: any = {
-//       ...(keyword && {
-//         OR: [
-//           { firstName: { contains: keyword, mode: "insensitive" } },
-//           { lastName: { contains: keyword, mode: "insensitive" } },
-//           { otherName: { contains: keyword, mode: "insensitive" } },
-//         ],
-//       }),
-//       ...(level &&
-//         level !== "All" && {
-//           level: { contains: level, mode: "insensitive" },
-//         }),
-//     };
-
-//     // If not admin, filter by their level/subLevel
-//     if (!user.isAdmin) {
-//       whereClause.level = user.level;
-//       whereClause.subLevel = user.subLevel;
-//     }
-
-//     const [students, totalCount] = await Promise.all([
-//       prisma.student.findMany({
-//         select: {
-//           id: true,
-//           studentId: true,
-//           firstName: true,
-//           lastName: true,
-//           otherName: true,
-//           dateOfBirth: true,
-//           level: true,
-//           subLevel: true,
-//           isStudent: true,
-//           isPaid: true,
-//           gender: true,
-//           yearAdmitted: true,
-//           stateOfOrigin: true,
-//           localGvt: true,
-//           homeTown: true,
-//           sponsorEmail: true,
-//           sponsorName: true,
-//           sponsorPhoneNumber: true,
-//           sponsorRelationship: true,
-//           imageUrl: true,
-//           createdAt: true,
-//           updatedAt: true,
-//         },
-//         where: whereClause,
-//         orderBy: { createdAt: "desc" },
-//         skip: pageSize * (page - 1),
-//         take: pageSize,
-//       }),
-//       prisma.student.count({ where: whereClause }),
-//     ]);
-
-//     res.status(200).json({
-//       students,
-//       page,
-//       totalPages: Math.ceil(totalCount / pageSize),
-//     });
-//   }
-// );
-
-
-
 
 // @route   GET /api/students
 // @access  Private (Admin or Owner)
-
 const getAllStudents = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const user = req.user;
@@ -328,14 +245,7 @@ const getAllStudents = asyncHandler(
       throw new Error("Unauthorized User");
     }
 
-    const {
-      keyword,
-      level,
-      studentId,
-      gender,
-      subLevel,
-    } = req.query;
-
+    const { keyword, level, studentId, gender, subLevel } = req.query;
 
     const page = parseInt(req.query.pageNumber as string) || 1;
     const pageSize = 30;
@@ -432,7 +342,7 @@ const getAllStudents = asyncHandler(
       totalPages: Math.ceil(totalCount / pageSize),
       totalStudents: totalCount,
     });
-  }
+  },
 );
 
 // GET /api/students/registered-by-me
@@ -491,7 +401,7 @@ const getStudentsRegisteredByUser = asyncHandler(
       page,
       totalPages: Math.ceil(totalCount / pageSize),
     });
-  }
+  },
 );
 
 // GET /api/students/export
@@ -536,7 +446,7 @@ const exportStudentsCSV = asyncHandler(
     res.setHeader("Content-Type", "text/csv");
     res.setHeader("Content-Disposition", `attachment; filename=${filename}`);
     res.status(200).send(csv);
-  }
+  },
 );
 
 // GET  STUDENT
@@ -583,7 +493,7 @@ const getStudent = asyncHandler(
     }
     res.status(200);
     res.json(student);
-  }
+  },
 );
 
 // GET  STUDENT
@@ -626,7 +536,7 @@ const getStudentProfile = asyncHandler(
     }
     res.status(200);
     res.json(student);
-  }
+  },
 );
 
 // @desc Update student
@@ -678,7 +588,7 @@ const updateStudent = asyncHandler(
 
       if (existingImageId) {
         const newImageId = existingImageId.substring(
-          existingImageId.indexOf("Bendonald") + "Bendonald/".length
+          existingImageId.indexOf("Bendonald") + "Bendonald/".length,
         );
 
         const uploadedResponse = await cloudinary.uploader.upload(image, {
@@ -749,7 +659,7 @@ const updateStudent = asyncHandler(
 
     // Return the updated student details
     res.status(200).json(updateStudent);
-  }
+  },
 );
 // @desc Delete student
 // @route DELETE api/students/:id
@@ -783,7 +693,7 @@ const deleteStudent = asyncHandler(
     });
 
     res.status(200).json("Student data deleted");
-  }
+  },
 );
 
 // @desc Send reset password link student
@@ -838,7 +748,7 @@ const forgetPassword = asyncHandler(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 // @desc Reset password
@@ -896,7 +806,7 @@ const resetPassword = asyncHandler(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 const graduateStudent = asyncHandler(
@@ -936,7 +846,7 @@ const graduateStudent = asyncHandler(
         ].join(", ")}`,
       }),
     });
-  }
+  },
 );
 
 const downloadStudentIdCard = async (req: Request, res: Response) => {

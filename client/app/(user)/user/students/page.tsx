@@ -1,6 +1,6 @@
 "use client";
 
-import {  useSearchStudentsQuery } from "@/src/features/students/studentApiSlice";
+import { useSearchStudentsQuery } from "@/src/features/students/studentApiSlice";
 import { useGetStudentsDataQuery } from "@/src/features/data/dataApiSlice";
 import StudentsSearch from "@/components/shared/students/student-search";
 import StudentsTable from "@/components/shared/students/students-table";
@@ -11,7 +11,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-
+import DownloadStudentDataButton from "@/components/shared/students/download-student-button";
+import GraduateStudentsButton from "@/components/shared/students/graduate-students-button";
 import Pagination from "@/components/shared/pagination";
 import { useState } from "react";
 
@@ -20,15 +21,23 @@ const StudentsPage = () => {
 
   const [filters, setFilters] = useState({
     keyword: "",
-    studentId: "",
-    gender: "",
     level: "",
     subLevel: "",
+    studentId: "",
+    gender: "",
   });
-  const { data, isLoading, isError } = useSearchStudentsQuery({page, ...filters});
+
+  const { data, isLoading, isError, isFetching } = useSearchStudentsQuery({
+    page,
+    ...filters,
+  });
   const { data: studentsData } = useGetStudentsDataQuery({});
-  const students = data?.students ?? [];
   const totalPages = data?.totalPages ?? 1;
+
+  const handleSearch = (values: any) => {
+    setPage(1);
+    setFilters(values);
+  };
 
   return (
     <div className="p-4 space-y-6">
@@ -66,25 +75,44 @@ const StudentsPage = () => {
         </Card>
       </div>
 
-      <StudentsSearch
-        loading={isLoading}
-        onSearch={(data) => {
-          setPage(1); // reset pagination
-          setFilters(data);
-        }}
-      />
-      <div className="overflow-x-auto">
-        <StudentsTable
-          students={students}
-          isLoading={isLoading}
-          isError={isError}
-        />
-        <Pagination
-          currentPage={page}
-          totalPages={totalPages}
-          onPageChange={(newPage) => setPage(newPage)}
-        />
-      </div>
+      <StudentsSearch onSearch={handleSearch} loading={isFetching} />
+
+      {isFetching ? (
+        <div className="p-6 space-y-3">
+          <div className="h-4 bg-muted rounded w-full animate-pulse" />
+          <div className="h-4 bg-muted rounded w-full animate-pulse" />
+          <p className="text-center">Fetching data...</p>
+          <div className="h-4 bg-muted rounded w-full animate-pulse" />
+        </div>
+      ) : (
+        <div className="overflow-x-auto">
+          <StudentsTable
+            students={data?.students ?? []}
+            isLoading={isLoading}
+            isError={isError}
+          />
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={(newPage) => setPage(newPage)}
+          />
+        </div>
+      )}
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Important Buttons</CardTitle>
+          <CardDescription className="text-destructive">
+            Note that this buttons here are marked as important button.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col md:flex-row gap-3">
+            <DownloadStudentDataButton />
+            <GraduateStudentsButton />
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

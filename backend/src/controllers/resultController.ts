@@ -128,10 +128,12 @@ const getResults = asyncHandler(
     const keyword = req.query.keyword as string | undefined;
     const session = req.query.session as string | undefined;
     const term = req.query.term as string | undefined;
-    const isPublished =
-      req.query.isPublished !== undefined
-        ? req.query.isPublished === "true"
-        : undefined;
+   const isPublished =
+     req.query.isPublished === "true"
+       ? true
+       : req.query.isPublished === "false"
+         ? false
+         : undefined;
 
     const page = parseInt(req.query.pageNumber as string) || 1;
     const pageSize = 30;
@@ -190,6 +192,8 @@ const getResults = asyncHandler(
     });
   },
 );
+
+
 
 // @GET STUDENT RESULT
 // @route GET api/results/:id
