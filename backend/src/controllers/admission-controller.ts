@@ -57,8 +57,10 @@ const getAllRequest = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const getSingleRequest = asyncHandler(async (req: Request, res: Response) => {
+      const id = req.params.id as string;
+
   const admission = await prisma.admission.findUnique({
-    where: { id: req.params.id },
+    where: { id },
   });
 
   if (!admission) {
@@ -70,8 +72,10 @@ const getSingleRequest = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const deleteAdmission = asyncHandler(async (req: Request, res: Response) => {
+      const id = req.params.id as string;
+
   await prisma.admission.delete({
-    where: { id: req.params.id },
+    where: { id },
   });
 
   res.status(200).json('Admission request deleted successfully');

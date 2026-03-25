@@ -113,9 +113,11 @@ const getResults = (0, express_async_handler_1.default)((req, res) => __awaiter(
     const keyword = req.query.keyword;
     const session = req.query.session;
     const term = req.query.term;
-    const isPublished = req.query.isPublished !== undefined
-        ? req.query.isPublished === "true"
-        : undefined;
+    const isPublished = req.query.isPublished === "true"
+        ? true
+        : req.query.isPublished === "false"
+            ? false
+            : undefined;
     const page = parseInt(req.query.pageNumber) || 1;
     const pageSize = 30;
     const whereClause = Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({}, (keyword && {
@@ -164,9 +166,10 @@ exports.getResults = getResults;
 // @route GET api/results/:id
 // @privacy Private
 const getResult = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
     const result = yield prisma_1.prisma.result.findFirst({
         where: {
-            id: req.params.id,
+            id,
         },
     });
     if (!result) {
@@ -224,6 +227,7 @@ const getStudentResults = (0, express_async_handler_1.default)((req, res) => __a
 }));
 exports.getStudentResults = getStudentResults;
 const updateResult = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
     if (!req.user) {
         res.status(401);
         throw new Error("Unauthorized User");
@@ -231,7 +235,7 @@ const updateResult = (0, express_async_handler_1.default)((req, res) => __awaite
     const validatedData = resultValidator_1.updateResultSchema.parse(req.body);
     const { subject, test, exam, grade, affectiveAssessments, psychomotorAssessments, teacherRemark, principalRemark, } = validatedData;
     const result = yield prisma_1.prisma.result.findUnique({
-        where: { id: req.params.id },
+        where: { id },
     });
     if (!result) {
         res.status(404);
@@ -300,9 +304,10 @@ const updateResult = (0, express_async_handler_1.default)((req, res) => __awaite
 }));
 exports.updateResult = updateResult;
 const deleteResult = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
     const result = yield prisma_1.prisma.result.findFirst({
         where: {
-            id: req.params.id,
+            id,
         },
     });
     if (!result) {
@@ -499,9 +504,10 @@ const manualSubjectRemoval = (0, express_async_handler_1.default)((req, res) => 
 }));
 exports.manualSubjectRemoval = manualSubjectRemoval;
 const addSubjectToStudentResult = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
     const { subjectName } = req.body;
     const result = yield prisma_1.prisma.result.findUnique({
-        where: { id: req.params.id },
+        where: { id },
     });
     if (!result) {
         res.status(404);
@@ -531,10 +537,11 @@ const addSubjectToStudentResult = (0, express_async_handler_1.default)((req, res
 }));
 exports.addSubjectToStudentResult = addSubjectToStudentResult;
 const removeSubjectFromStudentResult = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
     const { subjectName } = req.body;
     const result = yield prisma_1.prisma.result.findUnique({
         where: {
-            id: req.params.id,
+            id
         },
     });
     if (!result) {
@@ -623,9 +630,10 @@ const studentResultData = (0, express_async_handler_1.default)((req, res) => __a
 }));
 exports.studentResultData = studentResultData;
 const exportResult = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
     const result = yield prisma_1.prisma.result.findFirst({
         where: {
-            id: req.params.id,
+            id,
         },
     });
     if (!result) {

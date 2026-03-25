@@ -38,7 +38,7 @@ const getSubjects = asyncHandler(
 );
 
 const deleteSubject = asyncHandler(async (req, res) => {
-  const { id } = req.params;
+    const id = req.params.id as string;
   //   Check if subject exist
   const subjectExist = await prisma.subject.findFirst({
     where: {

@@ -199,9 +199,11 @@ const getResults = asyncHandler(
 // @route GET api/results/:id
 // @privacy Private
 const getResult = asyncHandler(async (req: Request, res: Response) => {
+      const id = req.params.id as string;
+
   const result = await prisma.result.findFirst({
     where: {
-      id: req.params.id,
+      id,
     },
   });
 
@@ -272,6 +274,8 @@ const getStudentResults = asyncHandler(
 
 const updateResult = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
+        const id = req.params.id as string;
+
     if (!req.user) {
       res.status(401);
       throw new Error("Unauthorized User");
@@ -290,7 +294,7 @@ const updateResult = asyncHandler(
     } = validatedData;
 
     const result: StudentResult | null = await prisma.result.findUnique({
-      where: { id: req.params.id },
+      where: { id },
     });
 
     if (!result) {
@@ -390,9 +394,11 @@ const updateResult = asyncHandler(
 
 const deleteResult = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
+        const id = req.params.id as string;
+
     const result = await prisma.result.findFirst({
       where: {
-        id: req.params.id,
+        id,
       },
     });
 
@@ -655,10 +661,12 @@ const manualSubjectRemoval = asyncHandler(
 
 const addSubjectToStudentResult = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
+        const id = req.params.id as string;
+
     const { subjectName } = req.body;
 
     const result = await prisma.result.findUnique({
-      where: { id: req.params.id },
+      where: { id },
     });
 
     if (!result) {
@@ -698,10 +706,12 @@ const addSubjectToStudentResult = asyncHandler(
 
 const removeSubjectFromStudentResult = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
+        const id = req.params.id as string;
+
     const { subjectName } = req.body;
     const result = await prisma.result.findUnique({
       where: {
-        id: req.params.id,
+        id
       },
     });
 
@@ -810,9 +820,11 @@ const studentResultData = asyncHandler(
 
 const exportResult = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
+        const id = req.params.id as string;
+
     const result = await prisma.result.findFirst({
       where: {
-        id: req.params.id,
+        id,
       },
     });
     if (!result) {

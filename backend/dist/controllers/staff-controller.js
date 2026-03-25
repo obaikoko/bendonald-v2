@@ -87,7 +87,7 @@ const getAllStaff = (0, express_async_handler_1.default)((req, res) => __awaiter
 }));
 exports.getAllStaff = getAllStaff;
 const getStaff = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
+    const id = req.params.id;
     try {
         const staff = yield prisma_1.prisma.staff.findUnique({
             where: {

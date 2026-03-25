@@ -44,7 +44,7 @@ const createInvoice = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const updateInvoice = asyncHandler(async (req: Request, res: Response) => {
-  const { id } = req.params;
+    const id = req.params.id as string;
   const payload = updateInvoiceSchema.parse(req.body);
 
   const invoice = await prisma.invoice.findUnique({ where: { id } });
@@ -262,7 +262,7 @@ const studentStatement = asyncHandler(async (req: Request, res: Response) => {
 
 const exportInvoiceReceipt = asyncHandler(
   async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const id = req.params.id as string;
     const invoice = await prisma.invoice.findUnique({
       where: { id },
       include: {
@@ -293,7 +293,7 @@ const exportInvoiceReceipt = asyncHandler(
 // @route DELETE /api/billing/invoices/:id
 // @privacy Private SUPER ADMIN
 const deleteInvoice = asyncHandler(async (req: Request, res: Response) => {
-  const { id } = req.params;
+    const id = req.params.id as string;
   if (!req.user.superAdmin) {
     res.status(401);
     throw new Error("Forbidden! You are not authorized to delete this invoice");

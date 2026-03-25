@@ -272,6 +272,7 @@ exports.getUsers = getUsers;
 // @Route POST /api/users/:id
 // @privacy Private ADMIN
 const getUserById = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
     try {
         const user = yield prisma_1.prisma.user.findFirst({
             select: {
@@ -287,7 +288,7 @@ const getUserById = (0, express_async_handler_1.default)((req, res) => __awaiter
                 createdAt: true,
             },
             where: {
-                id: req.params.id,
+                id,
             },
         });
         if (!user) {
@@ -305,10 +306,11 @@ exports.getUserById = getUserById;
 // @Route DELETE /api/users/:id
 // @privacy Private ADMIN
 const deleteUser = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
     try {
         const user = yield prisma_1.prisma.user.findFirst({
             where: {
-                id: req.params.id,
+                id,
             },
         });
         if (user) {

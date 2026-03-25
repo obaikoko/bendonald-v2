@@ -63,11 +63,12 @@ const addEvent = (0, express_async_handler_1.default)((req, res) => __awaiter(vo
 }));
 exports.addEvent = addEvent;
 const updateEvent = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
     const validateData = eventValidator_1.updateEventSchema.parse(req.body);
     const { title, description, date, imageUrl } = validateData;
     const event = yield prisma_1.prisma.event.findFirst({
         where: {
-            id: req.params.id,
+            id,
         },
     });
     if (!event) {
@@ -129,10 +130,11 @@ const updateEvent = (0, express_async_handler_1.default)((req, res) => __awaiter
 }));
 exports.updateEvent = updateEvent;
 const deleteEvent = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
     try {
         const event = yield prisma_1.prisma.event.findUnique({
             where: {
-                id: req.params.id,
+                id,
             },
         });
         if (!event) {

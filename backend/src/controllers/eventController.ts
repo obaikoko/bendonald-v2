@@ -54,11 +54,13 @@ const addEvent = asyncHandler(
 );
 
 const updateEvent = asyncHandler(async (req: Request, res: Response) => {
+      const id = req.params.id as string;
+
   const validateData = updateEventSchema.parse(req.body);
   const { title, description, date, imageUrl } = validateData;
   const event = await prisma.event.findFirst({
     where: {
-      id: req.params.id,
+      id,
     },
   });
 
@@ -129,10 +131,12 @@ const updateEvent = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const deleteEvent = asyncHandler(async (req, res) => {
+      const id = req.params.id as string;
+
   try {
     const event = await prisma.event.findUnique({
       where: {
-        id: req.params.id,
+        id,
       },
     });
 

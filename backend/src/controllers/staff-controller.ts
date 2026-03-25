@@ -105,7 +105,7 @@ const getAllStaff = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const getStaff = asyncHandler(async (req: Request, res: Response) => {
-  const { id } = req.params;
+    const id = req.params.id as string;
 
   try {
     const staff = await prisma.staff.findUnique({
@@ -127,7 +127,7 @@ const getStaff = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const updateStaff = asyncHandler(async (req: Request, res: Response) => {
-  const id = req.params.id;
+    const id = req.params.id as string;
   const parsed = staffSchema.partial().safeParse(req.body);
   if (!parsed.success) {
     res.status(400);
@@ -170,7 +170,7 @@ const updateStaff = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const deleteStaff = asyncHandler(async (req: Request, res: Response) => {
-  const id = req.params.id;
+    const id = req.params.id as string;
 
   const staff = await prisma.staff.findUnique({ where: { id } });
   if (!staff) {

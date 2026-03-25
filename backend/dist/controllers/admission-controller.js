@@ -55,8 +55,9 @@ const getAllRequest = (0, express_async_handler_1.default)((req, res) => __await
 }));
 exports.getAllRequest = getAllRequest;
 const getSingleRequest = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
     const admission = yield prisma_1.prisma.admission.findUnique({
-        where: { id: req.params.id },
+        where: { id },
     });
     if (!admission) {
         res.status(404);
@@ -66,8 +67,9 @@ const getSingleRequest = (0, express_async_handler_1.default)((req, res) => __aw
 }));
 exports.getSingleRequest = getSingleRequest;
 const deleteAdmission = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
     yield prisma_1.prisma.admission.delete({
-        where: { id: req.params.id },
+        where: { id },
     });
     res.status(200).json('Admission request deleted successfully');
 }));

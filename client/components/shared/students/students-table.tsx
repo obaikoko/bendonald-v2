@@ -68,7 +68,7 @@ const StudentsTable = ({
                 <TableCell className='cursor-pointer text-primary underline'>
                   <Link
                     href={
-                      user.isAdmin
+                      user?.isAdmin
                         ? `/admin/students/${student.id}`
                         : `/user/students/${student.id}`
                     }

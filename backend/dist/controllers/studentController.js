@@ -200,78 +200,6 @@ const registerStudent = (0, express_async_handler_1.default)((req, res) => __awa
     }
 }));
 exports.registerStudent = registerStudent;
-// // @route   GET /api/students
-// // @access  Private (Admin or Owner)
-// const getAllStudents = asyncHandler(
-//   async (req: Request, res: Response): Promise<void> => {
-//     const user = req.user;
-//     if (!user) {
-//       res.status(401);
-//       throw new Error("Unauthorized User");
-//     }
-//     const level = req.query.level as string | undefined;
-//     const keyword = req.query.keyword as string | undefined;
-//     const page = parseInt(req.query.pageNumber as string) || 1;
-//     const pageSize = 30;
-//     // Prisma filter
-//     const whereClause: any = {
-//       ...(keyword && {
-//         OR: [
-//           { firstName: { contains: keyword, mode: "insensitive" } },
-//           { lastName: { contains: keyword, mode: "insensitive" } },
-//           { otherName: { contains: keyword, mode: "insensitive" } },
-//         ],
-//       }),
-//       ...(level &&
-//         level !== "All" && {
-//           level: { contains: level, mode: "insensitive" },
-//         }),
-//     };
-//     // If not admin, filter by their level/subLevel
-//     if (!user.isAdmin) {
-//       whereClause.level = user.level;
-//       whereClause.subLevel = user.subLevel;
-//     }
-//     const [students, totalCount] = await Promise.all([
-//       prisma.student.findMany({
-//         select: {
-//           id: true,
-//           studentId: true,
-//           firstName: true,
-//           lastName: true,
-//           otherName: true,
-//           dateOfBirth: true,
-//           level: true,
-//           subLevel: true,
-//           isStudent: true,
-//           isPaid: true,
-//           gender: true,
-//           yearAdmitted: true,
-//           stateOfOrigin: true,
-//           localGvt: true,
-//           homeTown: true,
-//           sponsorEmail: true,
-//           sponsorName: true,
-//           sponsorPhoneNumber: true,
-//           sponsorRelationship: true,
-//           imageUrl: true,
-//           createdAt: true,
-//           updatedAt: true,
-//         },
-//         where: whereClause,
-//         orderBy: { createdAt: "desc" },
-//         skip: pageSize * (page - 1),
-//         take: pageSize,
-//       }),
-//       prisma.student.count({ where: whereClause }),
-//     ]);
-//     res.status(200).json({
-//       students,
-//       page,
-//       totalPages: Math.ceil(totalCount / pageSize),
-//     });
-//   }
-// );
 // @route   GET /api/students
 // @access  Private (Admin or Owner)
 const getAllStudents = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -280,7 +208,7 @@ const getAllStudents = (0, express_async_handler_1.default)((req, res) => __awai
         res.status(401);
         throw new Error("Unauthorized User");
     }
-    const { keyword, level, studentId, gender, subLevel, } = req.query;
+    const { keyword, level, studentId, gender, subLevel } = req.query;
     const page = parseInt(req.query.pageNumber) || 1;
     const pageSize = 30;
     const whereClause = {};
@@ -462,6 +390,7 @@ const getStudent = (0, express_async_handler_1.default)((req, res) => __awaiter(
         res.status(401);
         throw new Error("Unauthorized User");
     }
+    const id = req.params.id;
     const student = yield prisma_1.prisma.student.findFirst({
         select: {
             id: true,
@@ -488,7 +417,7 @@ const getStudent = (0, express_async_handler_1.default)((req, res) => __awaiter(
             updatedAt: true,
         },
         where: {
-            id: req.params.id,
+            id,
         },
     });
     if (!student) {
@@ -544,6 +473,7 @@ exports.getStudentProfile = getStudentProfile;
 // @route PUT api/students/:id
 // @privacy Private ADMIN
 const updateStudent = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
     const validateData = studentValidators_1.updateStudentSchema.parse(req.body);
     const { firstName, lastName, otherName, schoolId, dateOfBirth, level, subLevel, gender, yearAdmitted, stateOfOrigin, localGvt, homeTown, sponsorName, sponsorRelationship, sponsorPhoneNumber, sponsorEmail, image, } = validateData;
     if (!req.user) {
@@ -552,7 +482,7 @@ const updateStudent = (0, express_async_handler_1.default)((req, res) => __await
     }
     const student = yield prisma_1.prisma.student.findFirst({
         where: {
-            id: req.params.id,
+            id,
         },
     });
     if (!student) {
@@ -604,7 +534,7 @@ const updateStudent = (0, express_async_handler_1.default)((req, res) => __await
             createdAt: true,
         },
         where: {
-            id: req.params.id,
+            id,
         },
         data: {
             firstName: firstName !== null && firstName !== void 0 ? firstName : student.firstName,
@@ -635,12 +565,13 @@ exports.updateStudent = updateStudent;
 // @route DELETE api/students/:id
 // @privacy Private ADMIN
 const deleteStudent = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
     if (!req.user) {
         res.status(401);
         throw new Error("Unauthorized User");
     }
     const student = yield prisma_1.prisma.student.findUnique({
-        where: { id: req.params.id },
+        where: { id },
     });
     if (!student) {
         res.status(404);
@@ -788,11 +719,11 @@ const graduateStudent = (0, express_async_handler_1.default)((req, res) => __awa
 }));
 exports.graduateStudent = graduateStudent;
 const downloadStudentIdCard = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = req.params.id;
     try {
         if (!req.user.superAdmin) {
             throw new Error("Forbidden! User not allowed");
         }
-        const { id } = req.params;
         // 🔹 Get student data
         const student = yield prisma_1.prisma.student.findUnique({ where: { id } });
         if (!student) {

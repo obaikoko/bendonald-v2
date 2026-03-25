@@ -79,7 +79,7 @@ const authUser = asyncHandler(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 // @route POST api/users/logout
@@ -98,7 +98,7 @@ const logoutUser = asyncHandler(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 // @desc Register new User
@@ -152,7 +152,7 @@ const registerUser = asyncHandler(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 // @desc gets users profile
@@ -188,7 +188,7 @@ const getUserProfile = asyncHandler(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 // @description This is to authenticate users
@@ -266,7 +266,7 @@ const updateUser = asyncHandler(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 // @description This is to get all users
@@ -297,7 +297,7 @@ const getUsers = asyncHandler(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 // @description This is to get user by ID
@@ -305,6 +305,7 @@ const getUsers = asyncHandler(
 // @privacy Private ADMIN
 const getUserById = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
+    const id = req.params.id as string;
     try {
       const user = await prisma.user.findFirst({
         select: {
@@ -320,7 +321,7 @@ const getUserById = asyncHandler(
           createdAt: true,
         },
         where: {
-          id: req.params.id,
+          id,
         },
       });
       if (!user) {
@@ -332,7 +333,7 @@ const getUserById = asyncHandler(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 // @description This is to delete a user
@@ -340,10 +341,12 @@ const getUserById = asyncHandler(
 // @privacy Private ADMIN
 const deleteUser = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
+    const id = req.params.id as string;
+
     try {
       const user = await prisma.user.findFirst({
         where: {
-          id: req.params.id,
+          id,
         },
       });
 
@@ -365,7 +368,7 @@ const deleteUser = asyncHandler(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 // @desc Send mail to single parent/sponsor
@@ -394,7 +397,7 @@ const sendMail = asyncHandler(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 // @desc Send mail to All parent/sponsor
@@ -435,7 +438,7 @@ const sendMultipleMails = asyncHandler(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 // @desc Send reset password link
@@ -495,7 +498,7 @@ const forgetPassword = asyncHandler(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 // @desc Reset password
@@ -552,7 +555,7 @@ const resetPassword = asyncHandler(
     } catch (error) {
       throw error;
     }
-  }
+  },
 );
 
 export {

@@ -45,7 +45,7 @@ const createInvoice = (0, express_async_handler_1.default)((req, res) => __await
 exports.createInvoice = createInvoice;
 const updateInvoice = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b, _c;
-    const { id } = req.params;
+    const id = req.params.id;
     const payload = billingValidators_1.updateInvoiceSchema.parse(req.body);
     const invoice = yield prisma_1.prisma.invoice.findUnique({ where: { id } });
     if (!invoice) {
@@ -227,7 +227,7 @@ const studentStatement = (0, express_async_handler_1.default)((req, res) => __aw
 }));
 exports.studentStatement = studentStatement;
 const exportInvoiceReceipt = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
+    const id = req.params.id;
     const invoice = yield prisma_1.prisma.invoice.findUnique({
         where: { id },
         include: {
@@ -254,7 +254,7 @@ exports.exportInvoiceReceipt = exportInvoiceReceipt;
 // @route DELETE /api/billing/invoices/:id
 // @privacy Private SUPER ADMIN
 const deleteInvoice = (0, express_async_handler_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
+    const id = req.params.id;
     if (!req.user.superAdmin) {
         res.status(401);
         throw new Error("Forbidden! You are not authorized to delete this invoice");

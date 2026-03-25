@@ -458,6 +458,8 @@ const getStudent = asyncHandler(
       res.status(401);
       throw new Error("Unauthorized User");
     }
+    const id = req.params.id as string;
+
     const student = await prisma.student.findFirst({
       select: {
         id: true,
@@ -484,7 +486,7 @@ const getStudent = asyncHandler(
         updatedAt: true,
       },
       where: {
-        id: req.params.id,
+        id,
       },
     });
     if (!student) {
@@ -544,6 +546,8 @@ const getStudentProfile = asyncHandler(
 // @privacy Private ADMIN
 const updateStudent = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
+    const id = req.params.id as string;
+
     const validateData = updateStudentSchema.parse(req.body);
     const {
       firstName,
@@ -572,7 +576,7 @@ const updateStudent = asyncHandler(
 
     const student = await prisma.student.findFirst({
       where: {
-        id: req.params.id,
+        id,
       },
     });
 
@@ -633,7 +637,7 @@ const updateStudent = asyncHandler(
         createdAt: true,
       },
       where: {
-        id: req.params.id,
+        id,
       },
       data: {
         firstName: firstName ?? student.firstName,
@@ -666,12 +670,14 @@ const updateStudent = asyncHandler(
 // @privacy Private ADMIN
 const deleteStudent = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
+    const id = req.params.id as string;
+
     if (!req.user) {
       res.status(401);
       throw new Error("Unauthorized User");
     }
     const student = await prisma.student.findUnique({
-      where: { id: req.params.id },
+      where: { id },
     });
 
     if (!student) {
@@ -850,12 +856,14 @@ const graduateStudent = asyncHandler(
 );
 
 const downloadStudentIdCard = async (req: Request, res: Response) => {
+      const id = req.params.id as string;
+
   try {
     if (!req.user.superAdmin) {
       throw new Error("Forbidden! User not allowed");
     }
 
-    const { id } = req.params;
+    
 
     // 🔹 Get student data
     const student = await prisma.student.findUnique({ where: { id } });
