@@ -8,5 +8,6 @@ declare namespace NodeJS {
     GMAILEMAIL: string;
     GMAILPASSWORD: string;
     PUBLIC_DOMAIN: string;
+    SCHOOL_LOGO: string;
   }
 }

@@ -527,9 +527,15 @@ const addSubjectToStudentResult = (0, express_async_handler_1.default)((req, res
     };
     //  Merge old + new subject list (make sure subjectResults exists)
     const updatedSubjects = [...result.subjectResults, newSubject];
+    const totalScore = updatedSubjects.reduce((acc, s) => acc + (s.totalScore || 0), 0);
+    const averageScore = updatedSubjects.length > 0 ? totalScore / updatedSubjects.length : 0;
     yield prisma_1.prisma.result.update({
         where: { id: result.id },
-        data: { subjectResults: updatedSubjects },
+        data: {
+            subjectResults: updatedSubjects,
+            averageScore,
+            totalScore,
+        },
     });
     res
         .status(200)
@@ -541,7 +547,7 @@ const removeSubjectFromStudentResult = (0, express_async_handler_1.default)((req
     const { subjectName } = req.body;
     const result = yield prisma_1.prisma.result.findUnique({
         where: {
-            id
+            id,
         },
     });
     if (!result) {
@@ -553,12 +559,16 @@ const removeSubjectFromStudentResult = (0, express_async_handler_1.default)((req
         throw new Error("Subject required");
     }
     const updatedSubjects = result.subjectResults.filter((s) => s.subject !== subjectName);
+    const totalScore = updatedSubjects.reduce((acc, s) => acc + (s.totalScore || 0), 0);
+    const averageScore = updatedSubjects.length > 0 ? totalScore / updatedSubjects.length : 0;
     yield prisma_1.prisma.result.update({
         where: {
             id: result.id,
         },
         data: {
             subjectResults: updatedSubjects,
+            totalScore,
+            averageScore,
         },
     });
     res

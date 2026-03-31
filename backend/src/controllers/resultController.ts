@@ -123,17 +123,16 @@ const getResults = asyncHandler(
       throw new Error("Unauthorized User");
     }
 
-
     const level = req.query.level as string | undefined;
     const keyword = req.query.keyword as string | undefined;
     const session = req.query.session as string | undefined;
     const term = req.query.term as string | undefined;
-   const isPublished =
-     req.query.isPublished === "true"
-       ? true
-       : req.query.isPublished === "false"
-         ? false
-         : undefined;
+    const isPublished =
+      req.query.isPublished === "true"
+        ? true
+        : req.query.isPublished === "false"
+          ? false
+          : undefined;
 
     const page = parseInt(req.query.pageNumber as string) || 1;
     const pageSize = 30;
@@ -193,13 +192,11 @@ const getResults = asyncHandler(
   },
 );
 
-
-
 // @GET STUDENT RESULT
 // @route GET api/results/:id
 // @privacy Private
 const getResult = asyncHandler(async (req: Request, res: Response) => {
-      const id = req.params.id as string;
+  const id = req.params.id as string;
 
   const result = await prisma.result.findFirst({
     where: {
@@ -274,7 +271,7 @@ const getStudentResults = asyncHandler(
 
 const updateResult = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-        const id = req.params.id as string;
+    const id = req.params.id as string;
 
     if (!req.user) {
       res.status(401);
@@ -394,7 +391,7 @@ const updateResult = asyncHandler(
 
 const deleteResult = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-        const id = req.params.id as string;
+    const id = req.params.id as string;
 
     const result = await prisma.result.findFirst({
       where: {
@@ -661,7 +658,7 @@ const manualSubjectRemoval = asyncHandler(
 
 const addSubjectToStudentResult = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-        const id = req.params.id as string;
+    const id = req.params.id as string;
 
     const { subjectName } = req.body;
 
@@ -690,28 +687,36 @@ const addSubjectToStudentResult = asyncHandler(
 
     //  Merge old + new subject list (make sure subjectResults exists)
     const updatedSubjects = [...(result.subjectResults as any[]), newSubject];
+const totalScore = updatedSubjects.reduce(
+  (acc: number, s: any) => acc + (s.totalScore || 0),
+  0,
+);
+const averageScore =
+  updatedSubjects.length > 0 ? totalScore / updatedSubjects.length : 0;
 
-    await prisma.result.update({
-      where: { id: result.id },
-      data: { subjectResults: updatedSubjects },
-    });
+await prisma.result.update({
+  where: { id: result.id },
+  data: {
+    subjectResults: updatedSubjects,
+    averageScore,
+    totalScore,
+  },
+});
 
-    res
-      .status(200)
-      .json(
-        `${subjectName} added to ${result.firstName}'s result successfully.`,
-      );
+res
+  .status(200)
+  .json(`${subjectName} added to ${result.firstName}'s result successfully.`);
   },
 );
 
 const removeSubjectFromStudentResult = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-        const id = req.params.id as string;
+    const id = req.params.id as string;
 
     const { subjectName } = req.body;
     const result = await prisma.result.findUnique({
       where: {
-        id
+        id,
       },
     });
 
@@ -729,6 +734,13 @@ const removeSubjectFromStudentResult = asyncHandler(
       (s: any) => s.subject !== subjectName,
     );
 
+    const totalScore = updatedSubjects.reduce(
+      (acc: number, s: any) => acc + (s.totalScore || 0),
+      0,
+    );
+    const averageScore =
+      updatedSubjects.length > 0 ? totalScore / updatedSubjects.length : 0;
+
     await prisma.result.update({
       where: {
         id: result.id,
@@ -736,6 +748,8 @@ const removeSubjectFromStudentResult = asyncHandler(
 
       data: {
         subjectResults: updatedSubjects,
+        totalScore,
+        averageScore,
       },
     });
 
@@ -820,7 +834,7 @@ const studentResultData = asyncHandler(
 
 const exportResult = asyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-        const id = req.params.id as string;
+    const id = req.params.id as string;
 
     const result = await prisma.result.findFirst({
       where: {
