@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { useGetNextTermInfoQuery } from '@/src/features/nextTerm/nextTermApiSlcie';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { AlertTriangle } from 'lucide-react';
-import { formatDateTime } from '@/lib/utils';
+import { useGetNextTermInfoQuery } from "@/src/features/nextTerm/nextTermApiSlcie";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertTriangle } from "lucide-react";
+import { formatDateTime } from "@/lib/utils";
 
 const NextTermDetails = ({
   session,
@@ -24,17 +24,17 @@ const NextTermDetails = ({
 
   if (isLoading) {
     return (
-      <div className='space-y-4'>
-        <Skeleton className='h-8 w-[250px] bg-background' />
-        <Skeleton className='h-24 w-full bg-background' />
+      <div className="space-y-4">
+        <Skeleton className="h-8 w-[250px] bg-background" />
+        <Skeleton className="h-24 w-full bg-background" />
       </div>
     );
   }
 
   if (error || !data) {
     return (
-      <Alert variant='destructive' className='bg-background text-foreground'>
-        <AlertTriangle className='h-4 w-4' />
+      <Alert variant="destructive" className="bg-background text-foreground">
+        <AlertTriangle className="h-4 w-4" />
         <AlertTitle>Error</AlertTitle>
         <AlertDescription>
           Unable to fetch next term details. Please try again later.
@@ -44,16 +44,23 @@ const NextTermDetails = ({
   }
 
   return (
-    <Card className='bg-background text-foreground max-w-2xl mx-auto mt-6'>
+    <Card className="bg-background text-foreground max-w-2xl mx-auto mt-6">
       <CardHeader>
-        <CardTitle className='text-xl'>Next Term Details</CardTitle>
+        <CardTitle className="text-xl">Next Term Details</CardTitle>
       </CardHeader>
-      <CardContent className='space-y-3'>
+      <CardContent className="space-y-3">
         <p>
           <strong>Session:</strong> {data.session}
         </p>
         <p>
-          <strong>Term:</strong> {data.term}
+          <strong>Term:</strong>{" "}
+          {data.term === "First"
+            ? "Second"
+            : data.term === "Second"
+              ? "Third"
+              : data.term === "Third"
+                ? "First"
+                : ""}
         </p>
         <p>
           <strong>Level:</strong> {data.level}

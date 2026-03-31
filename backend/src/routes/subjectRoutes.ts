@@ -10,7 +10,7 @@ const router = Router();
 
 router
   .route("/")
-  .get(protect, admin, getSubjects)
+  .get(protect, getSubjects)
   .post(protect, admin, createSubject);
 router.delete("/:id", protect, admin, deleteSubject);
 
